@@ -6,7 +6,7 @@ services:
     volumes:
       - ./:/usr/src/app
     ports:
-      - '8080:5000'
+      - '8080:8080'
     depends_on:
       - mongo
     links:
@@ -17,14 +17,11 @@ services:
       - data-volume:/data/db
     ports:
       - '27017:27017'
-    restart: unless-stopped
+    restart: always
   mongo-express:
     image: mongo-express
     depends_on:
       - mongo
-    environment:
-      ME_CONFIG_BASICAUTH_USERNAME: root
-      ME_CONFIG_BASICAUTH_PASSWORD: password
     ports:
       - '5000:8081'
 
