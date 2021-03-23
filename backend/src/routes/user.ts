@@ -14,7 +14,6 @@ router.post('/create', async (req: Request, res: Response, next: NextFunction) =
   let { firstName, lastName, email, username, password } = req.body;
 
   const user = new User({
-    _id: new mongoose.Types.ObjectId(),
     firstName,
     lastName,
     email,
