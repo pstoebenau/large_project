@@ -1,5 +1,5 @@
 import express, { NextFunction, Request, Response } from "express";
-import nodemailer from "nodemailer";
+var nodemailer = require("nodemailer");
 import User from "@models/user";
 import mongoose from "mongoose";
 
