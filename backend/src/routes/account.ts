@@ -1,4 +1,5 @@
 import express, { NextFunction, Request, Response } from "express";
+import nodemailer from "nodemailer";
 import User from "@models/user";
 import mongoose from "mongoose";
 
@@ -11,7 +12,7 @@ router.post("/signup", async (req: Request, res: Response, next: NextFunction) =
       });
     }
 
-    let { firstName, lastName, email, username, password } = req.body;
+    let { firstName, lastName, email, username, password} = req.body;
 
     const user = new User({
       firstName,
