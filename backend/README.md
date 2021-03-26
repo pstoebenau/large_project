@@ -8,9 +8,11 @@
 
 ## How to setup the environment
 
+1. Go to the backend folder
 1. Run `npm install` in the app directory
 2. Run `npm start` to start dev server
 3. Run `docker-compose up` to start the mongoDB server.
+*Note: Windows users use `docker-compose.exe up`*
 
 ## How to connect the database
 
