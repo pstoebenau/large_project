@@ -15,6 +15,7 @@ router.post("/signup", async (req: Request, res: Response, next: NextFunction) =
     let { firstName, lastName, email, username, password} = req.body;
 
     const user = new User({
+      _id: mongoose.Schema.Types.ObjectId,
       firstName,
       lastName,
       email,
@@ -36,3 +37,5 @@ router.post("/signup", async (req: Request, res: Response, next: NextFunction) =
     }
   }
 );
+
+export default router;
