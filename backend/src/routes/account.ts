@@ -1,5 +1,6 @@
 import express, { NextFunction, Request, Response } from "express";
 var nodemailer = require("nodemailer");
+var bcrypt = require("bcrypt");
 import User from "@models/user";
 import mongoose from "mongoose";
 
@@ -15,12 +16,11 @@ router.post("/signup", async (req: Request, res: Response, next: NextFunction) =
     let { firstName, lastName, email, username, password} = req.body;
 
     const user = new User({
-      _id: mongoose.Schema.Types.ObjectId,
       firstName,
       lastName,
       email,
       username,
-      password,
+      bcrypt.hash(password),
     });
 
     try {
