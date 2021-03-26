@@ -8,7 +8,7 @@ import router from '@routes/user';
 
 const app = express();
 
-// Connect to mongoose
+// Connect to MongoDB database
 mongoose.connect(config.mongo.url, config.mongo.options)
   .then((result) => {
     console.log("Connected to MongoDB!");
