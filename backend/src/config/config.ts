@@ -11,9 +11,9 @@ const MONGO_OPTIONS = {
   retryWrites: false
 };
 
-const MONGO_HOST = process.env.MONGO_USERNAME || 'mongo';
+const MONGO_HOST = process.env.MONGO_HOST || 'mongo';
 const MONGO_USERNAME = process.env.MONGO_USERNAME || '';
-const MONGO_PASSWORD = process.env.MONGO_USERNAME || '';
+const MONGO_PASSWORD = process.env.MONGO_PASSWORD || '';
 const MONGO_DATABASE = process.env.MONGO_DATABASE || 'hot_or_not';
 
 let mongoUrl = `mongodb://${MONGO_USERNAME}:${MONGO_PASSWORD}@${MONGO_HOST}/${MONGO_DATABASE}`;
@@ -28,7 +28,7 @@ const MONGO = {
   url: mongoUrl
 }
 
-const SERVER_HOSTNAME = process.env.SERVER_HSOTNAME || 'localhost';
+const SERVER_HOSTNAME = process.env.SERVER_HOSTNAME || 'localhost';
 const SERVER_PORT = process.env.PORT || 8080;
 
 const SERVER = {

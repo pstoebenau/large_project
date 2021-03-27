@@ -1,6 +1,6 @@
 import express, { NextFunction, Request, Response } from "express";
-var nodemailer = require("nodemailer");
-var bcrypt = require("bcrypt");
+import nodemailer from "nodemailer";
+import bcrypt from "bcrypt";
 import User from "@models/user";
 import mongoose from "mongoose";
 
@@ -13,14 +13,34 @@ router.post("/signup", async (req: Request, res: Response, next: NextFunction) =
       });
     }
 
-    let { firstName, lastName, email, username, password} = req.body;
+    let { firstName, lastName, email, username, password } = req.body;
+
+    // bcrypt.hash(password, 10, (err, hash) => {
+    //   if (err) {
+    //     return res.status(500).json({
+    //       error: err,
+    //     });
+    //   } else {
+    //     const user = new User({
+    //       firstName,
+    //       lastName,
+    //       email,
+    //       username,
+    //       hash,
+    //       boolean: false,
+    //     });
+    //   }
+    // });
+
+    let hashedPassword = await bcrypt.hash(password, 10);
 
     const user = new User({
       firstName,
       lastName,
       email,
       username,
-      bcrypt.hash(password),
+      hashedPassword,
+      active: false,
     });
 
     try {
