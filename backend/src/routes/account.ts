@@ -6,59 +6,38 @@ import mongoose from "mongoose";
 
 const router = express.Router();
 
-router.post(
-  "/signup",
-  async (req: Request, res: Response, next: NextFunction) => {
-    if (!req.body) {
-      return res.status(500).json({
-        message: "Invalid input",
-      });
-    }
-
-    let { firstName, lastName, email, username, password } = req.body;
-
-    //bcrypt.hash(password, 10, (err, hash) => {
-    //  if (err) {
-    //    return res.status(500).json({
-    //      error: err,
-    //   });
-    //  } else {
-    //    const user = new User({
-    //      firstName,
-    //      lastName,
-    //      email,
-    //      username,
-    //      hash,
-    //    });
-    //  }
-    //});
-
-    const hash = await bcrypt.hash(password, 10);
-    return res.status(200).json({
-      hash,
+router.post("/signup", async (req: Request, res: Response, next: NextFunction) => {
+  if (!req.body) {
+    return res.status(500).json({
+      message: "Invalid input",
     });
-
-    const user = new User({
-      firstName,
-      lastName,
-      email,
-      username,
-      password: hash,
-    });
-
-    try {
-      let result = await user.save();
-
-      return res.status(201).json({
-        user: result,
-      });
-    } catch (error) {
-      return res.status(500).json({
-        message: error.message,
-        error,
-      });
-    }
   }
-);
+
+  let { firstName, lastName, email, username, password } = req.body;
+
+  const hash = await bcrypt.hash(password, 10);
+
+  const user = new User({
+    firstName,
+    lastName,
+    email,
+    username,
+    password: hash,
+    active: false,
+  });
+
+  try {
+    let result = await user.save();
+
+    return res.status(201).json({
+      user: result,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message,
+      error,
+    });
+  }
+});
 
 export default router;
