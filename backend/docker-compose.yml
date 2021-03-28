@@ -1,7 +1,7 @@
 version: '3'
 services:
   web-server:
-    iamge: node:15
+    image: node:15
     command: bash -c "npm install && npm start"
     volumes:
       - ./:/usr/src/app
