@@ -7,7 +7,6 @@ interface User extends Document {
   email: string;
   username: string;
   password: string;
-  active: boolean;
 }
 
 const UserSchema: Schema = new Schema(
@@ -17,7 +16,6 @@ const UserSchema: Schema = new Schema(
     email: { type: String, required: true, unique: true, match: /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/ },
     username: { type: String, required: true, unique: true },
     password: { type: String, required: true },
-    active: { type: Boolean },
   },
   {
     timestamps: true

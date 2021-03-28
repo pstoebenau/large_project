@@ -6,7 +6,9 @@ import mongoose from "mongoose";
 
 const router = express.Router();
 
-router.post("/signup", async (req: Request, res: Response, next: NextFunction) => {
+router.post(
+  "/signup",
+  async (req: Request, res: Response, next: NextFunction) => {
     if (!req.body) {
       return res.status(500).json({
         message: "Invalid input",
@@ -15,32 +17,30 @@ router.post("/signup", async (req: Request, res: Response, next: NextFunction) =
 
     let { firstName, lastName, email, username, password } = req.body;
 
-    // bcrypt.hash(password, 10, (err, hash) => {
-    //   if (err) {
-    //     return res.status(500).json({
-    //       error: err,
-    //     });
-    //   } else {
-    //     const user = new User({
-    //       firstName,
-    //       lastName,
-    //       email,
-    //       username,
-    //       hash,
-    //       boolean: false,
-    //     });
-    //   }
-    // });
+    //bcrypt.hash(password, 10, (err, hash) => {
+    //  if (err) {
+    //    return res.status(500).json({
+    //      error: err,
+    //   });
+    //  } else {
+    //    const user = new User({
+    //      firstName,
+    //      lastName,
+    //      email,
+    //      username,
+    //      hash,
+    //    });
+    //  }
+    //});
 
-    let hashedPassword = await bcrypt.hash(password, 10);
+    const hash = bcrypt.hashSync(password, 10);
 
     const user = new User({
       firstName,
       lastName,
       email,
       username,
-      hashedPassword,
-      active: false,
+      hash,
     });
 
     try {
