@@ -4,7 +4,7 @@ import bodyParser from 'body-parser';
 import config from '@config/config';
 import mongoose from 'mongoose';
 import userRoutes from '@routes/user';
-import userAccount from '@routes/account';
+import accountRoutes from '@routes/account';
 import router from '@routes/user';
 
 const app = express();
@@ -29,7 +29,7 @@ app.use(express.json());
 
 // Routes
 app.use('/api/user', userRoutes);
-app.use('/api/account', userAccount);
+app.use('/api/account', accountRoutes);
 
 // Error Handling
 app.use((req, res, next) => {
