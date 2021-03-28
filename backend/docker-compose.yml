@@ -1,8 +1,8 @@
 version: '3'
 services:
   web-server:
-    image: node:15
-    command: bash -c "npm install && npm start"
+    build: .
+    command: npm start
     volumes:
       - ./:/usr/src/app
     ports:
