@@ -33,14 +33,17 @@ router.post(
     //  }
     //});
 
-    const hash = bcrypt.hashSync(password, 10);
+    const hash = await bcrypt.hash(password, 10);
+    return res.status(200).json({
+      hash,
+    });
 
     const user = new User({
       firstName,
       lastName,
       email,
       username,
-      hash,
+      password: hash,
     });
 
     try {
