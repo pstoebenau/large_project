@@ -14,7 +14,7 @@ class SwipingPage extends StatelessWidget {
             Expanded(
               child: Row(
                 children: [
-                  Image(image: image)
+                  //Image(image: image)
                 ],
               ),
             )
