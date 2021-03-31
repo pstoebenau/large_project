@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 class SwipingPage extends StatelessWidget {
   const SwipingPage();
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -11,14 +10,15 @@ class SwipingPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             // This is the profile picture
+            SizedBox(height: 20),
             new Container(
               child: new Image.asset("assets/joe.jpg",
-                  width: 70, height: 70, fit: BoxFit.cover),
+                  width: 50, height: 50, fit: BoxFit.cover),
             ),
             SizedBox(height: 20),
             new Container(
               child: new Image.asset("assets/bogosort.png",
-                  width: 350, height: 450, fit: BoxFit.cover),
+                  width: 350, height: 400, fit: BoxFit.cover),
             ),
             SizedBox(height: 20),
             Row(
@@ -34,7 +34,29 @@ class SwipingPage extends StatelessWidget {
                       width: 70, height: 70, fit: BoxFit.cover),
                 ),
               ],
-            )
+            ),
+            SizedBox(height: 20),
+            BottomNavigationBar(
+              items: const <BottomNavigationBarItem>[
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.search),
+                  label: '',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.favorite),
+                  label: '',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.star),
+                  label: '',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.settings),
+                  label: '',
+                ),
+              ],
+              selectedItemColor: Colors.teal,
+            ),
           ],
         ),
       ),
