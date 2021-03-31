@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import './swiping.dart';
 
-class Signup extends StatelessWidget {
-  const Signup();
+class Login extends StatelessWidget {
+  const Login();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             SizedBox(height: 50),
             new Container(
@@ -28,7 +29,7 @@ class Signup extends StatelessWidget {
                 letterSpacing: 15 
               ),
             ),
-            SizedBox(height: 60),
+            SizedBox(height: 40),
             new Container(
               width: 350,
               child: Column(
@@ -59,7 +60,7 @@ class Signup extends StatelessWidget {
               height: 50,
               child: ElevatedButton(
                 onPressed: ()=>{
-                  Navigator.push(
+                   Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) => SwipingPage(),
@@ -79,7 +80,7 @@ class Signup extends StatelessWidget {
               "Or create a new account",
               style: TextStyle(decoration: TextDecoration.underline),
             ),
-            SizedBox(height: 30),
+            SizedBox(height: 20),
           ],
         ),
       ),

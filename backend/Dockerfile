@@ -1,10 +1,13 @@
 FROM node:15
 
-#Install some dependencies
+WORKDIR /usr/app
 
-WORKDIR /usr/src/app
-COPY ./ /usr/src/app
+# Install some dependencies
+COPY package*.json ./
 RUN npm install
 
+# Copy backend
+COPY . .
+
 # Set up a default command
-CMD [ "npm","start" ]
+# CMD [ "npm","start" ]
