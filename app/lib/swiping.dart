@@ -26,12 +26,12 @@ class SwipingPage extends StatelessWidget {
               children: [
                 new Container(
                   child: new Image.asset("assets/image 7.png",
-                      width: 70, height: 70, fit: BoxFit.cover),
+                      width: 70, height: 70, fit: BoxFit.fitHeight),
                 ),
                 SizedBox(width: 200),
                 new Container(
                   child: new Image.asset("assets/image 13.png",
-                      width: 70, height: 70, fit: BoxFit.cover),
+                      width: 70, height: 70, fit: BoxFit.fitHeight),
                 ),
               ],
             ),
@@ -40,7 +40,7 @@ class SwipingPage extends StatelessWidget {
               items: const <BottomNavigationBarItem>[
                 BottomNavigationBarItem(
                   icon: Icon(Icons.search),
-                  label: '',
+                  label: ''
                 ),
                 BottomNavigationBarItem(
                   icon: Icon(Icons.favorite),
