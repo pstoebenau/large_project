@@ -7,18 +7,18 @@ class SwipingPage extends StatelessWidget {
     return Scaffold(
       body: Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             // This is the profile picture
             SizedBox(height: 20),
             new Container(
-              child: new Image.asset("assets/joe.jpg",
+              child: new Image.asset("assets/joe.png",
                   width: 50, height: 50, fit: BoxFit.cover),
             ),
             SizedBox(height: 20),
             new Container(
               child: new Image.asset("assets/bogosort.png",
-                  width: 350, height: 400, fit: BoxFit.cover),
+                  width: 350, height: 400, fit: BoxFit.contain),
             ),
             SizedBox(height: 20),
             Row(
@@ -57,6 +57,7 @@ class SwipingPage extends StatelessWidget {
               ],
               selectedItemColor: Colors.teal,
             ),
+            SizedBox(height: 10)
           ],
         ),
       ),
