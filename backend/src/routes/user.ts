@@ -1,5 +1,5 @@
 import express, { NextFunction, Request, Response } from 'express';
-import User from '@models/user';
+import User from '@schemas/user';
 import mongoose from 'mongoose';
 
 const router = express.Router();
