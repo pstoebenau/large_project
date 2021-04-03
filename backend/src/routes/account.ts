@@ -36,6 +36,32 @@ router.post(
     try {
       let result = await user.save();
 
+      var smtpConfig = {
+        host: 'smtp.gmail.com',
+        port: 465,
+        secure: true, // use SSL
+        auth: {
+            user: 'mmidnight.magic@gmail.com',
+            pass: 'magic!password'
+        }
+      };
+    
+      var transporter = nodemailer.createTransport(smtpConfig);
+    
+      let token = jwt.sign({userId: result.id}, config.server.secret);
+    
+      let verifyLink = `http://${config.server.hostname}:${config.server.port}/api/account/verify?token=${token}`;
+      let send = await transporter.sendMail({
+        from: '"Chill Midnight 👻" <mmidnight.magic@gmail.com>', // sender address
+        to: email, // list of receivers
+        subject: "Hello ✔", // Subject line
+        text: "Hello world?", // plain text body
+        html: `Hello,<br> Please Click on the link to verify your email.<br><a href=${verifyLink}>Click here to verify</a>`, // html body
+      });
+      
+      console.log("Message sent: %s", send.messageId);
+      console.log("Preview URL: %s", nodemailer.getTestMessageUrl(send));
+
       return res.status(201).json({
         user: result,
       });
@@ -61,20 +87,17 @@ router.get("/send", async (req: Request, res: Response, next: NextFunction) => {
 
   var transporter = nodemailer.createTransport(smtpConfig);
 
-  let token = jwt.sign({userId: "ashodfahjkdfhaskjdfh"}, config.server.secret);
-  console.log(token);
+  let token = jwt.sign({userId: "this-is-the-user-id-string"}, config.server.secret);
 
-  let data = jwt.decode(token) as string;
-  console.log(data);  
-  console.log(JSON.parse(data));
+  let verifyLink = `http://${config.server.hostname}:${config.server.port}/api/account/verify/token=${token}`;
 
   try {
     let send = await transporter.sendMail({
       from: '"Chill Midnight 👻" <mmidnight.magic@gmail.com>', // sender address
-      to: "jajptadlkajwxnraia@upived.online", // list of receivers
+      to: "joxahec390@shzsedu.com", // list of receivers
       subject: "Hello ✔", // Subject line
       text: "Hello world?", // plain text body
-      html: "<b>Hello world?</b>", // html body
+      html: `Hello,<br> Please Click on the link to verify your email.<br><a href=${verifyLink}>Click here to verify</a>`, // html body
     });
 
     console.log("Message sent: %s", send.messageId);
@@ -89,56 +112,22 @@ router.get("/send", async (req: Request, res: Response, next: NextFunction) => {
   }
 });
 
+router.get("/verify/:token", async function (req, res) {
+  let token = req.params.token;
 
-/*router.get("/send", function (req, res) {
-  let account = nodemailer.createTestAccount();
+  try {
+    let data = jwt.decode(token) as any;
+    let userId = data.userId;
+  
+    let user = await User.findById(userId).exec();
+    console.log(user);
 
-  let transporter = nodemailer.createTransport({
-    host: "smtp.ethereal.email",
-    port: 587,
-    secure: false,
-    auth: {
-      user: account.user,
-      pass: account.pass,
-    },
-  });
-
-  let rand = Math.floor(Math.random() * 100 + 54);
-  let link = `http://${config.server.hostname}/verify?id=${rand}`;
-  let mailOptions = {
-    to: "ywvrlrqqmipjsshkze@miucce.com",
-    subject: "Please confirm your Email account",
-    html:
-      "Hello,<br> Please Click on the link to verify your email.<br><a href=" +
-      link +
-      ">Click here to verify</a>",
-  };
-  console.log(mailOptions);
-  transporter.sendMail(mailOptions, function (error, response) {
-    if (error) {
-      console.log(error);
-      res.end("error");
-    } else {
-      console.log("Message sent: " + response.message);
-      res.end("sent");
-    }
-  });
-});*/
-
-/*router.get("/verify", function (req, res) {
-  console.log(req.protocol + ":/" + req.get("host"));
-  if (req.protocol + "://" + req.get("host") == "http://" + host) {
-    console.log("Domain is matched. Information is from Authentic email");
-    if (req.query.id == rand) {
-      console.log("email is verified");
-      res.end("<h1>Email " + mailOptions.to + " is been Successfully verified");
-    } else {
-      console.log("email is not verified");
-      res.end("<h1>Bad Request</h1>");
-    }
-  } else {
-    res.end("<h1>Request is from unknown source");
+    res.status(200).json({user});
+  } catch (error) {
+    res.status(500).json({
+      message: error.message
+    })
   }
-});*/
+});
 
 export default router;
