@@ -1,10 +1,11 @@
 import express, { NextFunction, Request, Response } from "express";
 import nodemailer, { createTestAccount } from "nodemailer";
-//import jwt from "jsonwebtoken"
 import bcrypt from "bcrypt";
+import jwt from 'jsonwebtoken';
 import User from "@schemas/user";
 import mongoose from "mongoose";
 import config from "@config/config";
+import UserFunctions from "../functions/users";
 
 const router = express.Router();
 
@@ -48,29 +49,44 @@ router.post(
 );
 
 router.get("/send", async (req: Request, res: Response, next: NextFunction) => {
-
-  let testAccount = await nodemailer.createTestAccount();
-
-  let transporter = nodemailer.createTransport({
-    host: "smtp.ethereal.email",
-    port: 587,
-    secure: false, // true for 465, false for other ports
+  var smtpConfig = {
+    host: 'smtp.gmail.com',
+    port: 465,
+    secure: true, // use SSL
     auth: {
-      user: testAccount.user, // generated ethereal user
-      pass: testAccount.pass, // generated ethereal password
-    },
-  });
+        user: 'mmidnight.magic@gmail.com',
+        pass: 'magic!password'
+    }
+  };
 
-  let send = await transporter.sendMail({
-    from: '"Fred Foo 👻" <foo@example.com>', // sender address
-    to: "ywvrlrqqmipjsshkze@miucce.com, baz@example.com", // list of receivers
-    subject: "Hello ✔", // Subject line
-    text: "Hello world?", // plain text body
-    html: "<b>Hello world?</b>", // html body
-  });
+  var transporter = nodemailer.createTransport(smtpConfig);
 
-  console.log("Message sent: %s", send.messageId);
-  console.log("Preview URL: %s", nodemailer.getTestMessageUrl(send));
+  let token = jwt.sign({userId: "ashodfahjkdfhaskjdfh"}, config.server.secret);
+  console.log(token);
+
+  let data = jwt.decode(token) as string;
+  console.log(data);  
+  console.log(JSON.parse(data));
+
+  try {
+    let send = await transporter.sendMail({
+      from: '"Chill Midnight 👻" <mmidnight.magic@gmail.com>', // sender address
+      to: "jajptadlkajwxnraia@upived.online", // list of receivers
+      subject: "Hello ✔", // Subject line
+      text: "Hello world?", // plain text body
+      html: "<b>Hello world?</b>", // html body
+    });
+
+    console.log("Message sent: %s", send.messageId);
+    console.log("Preview URL: %s", nodemailer.getTestMessageUrl(send));
+
+    return res.status(200).json();
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message,
+      error,
+    });
+  }
 });
 
 
