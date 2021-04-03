@@ -50,7 +50,7 @@ router.post(
     
       let token = jwt.sign({userId: result.id}, config.server.secret);
     
-      let verifyLink = `http://${config.server.hostname}:${config.server.port}/api/account/verify?token=${token}`;
+      let verifyLink = `http://${config.server.hostname}:${config.server.port}/api/account/verify/${token}`;
       let send = await transporter.sendMail({
         from: '"Chill Midnight 👻" <mmidnight.magic@gmail.com>', // sender address
         to: email, // list of receivers
