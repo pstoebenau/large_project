@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class Signup extends StatelessWidget {
-  const Signup();
+class Signup_next extends StatelessWidget {
+  const Signup_next();
 
   @override
   Widget build(BuildContext context) {
@@ -29,21 +29,24 @@ class Signup extends StatelessWidget {
                     TextField(
                       decoration: InputDecoration(
                         border: OutlineInputBorder(),
-                        labelText: 'First Name',
+                        labelText: 'Username',
+                        suffixIcon: Icon(Icons.account_circle),
                       ),
                     ),
                     SizedBox(height: 20),
                     TextField(
                       decoration: InputDecoration(
                         border: OutlineInputBorder(),
-                        labelText: 'Last Name',
+                        labelText: 'Password',
+                        suffixIcon: Icon(Icons.remove_red_eye),
                       ),
                     ),
                     SizedBox(height: 20),
                     TextField(
                       decoration: InputDecoration(
                         border: OutlineInputBorder(),
-                        labelText: 'Email',
+                        labelText: 'Confim Password',
+                        suffixIcon: Icon(Icons.remove_red_eye),
                       ),
                     ),
                   ]),
@@ -54,7 +57,7 @@ class Signup extends StatelessWidget {
               height: 50,
               child: ElevatedButton(
                 onPressed: () => {},
-                child: Text('Next'),
+                child: Text('CREATE ACCOUNT'),
               ),
             ),
             SizedBox(height: 60),
