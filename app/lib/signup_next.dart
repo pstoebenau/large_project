@@ -45,7 +45,7 @@ class Signup_next extends StatelessWidget {
                     TextField(
                       decoration: InputDecoration(
                         border: OutlineInputBorder(),
-                        labelText: 'Confim Password',
+                        labelText: 'Confirm Password',
                         suffixIcon: Icon(Icons.remove_red_eye),
                       ),
                     ),
@@ -56,7 +56,23 @@ class Signup_next extends StatelessWidget {
               width: 220,
               height: 50,
               child: ElevatedButton(
-                onPressed: () => {},
+                onPressed: () => {
+                  showDialog(
+                    context: context,
+                    builder: (ctx) => AlertDialog(
+                      title: Text("Thank you for signing in"),
+                      content: Text("Verify your email address"),
+                      actions: <Widget>[
+                        ElevatedButton(
+                          onPressed: () {
+                            Navigator.of(ctx).pop();
+                          },
+                          child: Text("Verify my email"),
+                        ),
+                      ],
+                    ),
+                  ),
+                },
                 child: Text('CREATE ACCOUNT'),
               ),
             ),
