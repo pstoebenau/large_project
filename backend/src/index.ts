@@ -1,11 +1,11 @@
 import http from 'http';
 import express from 'express';
 import bodyParser from 'body-parser';
-import config from '@config/config';
+import config from '@/config/config';
 import mongoose from 'mongoose';
-import userRoutes from '@routes/user';
-import accountRoutes from '@routes/account';
-import router from '@routes/user';
+import userRoutes from '@/routes/user';
+import accountRoutes from '@/routes/account';
+import router from '@/routes/user';
 
 const app = express();
 
