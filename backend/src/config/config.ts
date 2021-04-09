@@ -17,8 +17,8 @@ const MONGO_PASSWORD = process.env.MONGO_PASSWORD || '';
 const MONGO_DATABASE = process.env.MONGO_DATABASE || 'hot_or_not';
 
 let mongoUrl = `mongodb+srv://${MONGO_USERNAME}:${MONGO_PASSWORD}@${MONGO_HOST}/${MONGO_DATABASE}`;
-if (MONGO_USERNAME === "" || MONGO_PASSWORD === "")
-  mongoUrl = `mongodb+srv://${MONGO_HOST}/${MONGO_DATABASE}`;
+if (MONGO_HOST == "mongo")
+  mongoUrl = `mongodb://${MONGO_HOST}/${MONGO_DATABASE}`;
 
 const MONGO = {
   host: MONGO_HOST,
