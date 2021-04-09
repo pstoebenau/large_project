@@ -32,9 +32,9 @@ import express, { NextFunction, Request, Response } from "express";
 import nodemailer, { createTestAccount } from "nodemailer";
 import bcrypt from "bcrypt";
 import jwt from 'jsonwebtoken';
-import User from "@schemas/user";
+import User from "@/schemas/user";
 import mongoose from "mongoose";
-import config from "@config/config";
+import config from "@/config/config";
 import UserFunctions from "../functions/users";
 
 const router = express.Router();
