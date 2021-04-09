@@ -16,9 +16,9 @@ const MONGO_USERNAME = process.env.MONGO_USERNAME || '';
 const MONGO_PASSWORD = process.env.MONGO_PASSWORD || '';
 const MONGO_DATABASE = process.env.MONGO_DATABASE || 'hot_or_not';
 
-let mongoUrl = `mongodb://${MONGO_USERNAME}:${MONGO_PASSWORD}@${MONGO_HOST}/${MONGO_DATABASE}`;
+let mongoUrl = `mongodb+srv://${MONGO_USERNAME}:${MONGO_PASSWORD}@${MONGO_HOST}/${MONGO_DATABASE}`;
 if (MONGO_USERNAME === "" || MONGO_PASSWORD === "")
-  mongoUrl = `mongodb://${MONGO_HOST}/${MONGO_DATABASE}`;
+  mongoUrl = `mongodb+srv://${MONGO_HOST}/${MONGO_DATABASE}`;
 
 const MONGO = {
   host: MONGO_HOST,
