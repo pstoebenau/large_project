@@ -1,3 +1,33 @@
+// http://localhost:8080/api/account/signup
+
+// input
+// {
+//   "firstName": string,
+//   "lastName": string,
+//   "email": string,
+//   "username": string,
+//   "password": string
+// }
+
+// output
+// {
+//   "message": string
+// }
+
+//http://localhost:8080/api/account/login
+
+// input
+// {
+//   "username": string,
+//   "password": string
+// }
+
+// output
+// {
+//   token: string
+// }
+
+
 import express, { NextFunction, Request, Response } from "express";
 import nodemailer, { createTestAccount } from "nodemailer";
 import bcrypt from "bcrypt";
@@ -63,7 +93,7 @@ router.post(
       console.log("Preview URL: %s", nodemailer.getTestMessageUrl(send));
 
       return res.status(201).json({
-        user: result,
+        message: "success"
       });
     } catch (error) {
       return res.status(500).json({
@@ -97,13 +127,39 @@ router.get("/verify/:token", async function (req, res) {
 
 router.post('/login', async function(req,res) {
   let { username, password} = req.body;
-  const hash = bcrypt.hash(password, 10);
+  //const hash = await bcrypt.hash(password, 10);
+  let token;
   
   try {
     let user = await User.findOne({ username });
     console.log(user);
+    if(user == null || !user.password)
+    {
+      res.status(200).json({
+        message: "invalid password"
+        
+      });
+      return;
+    }
 
-    res.status(200).json();
+    if (bcrypt.compareSync(password, user.password))
+    {
+      if (user?.active)
+      {
+        token = jwt.sign({userId: user.id, firstname: user.firstName, username: user.username}, config.server.secret);
+        res.status(200).json({token});
+      }
+      else
+      {
+        res.status(200).json({
+          message: "verify email"
+        });
+      }
+    }
+
+    res.status(200).json({
+      message: "invalid password"
+    });
   } catch (error) {
     res.status(500).json({
       message: error.message

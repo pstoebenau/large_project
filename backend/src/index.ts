@@ -18,7 +18,7 @@ mongoose.connect(config.mongo.url, config.mongo.options)
   });
 
 app.get('/', (req, res) => {
-  res.send('<h1>NOT AN APP!<br>THIS IS A REST API!</h1>');
+  res.send('<h1>THIS IS NOT AN APP!<br>THIS IS A REST API!</h1>');
 });
 
 // Server headers
