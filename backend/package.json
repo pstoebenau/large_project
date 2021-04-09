@@ -18,7 +18,8 @@
     "mongodb": "^3.6.4",
     "mongoose": "^5.12.0",
     "ts-node": "^9.1.1",
-    "tsconfig-paths": "^3.9.0"
+    "tsconfig-paths": "^3.9.0",
+    "typescript": "^4.2.4"
   },
   "devDependencies": {
     "@types/dotenv": "^8.2.0",
@@ -26,6 +27,5 @@
     "@types/mongoose": "^5.10.3",
     "@types/node": "^14.14.33",
     "ts-node-dev": "^1.1.6",
-    "typescript": "^4.2.4"
   }
 }
