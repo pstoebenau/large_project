@@ -1,4 +1,4 @@
-// http://localhost:8080/api/account/signup
+// /api/account/signup
 
 // input
 // {
@@ -14,7 +14,7 @@
 //   "message": string
 // }
 
-//http://localhost:8080/api/account/login
+// /api/account/login
 
 // input
 // {
