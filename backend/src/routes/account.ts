@@ -35,7 +35,7 @@ import jwt from 'jsonwebtoken';
 import User from "@/schemas/user";
 import mongoose from "mongoose";
 import config from "@/config/config";
-import UserFunctions from "../functions/users";
+import UserFunctions from "../functions/user";
 
 const router = express.Router();
 
