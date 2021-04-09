@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "REST API",
   "main": "index.js",
+  "engines": {
+    "node": "14.x"
+  },
   "scripts": {
     "start": "ts-node -r tsconfig-paths/register src/index.ts",
     "dev": "tsnd --respawn -r tsconfig-paths/register src/index.ts",
