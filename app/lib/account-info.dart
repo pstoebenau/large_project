@@ -10,12 +10,20 @@ class AccountInfoPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             // This is the profile picture
-            SizedBox(height: 40),
-            new Container(
-              child: new Image.asset("assets/joe.png",
-                  width: 50, height: 50, fit: BoxFit.cover),
+            SizedBox(height: 0),
+            Align(
+              alignment: Alignment(-.8, -1),
+              child: new Container(
+                child: new Image.asset("assets/joe.png",
+                    width: 90, height: 90, fit: BoxFit.cover),
+              ),
             ),
-            SizedBox(height: 10)
+            Container(
+              width: 400,
+              height: 400,
+              color: Colors.grey[900],
+            ),
+            //SizedBox(height: 500.0),
           ],
         ),
       ),
