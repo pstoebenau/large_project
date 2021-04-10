@@ -24,6 +24,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primaryColor: Color(0xff00C2FF),
         accentColor: Color(0xff003EF8),
+        backgroundColor: Color(0xff292929),
         brightness: Brightness.dark,
       ),
       home: Navbar(),

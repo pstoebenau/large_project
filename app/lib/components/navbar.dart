@@ -1,79 +1,107 @@
 import 'package:flutter/material.dart';
-import 'package:rive/rive.dart';
-
-class NavBar extends StatefulWidget {
-  createState() => NavBarState();
-}
+import 'package:flare_flutter/flare_actor.dart';
 
 class MenuItem {
-  final String name;
+  final String iconName;
   final Color color;
-  final double x;
-  MenuItem({this.name, this.color, this.x});
+  final double xPos;
+  
+  MenuItem({this.iconName, this.color, this.xPos});
 }
 
-class NavBarState extends State<NavBar> {
-  List items = [
-    MenuItem(x: -1.0, name: 'house', color: Colors.lightBlue[100]),
-    MenuItem(x: -0.5, name: 'planet', color: Colors.purple),
-    MenuItem(x: 0.0, name: 'camera', color: Colors.greenAccent),
-    MenuItem(x: 0.5, name: 'heart', color: Colors.pink),
-    MenuItem(x: 1.0, name: 'head', color: Colors.yellow),
-  ];
+class Navbar extends StatefulWidget {
+  @override
+  _NavbarState createState() => _NavbarState();
+}
 
+class _NavbarState extends State<Navbar> {
+  List items = [
+    MenuItem(xPos: -1.0, iconName: 'planet', color: Colors.lightBlue[100]),
+    MenuItem(xPos: -0.5, iconName: 'camera', color: Colors.purple),
+    MenuItem(xPos: -0.0, iconName: 'heart', color: Colors.greenAccent),
+    MenuItem(xPos: 0.5, iconName: 'house', color: Colors.pink),
+    MenuItem(xPos: 1.0, iconName: 'head', color: Colors.yellow),
+  ];
   MenuItem active;
 
   @override
-  void initState() {
+  void initState() { 
     super.initState();
-
-    active = items[0]; // <-- 1. Activate a menu item
+    
+    active = items[0];
   }
 
-  @override
   Widget build(BuildContext context) {
     double w = MediaQuery.of(context).size.width;
-    return Container(
-      height: 80,
-      color: Colors.black,
-      child: Stack(    //  <-- 2. Define a stack
-        children: [
-          AnimatedContainer(  //  <-- 3. Animated top bar
-            duration: Duration(milliseconds: 200),
-            alignment: Alignment(active.x, -1),
-            child: AnimatedContainer(
-              duration: Duration(milliseconds: 1000),
-              height: 8,
-              width: w * 0.2,
-              color: active.color,
-            ),
+    return Scaffold(
+      body: Align(
+        alignment: Alignment.bottomCenter,
+        child: Container(
+          padding: EdgeInsets.fromLTRB(10, 20, 10, 20),
+          margin: EdgeInsets.all(15),
+          height: 75,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(100)),
+            color: Theme.of(context).backgroundColor,
+            boxShadow: [
+              BoxShadow(
+                blurRadius: 10,
+                color: Colors.black.withOpacity(0.14),
+                offset: Offset(0,8),
+              ),
+              BoxShadow(
+                blurRadius: 14,
+                color: Colors.black.withOpacity(0.12),
+                offset: Offset(0,3),
+              ),
+              BoxShadow(
+                blurRadius: 5,
+                color: Colors.black.withOpacity(0.2),
+                offset: Offset(0,5),
+              ),
+            ],
           ),
-          Container(  // <-- 4. Main menu row
-            child: Row(   
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: items.map((item) {
-                return _rive(item);  // <-- 5. Flare graphic will go here
-              }),
-            ),
+          child: Stack(
+            children: [
+              AnimatedContainer(
+                duration: Duration(milliseconds: 200),
+                alignment: Alignment(active.xPos, 1.6),
+                padding: EdgeInsets.fromLTRB(3, 0, 3, 0),
+                  child: AnimatedContainer(
+                    duration: Duration(milliseconds: 200),
+                    height: 8,
+                    width: w*0.15,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(5)),
+                      color: active.color,
+                    ),
+                  ),
+              ),
+              Container(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: items.map((item) {
+                    return _flare(item);
+                  }).toList(),
+                ),
+              ),
+            ],
           )
-        ],
+        ),
       ),
     );
   }
 
-  Widget _rive(MenuItem item) {
+  Widget _flare(MenuItem item) {
     return GestureDetector(
       child: AspectRatio(
         aspectRatio: 1,
-        child: Padding(
-          padding: EdgeInsets.only(top: 20),
-          child: Rive(
-            'assets/${item.name}.flr',
-            alignment: Alignment.center,
-            fit: BoxFit.contain,
-            animation: item.name == active.name ? 'go' : 'idle',
-          ),
+        child: FlareActor(
+          'assets/${item.iconName}.flr',
+          alignment: Alignment.center,
+          fit: BoxFit.contain,
+          color: item.color,
+          animation: item.iconName == active.iconName ? 'go' : 'idle',
         ),
       ),
       onTap: () {
