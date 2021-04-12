@@ -22,7 +22,7 @@ class AccountInfoPage extends StatelessWidget {
                       child: Image.asset(
                         "assets/Rectangle 27.png",
                         width: 550,
-                        height: 515,
+                        height: 550,
                       ),
                     ),
                   ),
@@ -88,19 +88,54 @@ class AccountInfoPage extends StatelessWidget {
                     ),
                   ),
                   Align(
-                    alignment: Alignment(.45, .08),
+                    alignment: Alignment(0, .08),
                     child: Container(
                       child: Text(
-                        'Your Snippets                + ',
+                        'Your Snippets',
                         style: TextStyle(fontSize: 20),
                       ),
                     ),
                   ),
                   Align(
-                    alignment: Alignment(0, -.2),
+                    alignment: Alignment(-.68, .4),
                     child: Container(
-                      child: Image.asset("assets/Rectangle 28.png",
-                          width: 287, height: 110),
+                      child: Image.asset("assets/carbon (5) 3.png",
+                          width: 100, height: 100),
+                    ),
+                  ),
+                  Align(
+                    alignment: Alignment(0, .4),
+                    child: Container(
+                      child: Image.asset("assets/bogosort.png",
+                          width: 100, height: 100, fit: BoxFit.cover),
+                    ),
+                  ),
+                  Align(
+                    alignment: Alignment(.68, .4),
+                    child: Container(
+                      child: Image.asset("assets/carbon (5) 3.png",
+                          width: 100, height: 100),
+                    ),
+                  ),
+                  Align(
+                    alignment: Alignment(-.68, .82),
+                    child: Container(
+                      child: Image.asset("assets/bogosort.png",
+                          width: 100, height: 100, fit: BoxFit.cover),
+                    ),
+                  ),
+                  Align(
+                    alignment: Alignment(0, .82),
+                    child: Container(
+                      child: Image.asset("assets/carbon (5) 3.png",
+                          width: 100, height: 100, fit: BoxFit.cover),
+                    ),
+                  ),
+                  Align(
+                    alignment: Alignment(.68, .82),
+                    child: Container(
+                      child: Image.asset("assets/bogosort.png",
+                          width: 100, height: 100, fit: BoxFit.cover),
                     ),
                   ),
                 ],
