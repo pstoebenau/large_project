@@ -16,11 +16,11 @@ class Navbar extends StatefulWidget {
 
 class _NavbarState extends State<Navbar> {
   List items = [
-    MenuItem(xPos: -1.0, iconName: 'planet', color: Colors.lightBlue[100]),
-    MenuItem(xPos: -0.5, iconName: 'camera', color: Colors.purple),
-    MenuItem(xPos: -0.0, iconName: 'heart', color: Colors.greenAccent),
-    MenuItem(xPos: 0.5, iconName: 'house', color: Colors.pink),
-    MenuItem(xPos: 1.0, iconName: 'head', color: Colors.yellow),
+    MenuItem(xPos: -1.0, iconName: 'planet.flr', color: Colors.lightBlue[100]),
+    MenuItem(xPos: -0.5, iconName: 'camera.flr', color: Colors.purple),
+    MenuItem(xPos: -0.0, iconName: 'heart.flr', color: Colors.greenAccent),
+    MenuItem(xPos: 0.5, iconName: 'house.flr', color: Colors.pink),
+    MenuItem(xPos: 1.0, iconName: 'head.flr', color: Colors.yellow),
   ];
   MenuItem active;
 
@@ -97,7 +97,7 @@ class _NavbarState extends State<Navbar> {
       child: AspectRatio(
         aspectRatio: 1,
         child: FlareActor(
-          'assets/${item.iconName}.flr',
+          'assets/${item.iconName}',
           alignment: Alignment.center,
           fit: BoxFit.contain,
           color: item.color,
