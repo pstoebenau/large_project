@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import './upload-snippet.dart';
 
 class AccountEditPage extends StatelessWidget {
   const AccountEditPage();
@@ -29,16 +30,31 @@ class AccountEditPage extends StatelessWidget {
                   Align(
                     alignment: Alignment(-.85, -1),
                     child: Container(
+                      // Grab from API a profile picture
                       child: Image.asset("assets/joe.png",
                           width: 90, height: 90, fit: BoxFit.cover),
                     ),
                   ),
-                  Expanded(
-                    child: Align(
-                      alignment: Alignment(.6, -.85),
-                      child: Container(
-                        child: Image.asset("assets/edit.png",
-                            width: 30, height: 30, fit: BoxFit.cover),
+                  Align(
+                    alignment: Alignment(.7, -.88),
+                    child: Container(
+                      child: FlatButton(
+                        padding: EdgeInsets.all(0.0),
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => UploadSnippet(),
+                            ),
+                          );
+                        },
+                        // This should be replaced with user profile picture
+                        // Associated with the snippet
+                        child: Container(
+                          // Button that will go to the edit page
+                          child: Image.asset("assets/edit.png",
+                              width: 30, height: 30, fit: BoxFit.cover),
+                        ),
                       ),
                     ),
                   ),
@@ -46,6 +62,7 @@ class AccountEditPage extends StatelessWidget {
                     alignment: Alignment(0, -.85),
                     child: Container(
                       child: Text(
+                        // Grab from API the user's name
                         'Joe Mama',
                         style: TextStyle(fontSize: 25),
                       ),
@@ -55,6 +72,7 @@ class AccountEditPage extends StatelessWidget {
                     alignment: Alignment(-.45, -.62),
                     child: Container(
                       child: Text(
+                        // Grab this from API too
                         'username: Joe_Mama',
                         style: TextStyle(fontSize: 17),
                       ),
@@ -64,6 +82,7 @@ class AccountEditPage extends StatelessWidget {
                     alignment: Alignment(-.43, -.5),
                     child: Container(
                       child: Text(
+                        // Grab this from the API
                         'email: joe@mama.com',
                         style: TextStyle(fontSize: 17),
                       ),
@@ -82,6 +101,7 @@ class AccountEditPage extends StatelessWidget {
                     alignment: Alignment(-.1, -.28),
                     child: Container(
                       child: Text(
+                        // Grab the description from the API
                         'About Me: You\'ve never had it Joe good',
                         style: TextStyle(fontSize: 12),
                       ),
@@ -96,9 +116,33 @@ class AccountEditPage extends StatelessWidget {
                       ),
                     ),
                   ),
+                  // Button to go to the upload snippet page insert here
+                  Align(
+                    alignment: Alignment(.8, 0.085),
+                    child: Container(
+                      child: FlatButton(
+                        padding: EdgeInsets.all(0.0),
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => UploadSnippet(),
+                            ),
+                          );
+                        },
+                        // This should be replaced with user profile picture
+                        // Associated with the snippet
+                        child: Text(
+                          '+',
+                          style: TextStyle(fontSize: 20),
+                        ),
+                      ),
+                    ),
+                  ),
                   Align(
                     alignment: Alignment(-.68, .4),
                     child: Container(
+                      // snippet from API
                       child: Image.asset("assets/carbon (5) 3.png",
                           width: 100, height: 100),
                     ),
@@ -106,6 +150,7 @@ class AccountEditPage extends StatelessWidget {
                   Align(
                     alignment: Alignment(0, .4),
                     child: Container(
+                      // snippet from API
                       child: Image.asset("assets/bogosort.png",
                           width: 100, height: 100, fit: BoxFit.cover),
                     ),
@@ -113,6 +158,7 @@ class AccountEditPage extends StatelessWidget {
                   Align(
                     alignment: Alignment(.68, .4),
                     child: Container(
+                      // snippet from API
                       child: Image.asset("assets/carbon (5) 3.png",
                           width: 100, height: 100),
                     ),
@@ -120,6 +166,7 @@ class AccountEditPage extends StatelessWidget {
                   Align(
                     alignment: Alignment(-.68, .82),
                     child: Container(
+                      // snippet from API
                       child: Image.asset("assets/bogosort.png",
                           width: 100, height: 100, fit: BoxFit.cover),
                     ),
@@ -127,6 +174,7 @@ class AccountEditPage extends StatelessWidget {
                   Align(
                     alignment: Alignment(0, .82),
                     child: Container(
+                      // snippet from API
                       child: Image.asset("assets/carbon (5) 3.png",
                           width: 100, height: 100, fit: BoxFit.cover),
                     ),
@@ -134,6 +182,7 @@ class AccountEditPage extends StatelessWidget {
                   Align(
                     alignment: Alignment(.68, .82),
                     child: Container(
+                      // snippet from API
                       child: Image.asset("assets/bogosort.png",
                           width: 100, height: 100, fit: BoxFit.cover),
                     ),
