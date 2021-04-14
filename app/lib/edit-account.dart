@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
 
-class EditAccount extends StatelessWidget {
-  const EditAccount();
+class EditAccount extends StatefulWidget {
+  @override
+  _EditAccountState createState() => _EditAccountState();
+}
+
+class _EditAccountState extends State<EditAccount> {
+  String fullName = 'Joe Mama'; // Grab from API
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,11 +48,14 @@ class EditAccount extends StatelessWidget {
                     child: Container(
                       width: 300,
                       child: TextField(
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           border: OutlineInputBorder(),
-                          // Maybe put old first Name?
-                          
+                          labelText: 'First Name',
                         ),
+                        autocorrect: false,
+                        onChanged: (String value) {
+                          fullName = value;
+                        },
                       ),
                     ),
                   ),
@@ -57,19 +66,31 @@ class EditAccount extends StatelessWidget {
                       child: TextField(
                         decoration: InputDecoration(
                           border: OutlineInputBorder(),
-                          labelText: 'Mama',
+                          labelText: 'Last Name',
                         ),
                       ),
                     ),
                   ),
                   Align(
-                    alignment: Alignment(0, -.33),
+                    alignment: Alignment(0, -.05),
                     child: Container(
                       width: 300,
                       child: TextField(
                         decoration: InputDecoration(
                           border: OutlineInputBorder(),
-                          labelText: 'Mama',
+                          labelText: 'Email',
+                        ),
+                      ),
+                    ),
+                  ),
+                  Align(
+                    alignment: Alignment(0, .23),
+                    child: Container(
+                      width: 300,
+                      child: TextField(
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText: 'About Me',
                         ),
                       ),
                     ),
