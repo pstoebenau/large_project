@@ -13,11 +13,12 @@ router.post('/addSnippet/:id', async (req: Request, res: Response, next: NextFun
         });
     }
 
-    let { _id, imageURL } = req.body;
+    let { _id, imageURL, scores } = req.body;
 
     const snippet = new Snippet({
         _id,
-        imageURL
+        imageURL,
+        scores
     });
     
     try {

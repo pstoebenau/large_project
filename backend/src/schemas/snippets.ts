@@ -6,6 +6,7 @@ const SnippetSchema: Schema = new Schema(
   {
     _id: { type: String, required: true},
     imageURL: { type: String, required: true },
+    scores: {type: Number, required: true}
   });
 
 export default mongoose.model<Snippet>('Snippet', SnippetSchema);
