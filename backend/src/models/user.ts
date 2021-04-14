@@ -6,4 +6,5 @@ export default interface User extends Document {
   email: string;
   username: string;
   password: string;
+  active: boolean;
 }

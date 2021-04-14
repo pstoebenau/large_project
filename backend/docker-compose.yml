@@ -2,7 +2,7 @@ version: '3'
 services:
   web-server:
     build: .
-    command: npm start
+    command: bash -c "npm install && npm start"
     volumes:
       - ./:/usr/app
     ports:
