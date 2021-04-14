@@ -23,6 +23,8 @@ class SwipingPage extends StatelessWidget {
                     ),
                   );
                 },
+                // This should be replaced with user profile picture
+                // Associated with the snippet
                 child: new Image.asset("assets/joe.png",
                     width: 50, height: 50, fit: BoxFit.cover),
               ),

@@ -29,6 +29,8 @@ class AccountInfoPage extends StatelessWidget {
                   Align(
                     alignment: Alignment(-.85, -1),
                     child: Container(
+                      // This is the user profile picture
+                      // This should grab the API user profile pic
                       child: Image.asset("assets/joe.png",
                           width: 90, height: 90, fit: BoxFit.cover),
                     ),
@@ -55,6 +57,8 @@ class AccountInfoPage extends StatelessWidget {
                     alignment: Alignment(-.1, -.6),
                     child: Container(
                       child: Text(
+                        // This is the user description, it should
+                        // Grab from the API the user description
                         'About Me: You\'ve never had it Joe good',
                         style: TextStyle(fontSize: 12),
                       ),
@@ -72,6 +76,7 @@ class AccountInfoPage extends StatelessWidget {
                   Align(
                     alignment: Alignment(-.62, 0.1),
                     child: Container(
+                      // This should be replaced by a snippet from the user
                       child: Image.asset("assets/carbon (5) 3.png",
                           width: 153, height: 153, fit: BoxFit.cover),
                     ),
@@ -79,6 +84,7 @@ class AccountInfoPage extends StatelessWidget {
                   Align(
                     alignment: Alignment(.62, .1),
                     child: Container(
+                      // User snippet here 
                       child: Image.asset("assets/bogosort.png",
                           width: 153, height: 153, fit: BoxFit.cover),
                     ),
@@ -86,6 +92,7 @@ class AccountInfoPage extends StatelessWidget {
                   Align(
                     alignment: Alignment(-.62, .82),
                     child: Container(
+                      // User snippet here
                       child: Image.asset("assets/bogosort.png",
                           width: 153, height: 153, fit: BoxFit.cover),
                     ),
@@ -93,6 +100,7 @@ class AccountInfoPage extends StatelessWidget {
                   Align(
                     alignment: Alignment(.62, .82),
                     child: Container(
+                      // User snippet here
                       child: Image.asset("assets/carbon (5) 3.png",
                           width: 153, height: 153, fit: BoxFit.cover),
                     ),
