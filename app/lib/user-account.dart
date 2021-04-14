@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import './upload-snippet.dart';
+import './edit-account.dart';
 
-class AccountEditPage extends StatelessWidget {
-  const AccountEditPage();
+class UserAccountPage extends StatelessWidget {
+  const UserAccountPage();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,7 +45,7 @@ class AccountEditPage extends StatelessWidget {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => UploadSnippet(),
+                              builder: (context) => EditAccount(),
                             ),
                           );
                         },

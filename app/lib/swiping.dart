@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import './account-info.dart';
+import './view-account.dart';
 
 class SwipingPage extends StatelessWidget {
   const SwipingPage();
@@ -19,7 +19,7 @@ class SwipingPage extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => AccountInfoPage(),
+                      builder: (context) => ViewAccountPage(),
                     ),
                   );
                 },

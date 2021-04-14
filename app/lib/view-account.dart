@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class AccountInfoPage extends StatelessWidget {
-  const AccountInfoPage();
+class ViewAccountPage extends StatelessWidget {
+  const ViewAccountPage();
   @override
   Widget build(BuildContext context) {
     return Scaffold(

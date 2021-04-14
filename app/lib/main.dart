@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'login.dart';
-import './account-edit.dart';
+import './user-account.dart';
 
 void main() {
   runApp(MyApp());
@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
         accentColor: Color(0xff003EF8),
         brightness: Brightness.dark,
       ),
-      home: AccountEditPage(), // Make sure to change this back to login and don't push
+      home: UserAccountPage(), // Make sure to change this back to login and don't push
     );
   }
 }
