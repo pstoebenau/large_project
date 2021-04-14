@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class Signup extends StatelessWidget {
-  const Signup();
+class NewPassword extends StatelessWidget {
+  const NewPassword();
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +17,11 @@ class Signup extends StatelessWidget {
             ),
             SizedBox(height: 40),
             Text(
-              'REGISTER',
+              'NEW',
+              style: TextStyle(fontSize: 32, letterSpacing: 15),
+            ),
+            Text(
+              'PASSWORD',
               style: TextStyle(fontSize: 32, letterSpacing: 15),
             ),
             SizedBox(height: 40),
@@ -26,25 +30,20 @@ class Signup extends StatelessWidget {
               child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
+                    SizedBox(height: 20),
                     TextField(
                       decoration: InputDecoration(
                         border: OutlineInputBorder(),
-                        labelText: 'First Name',
+                        labelText: 'Password',
+                        suffixIcon: Icon(Icons.remove_red_eye),
                       ),
                     ),
                     SizedBox(height: 20),
                     TextField(
                       decoration: InputDecoration(
                         border: OutlineInputBorder(),
-                        labelText: 'Last Name',
-                      ),
-                    ),
-                    SizedBox(height: 20),
-                    TextField(
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: 'Email',
-                        suffixIcon: Icon(Icons.mail),
+                        labelText: 'Confirm Password',
+                        suffixIcon: Icon(Icons.remove_red_eye),
                       ),
                     ),
                   ]),
@@ -55,14 +54,10 @@ class Signup extends StatelessWidget {
               height: 50,
               child: ElevatedButton(
                 onPressed: () => {},
-                child: Text('Next'),
+                child: Text('Change password'),
               ),
             ),
             SizedBox(height: 60),
-            Text(
-              "Login to an existing account",
-              style: TextStyle(decoration: TextDecoration.underline),
-            ),
             SizedBox(height: 30),
           ],
         ),

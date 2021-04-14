@@ -17,27 +17,19 @@ class ForgotPassword extends StatelessWidget {
             ),
             SizedBox(height: 40),
             Text(
-              'FORGOT PASSWORD?',
-              style: TextStyle(fontSize: 20, letterSpacing: 12),
+              'FORGOT',
+              style: TextStyle(fontSize: 30, letterSpacing: 12),
             ),
-            SizedBox(height: 40),
+            Text(
+              'PASSWORD?',
+              style: TextStyle(fontSize: 30, letterSpacing: 12),
+            ),
+            SizedBox(height: 20),
             new Container(
               width: 350,
               child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    TextField(
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: 'Username',
-                        suffixIcon: Icon(Icons.account_circle),
-                      ),
-                    ),
-                    SizedBox(height: 20),
-                    Text(
-                      'OR',
-                      style: TextStyle(fontSize: 20, letterSpacing: 12),
-                    ),
                     SizedBox(height: 20),
                     TextField(
                       decoration: InputDecoration(
