@@ -6,6 +6,7 @@ import mongoose from 'mongoose';
 import userRoutes from '@/routes/user';
 import accountRoutes from '@/routes/account';
 import router from '@/routes/user';
+import snippetRoutes from '@/routes/snippets';
 
 const app = express();
 
@@ -30,6 +31,7 @@ app.use(express.json());
 // Routes
 app.use('/api/user', userRoutes);
 app.use('/api/account', accountRoutes);
+app.use('/api/snippet', snippetRoutes);
 
 // Error Handling
 app.use((req, res, next) => {
