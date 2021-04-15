@@ -7,11 +7,10 @@ import jwt from 'jsonwebtoken';
 
 const router = express.Router();
 
-router.post('/add', async (req: Request, res: Response, next: NextFunction) => {
+router.post('/create', async (req: Request, res: Response, next: NextFunction) => {
   let { token, imageURL } = req.body;
 
   const user = jwt.verify(token, config.server.secret) as User;
-  console.log(user.userId);
 
   const snippet = new Snippet({
     userId: user.userId,
