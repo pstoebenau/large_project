@@ -30,11 +30,8 @@ app.use(express.json());
 
 // Routes
 app.use('/api/user', userRoutes);
-<<<<<<< HEAD
-app.use('/api/snippet', snippetRoutes);
-=======
 app.use('/api/account', accountRoutes);
->>>>>>> fe7675acc5b5514b96f57728687f48322cc6d036
+app.use('/api/snippet', snippetRoutes);
 
 // Error Handling
 app.use((req, res, next) => {

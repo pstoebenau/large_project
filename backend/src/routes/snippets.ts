@@ -1,52 +1,50 @@
 import express, { NextFunction, Request, Response } from 'express';
-import User from '@/schemas/user';
+import User from '@/models/user';
 import Snippet from '@/schemas/snippets';
 import mongoose from 'mongoose';
+import config from "@/config/config";
+import jwt from 'jsonwebtoken';
 
 const router = express.Router();
 
-router.post('/addSnippet/:id', async (req: Request, res: Response, next: NextFunction) => {
+router.post('/add', async (req: Request, res: Response, next: NextFunction) => {
+  let { token, imageURL } = req.body;
 
-    if (!req.body) {
-        return res.status(500).json({
-            message: "Invalid input"
-        });
-    }
+  const user = jwt.verify(token, config.server.secret) as User;
+  console.log(user.userId);
 
-    let { _id, imageURL, scores } = req.body;
+  const snippet = new Snippet({
+    userId: user.userId,
+    imageURL,
+    score: 0,
+  });
 
-    const snippet = new Snippet({
-        _id,
-        imageURL,
-        scores
-    });
+  try {
+    let results = await snippet.save()
     
-    try {
-        let results = await snippet.save()
-        
-        return res.status(200).json({
-            snippet: results
-        });
-    } catch (error) {
-        return res.status(500).json({
-            message: error.message
-        });
-    }
+    return res.status(200).json({
+      snippet: results
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message
+    });
+  }
 });
 
 router.get('/find', async (req: Request, res: Response, next: NextFunction) => {
-    try {
-        let results = await Snippet.find().exec();
-        
-        return res.status(200).json({
-            snippet: results,
-            count: results.length
-        });
-    } catch (error) {
-        return res.status(500).json({
-            message: error.message
-        });
-    }
+  try {
+    let results = await Snippet.find().exec();
+    
+    return res.status(200).json({
+      snippet: results,
+      count: results.length
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message
+    });
+  }
 });
 
 export default router;

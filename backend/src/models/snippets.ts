@@ -1,7 +1,8 @@
 import { Document, Schema } from 'mongoose';
 
 export default interface Snippet extends Document {
-  _id: string;
+  id: string,
+  userId: string;
   imageURL: string;
-  scores: number;
+  score: number;
 }
