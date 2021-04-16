@@ -1,5 +1,5 @@
 import express, { NextFunction, Request, Response } from 'express';
-import User from '@/models/user';
+import Token from '@/models/token';
 import Snippet from '@/schemas/snippets';
 import mongoose from 'mongoose';
 import config from "@/config/config";
@@ -10,10 +10,10 @@ const router = express.Router();
 router.post('/create', async (req: Request, res: Response, next: NextFunction) => {
   let { token, imageURL } = req.body;
 
-  const user = jwt.verify(token, config.server.secret) as User;
+  const data = jwt.verify(token, config.server.secret) as Token;
 
   const snippet = new Snippet({
-    userId: user.userId,
+    userId: data.userId,
     imageURL,
     score: 0,
   });
