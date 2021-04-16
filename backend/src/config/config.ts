@@ -16,8 +16,8 @@ const MONGO_USERNAME = process.env.MONGO_USERNAME || '';
 const MONGO_PASSWORD = process.env.MONGO_PASSWORD || '';
 const MONGO_DATABASE = process.env.MONGO_DATABASE || 'hot_or_not';
 
-let mongoUrl = `mongodb://${MONGO_USERNAME}:${MONGO_PASSWORD}@${MONGO_HOST}/${MONGO_DATABASE}`;
-if (MONGO_USERNAME === "" || MONGO_PASSWORD === "")
+let mongoUrl = `mongodb+srv://${MONGO_USERNAME}:${MONGO_PASSWORD}@${MONGO_HOST}/${MONGO_DATABASE}`;
+if (MONGO_HOST == "mongo")
   mongoUrl = `mongodb://${MONGO_HOST}/${MONGO_DATABASE}`;
 
 const MONGO = {
@@ -30,10 +30,12 @@ const MONGO = {
 
 const SERVER_HOSTNAME = process.env.SERVER_HOSTNAME || 'localhost';
 const SERVER_PORT = process.env.PORT || 8080;
+const SERVER_SECRET = "verysecretwow";
 
 const SERVER = {
   hostname: SERVER_HOSTNAME,
-  port: SERVER_PORT
+  port: SERVER_PORT,
+  secret: SERVER_SECRET
 }
 
 const config = {

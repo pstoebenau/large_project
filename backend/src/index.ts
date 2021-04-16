@@ -4,7 +4,9 @@ import bodyParser from 'body-parser';
 import config from '@/config/config';
 import mongoose from 'mongoose';
 import userRoutes from '@/routes/user';
+import accountRoutes from '@/routes/account';
 import router from '@/routes/user';
+import snippetRoutes from '@/routes/snippets';
 
 const app = express();
 
@@ -17,7 +19,7 @@ mongoose.connect(config.mongo.url, config.mongo.options)
   });
 
 app.get('/', (req, res) => {
-  res.send('<h1>NOT AN APP!<br>THIS IS A REST API!</h1>');
+  res.send('<h1>THIS IS NOT AN APP!<br>THIS IS A REST API!</h1>');
 });
 
 // Server headers
@@ -28,6 +30,8 @@ app.use(express.json());
 
 // Routes
 app.use('/api/user', userRoutes);
+app.use('/api/account', accountRoutes);
+app.use('/api/snippet', snippetRoutes);
 
 // Error Handling
 app.use((req, res, next) => {
