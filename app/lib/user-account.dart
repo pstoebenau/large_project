@@ -13,13 +13,13 @@ class UserAccountPage extends StatelessWidget {
           children: [
             SizedBox(height: 50),
             SizedBox(
-              width: 700,
+              width: 800,
               height: 600,
               child: Stack(
                 children: <Widget>[
                   // This is the rectangle background
                   Align(
-                    alignment: Alignment(0, -0.1),
+                    alignment: Alignment(0, -0.8),
                     child: Container(
                       child: Image.asset(
                         "assets/Rectangle 27.png",
@@ -37,7 +37,7 @@ class UserAccountPage extends StatelessWidget {
                     ),
                   ),
                   Align(
-                    alignment: Alignment(.7, -.88),
+                    alignment: Alignment(.7, -.98),
                     child: Container(
                       child: FlatButton(
                         padding: EdgeInsets.all(0.0),
@@ -60,7 +60,7 @@ class UserAccountPage extends StatelessWidget {
                     ),
                   ),
                   Align(
-                    alignment: Alignment(0, -.85),
+                    alignment: Alignment(0, -.95),
                     child: Container(
                       child: Text(
                         // Grab from API the user's name
@@ -91,7 +91,7 @@ class UserAccountPage extends StatelessWidget {
                   ),
                   Expanded(
                     child: Align(
-                      alignment: Alignment(0, -.2),
+                      alignment: Alignment(0, -.25),
                       child: Container(
                         child: Image.asset("assets/Rectangle 28.png",
                             width: 287, height: 110),
@@ -99,7 +99,7 @@ class UserAccountPage extends StatelessWidget {
                     ),
                   ),
                   Align(
-                    alignment: Alignment(-.1, -.28),
+                    alignment: Alignment(-.1, -.3),
                     child: Container(
                       child: Text(
                         // Grab the description from the API
@@ -109,7 +109,7 @@ class UserAccountPage extends StatelessWidget {
                     ),
                   ),
                   Align(
-                    alignment: Alignment(0, .08),
+                    alignment: Alignment(0, 0.05),
                     child: Container(
                       child: Text(
                         'Your Snippets',
@@ -119,7 +119,7 @@ class UserAccountPage extends StatelessWidget {
                   ),
                   // Button to go to the upload snippet page insert here
                   Align(
-                    alignment: Alignment(.8, 0.085),
+                    alignment: Alignment(.8, 0.05),
                     child: Container(
                       child: FlatButton(
                         padding: EdgeInsets.all(0.0),
@@ -141,7 +141,7 @@ class UserAccountPage extends StatelessWidget {
                     ),
                   ),
                   Align(
-                    alignment: Alignment(-.68, .4),
+                    alignment: Alignment(-.68, .35),
                     child: Container(
                       // snippet from API
                       child: Image.asset("assets/carbon (5) 3.png",
@@ -149,7 +149,7 @@ class UserAccountPage extends StatelessWidget {
                     ),
                   ),
                   Align(
-                    alignment: Alignment(0, .4),
+                    alignment: Alignment(0, .35),
                     child: Container(
                       // snippet from API
                       child: Image.asset("assets/bogosort.png",
@@ -157,7 +157,7 @@ class UserAccountPage extends StatelessWidget {
                     ),
                   ),
                   Align(
-                    alignment: Alignment(.68, .4),
+                    alignment: Alignment(.68, .35),
                     child: Container(
                       // snippet from API
                       child: Image.asset("assets/carbon (5) 3.png",
@@ -165,7 +165,7 @@ class UserAccountPage extends StatelessWidget {
                     ),
                   ),
                   Align(
-                    alignment: Alignment(-.68, .82),
+                    alignment: Alignment(-.68, .77),
                     child: Container(
                       // snippet from API
                       child: Image.asset("assets/bogosort.png",
@@ -173,7 +173,7 @@ class UserAccountPage extends StatelessWidget {
                     ),
                   ),
                   Align(
-                    alignment: Alignment(0, .82),
+                    alignment: Alignment(0, .77),
                     child: Container(
                       // snippet from API
                       child: Image.asset("assets/carbon (5) 3.png",
@@ -181,7 +181,7 @@ class UserAccountPage extends StatelessWidget {
                     ),
                   ),
                   Align(
-                    alignment: Alignment(.68, .82),
+                    alignment: Alignment(.68, .77),
                     child: Container(
                       // snippet from API
                       child: Image.asset("assets/bogosort.png",
