@@ -131,8 +131,6 @@ class UserAccountPage extends StatelessWidget {
                             ),
                           );
                         },
-                        // This should be replaced with user profile picture
-                        // Associated with the snippet
                         child: Text(
                           '+',
                           style: TextStyle(fontSize: 20),
