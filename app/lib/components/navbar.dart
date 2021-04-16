@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flare_flutter/flare_actor.dart';
+import 'package:flutter/services.dart';
+import 'package:rive/rive.dart';
 
 class MenuItem {
   final String iconName;
@@ -16,19 +17,40 @@ class Navbar extends StatefulWidget {
 
 class _NavbarState extends State<Navbar> {
   List items = [
-    MenuItem(xPos: -1.0, iconName: 'planet.flr', color: Colors.lightBlue[100]),
-    MenuItem(xPos: -0.5, iconName: 'camera.flr', color: Colors.purple),
-    MenuItem(xPos: -0.0, iconName: 'heart.flr', color: Colors.greenAccent),
-    MenuItem(xPos: 0.5, iconName: 'house.flr', color: Colors.pink),
-    MenuItem(xPos: 1.0, iconName: 'head.flr', color: Colors.yellow),
+    MenuItem(xPos: -1.0, iconName: 'star.riv', color: Colors.lightBlue[100]),
+    MenuItem(xPos: -0.5, iconName: 'star.riv', color: Colors.purple),
+    MenuItem(xPos: -0.0, iconName: 'star.riv', color: Colors.greenAccent),
+    MenuItem(xPos: 0.5, iconName: 'star.riv', color: Colors.pink),
+    MenuItem(xPos: 1.0, iconName: 'star.riv', color: Colors.yellow),
   ];
   MenuItem active;
 
+  Artboard _riveArtboard;
+  RiveAnimationController _controller;
   @override
-  void initState() { 
+  void initState() {
     super.initState();
-    
+
     active = items[0];
+    loadRiveAsset('star.riv');
+  }
+
+  loadRiveAsset(String asset) {
+    // Load the animation file from the bundle, note that you could also
+    // download this. The RiveFile just expects a list of bytes.
+    rootBundle.load(asset).then(
+      (data) async {
+        // Load the RiveFile from the binary data.
+        final file = RiveFile.import(data);
+        // The artboard is the root of the animation and gets drawn in the
+        // Rive widget.
+        final artboard = file.mainArtboard;
+        // Add a controller to play back a known animation on the main/default
+        // artboard.We store a reference to it so we can toggle playback.
+        artboard.addController(_controller = SimpleAnimation('Animation'));
+        setState(() => _riveArtboard = artboard);
+      },
+    );
   }
 
   Widget build(BuildContext context) {
@@ -37,6 +59,7 @@ class _NavbarState extends State<Navbar> {
       body: Align(
         alignment: Alignment.bottomCenter,
         child: Container(
+          constraints: BoxConstraints(maxWidth: 500),
           padding: EdgeInsets.fromLTRB(10, 20, 10, 20),
           margin: EdgeInsets.all(15),
           height: 75,
@@ -66,7 +89,9 @@ class _NavbarState extends State<Navbar> {
               AnimatedContainer(
                 duration: Duration(milliseconds: 200),
                 alignment: Alignment(active.xPos, 1.6),
-                padding: EdgeInsets.fromLTRB(3, 0, 3, 0),
+                padding: EdgeInsets.fromLTRB(13, 0, 13, 0),
+                child: FractionallySizedBox(
+                  widthFactor: 0.15,
                   child: AnimatedContainer(
                     duration: Duration(milliseconds: 200),
                     height: 8,
@@ -76,12 +101,13 @@ class _NavbarState extends State<Navbar> {
                       color: active.color,
                     ),
                   ),
+                ),
               ),
               Container(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: items.map((item) {
-                    return _flare(item);
+                    return animatedItem(item);
                   }).toList(),
                 ),
               ),
@@ -92,23 +118,28 @@ class _NavbarState extends State<Navbar> {
     );
   }
 
-  Widget _flare(MenuItem item) {
+  Widget animatedItem(MenuItem item) {
     return GestureDetector(
       child: AspectRatio(
         aspectRatio: 1,
-        child: FlareActor(
-          'assets/${item.iconName}',
-          alignment: Alignment.center,
-          fit: BoxFit.contain,
-          color: item.color,
-          animation: item.iconName == active.iconName ? 'go' : 'idle',
-        ),
+        child: _rive(),
       ),
       onTap: () {
         setState(() {
           active = item;
+          _controller.isActive = !_controller.isActive;
+          print(_controller);
         });
       },
+    );
+  }
+
+  Widget _rive() {
+    if (_riveArtboard == null)
+      return SizedBox();
+
+    return Rive(
+      artboard: _riveArtboard,
     );
   }
 }
