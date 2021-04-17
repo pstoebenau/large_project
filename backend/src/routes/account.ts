@@ -117,9 +117,9 @@ router.get("/verify/:token", async function (req, res) {
     });
     console.log(user);
 
-    res.status(200).json({user});
+    return res.status(200).json({user});
   } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
       message: error.message
     });
   }
@@ -135,10 +135,9 @@ router.post('/login', async function(req,res) {
     console.log(user);
     if(user == null || !user.password)
     {
-      res.status(200).json({
+      return res.status(200).json({
         message: "invalid password"
       });
-      return;
     }
 
     if (bcrypt.compareSync(password, user.password))
@@ -146,23 +145,21 @@ router.post('/login', async function(req,res) {
       if (user?.active)
       {
         token = jwt.sign({userId: user.id, firstname: user.firstName, username: user.username}, config.server.secret);
-        res.status(200).json({token});
-        return;
+        return res.status(200).json({token});
       }
       else
       {
-        res.status(200).json({
+        return res.status(200).json({
           message: "verify email"
         });
-        return;
       }
     }
 
-    res.status(200).json({
+    return res.status(200).json({
       message: "invalid password"
     });
   } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
       message: error.message
     });
   }
