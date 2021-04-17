@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:large_project/navbar.dart';
 import 'login.dart';
-import 'components/navbar.dart';
 
 void main() {
   runApp(MyApp());
@@ -11,7 +11,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Spicy Code',
+      title: 'Chill Chili',
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -27,7 +27,11 @@ class MyApp extends StatelessWidget {
         backgroundColor: Color(0xff292929),
         brightness: Brightness.dark,
       ),
-      home: Navbar(),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => Login(),
+        '/swipe': (context) => Navbar(initialRoute: 'swipe'),
+      },
     );
   }
 }
