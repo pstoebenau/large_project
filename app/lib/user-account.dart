@@ -1,9 +1,16 @@
 import 'package:flutter/material.dart';
 import './upload-snippet.dart';
 import './edit-account.dart';
+import 'package:image_picker/image_picker.dart';
 
-class UserAccountPage extends StatelessWidget {
-  const UserAccountPage();
+class UserAccountPage extends StatefulWidget {
+  @override
+  _UserAccountPageState createState() => _UserAccountPageState();
+}
+
+class _UserAccountPageState extends State<UserAccountPage> {
+  PickedFile _imageFile;
+  final ImagePicker _picker = ImagePicker();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -124,11 +131,9 @@ class UserAccountPage extends StatelessWidget {
                       child: FlatButton(
                         padding: EdgeInsets.all(0.0),
                         onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => UploadSnippet(),
-                            ),
+                          showModalBottomSheet(
+                            context: context,
+                            builder: ((builder) => bottomSheet(context)),
                           );
                         },
                         child: Text(
@@ -194,5 +199,39 @@ class UserAccountPage extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void takePhoto(ImageSource source) async {
+    final pickedFile = await _picker.getImage(
+      source: source,
+    );
+    setState(() {
+      _imageFile = pickedFile;
+    });
+  }
+
+  Widget bottomSheet(BuildContext context) {
+    return Container(
+        height: 25.0,
+        width: MediaQuery.of(context).size.width,
+        margin: EdgeInsets.symmetric(
+          horizontal: 20,
+          vertical: 20,
+        ),
+        child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+          FlatButton.icon(
+              onPressed: () {
+                takePhoto(ImageSource.camera);
+              },
+              icon: Icon(Icons.camera),
+              label: Text("Camera")),
+          SizedBox(width: 50),
+          FlatButton.icon(
+              onPressed: () {
+                takePhoto(ImageSource.gallery);
+              },
+              icon: Icon(Icons.image),
+              label: Text("Photo Library")),
+        ]));
   }
 }

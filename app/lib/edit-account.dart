@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+
 
 class EditAccount extends StatefulWidget {
   @override
@@ -7,7 +9,8 @@ class EditAccount extends StatefulWidget {
 
 class _EditAccountState extends State<EditAccount> {
   String fullName = 'Joe Mama'; // Grab from API
-
+  PickedFile _imageFile;
+  final ImagePicker _picker = ImagePicker();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,7 +21,7 @@ class _EditAccountState extends State<EditAccount> {
             SizedBox(height: 50),
             Align(
               alignment: Alignment(-1, 0),
-                          child: SizedBox(
+              child: SizedBox(
                 width: 800,
                 height: 600,
                 child: Stack(
@@ -36,17 +39,38 @@ class _EditAccountState extends State<EditAccount> {
                         ),
                       ),
                     ),
-                    Align(
-                      alignment: Alignment(0, -1),
-                      child: Container(
-                        // This is the user profile picture
-                        // This should grab the API user profile pic
-                        child: Image.asset("assets/joe.png",
-                            width: 90, height: 90, fit: BoxFit.cover),
+                    InkWell(
+                      onTap: () {
+                        showModalBottomSheet(
+                            context: context,
+                            builder: ((builder) => bottomSheet(context)),
+                          );
+                      },
+                      child: Align(
+                        alignment: Alignment(0, -1),
+                        child: Container(
+                          // This is the user profile picture
+                          // This should grab the API user profile pic
+                          child: Image.asset("assets/joe.png",
+                              width: 90, height: 90, fit: BoxFit.cover),
+                        ),
                       ),
                     ),
                     Align(
-                      alignment: Alignment(0, -.62),
+                      alignment: Alignment(0, -.67),
+                      child: Container(
+                        child: Text(
+                          // Grab the description from the API
+                          'Change Profile Photo',
+                          style: TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.blueAccent[400]),
+                        ),
+                      ),
+                    ),
+                    Align(
+                      alignment: Alignment(0, -.55),
                       child: Container(
                         width: 300,
                         child: TextField(
@@ -62,7 +86,7 @@ class _EditAccountState extends State<EditAccount> {
                       ),
                     ),
                     Align(
-                      alignment: Alignment(0, -.33),
+                      alignment: Alignment(0, -.27),
                       child: Container(
                         width: 300,
                         child: TextField(
@@ -74,7 +98,7 @@ class _EditAccountState extends State<EditAccount> {
                       ),
                     ),
                     Align(
-                      alignment: Alignment(0, -.05),
+                      alignment: Alignment(0, .01),
                       child: Container(
                         width: 300,
                         child: TextField(
@@ -86,7 +110,7 @@ class _EditAccountState extends State<EditAccount> {
                       ),
                     ),
                     Align(
-                      alignment: Alignment(0, .23),
+                      alignment: Alignment(0, .29),
                       child: Container(
                         width: 300,
                         child: TextField(
@@ -98,12 +122,11 @@ class _EditAccountState extends State<EditAccount> {
                       ),
                     ),
                     Align(
-                      alignment: Alignment(0, .53),
+                      alignment: Alignment(0, .55),
                       child: Container(
                           width: 260,
                           height: 50,
                           child: FlatButton(
-                            
                             onPressed: () {
                               // Need API Endpoint connected here
                               // Navigator.push(
@@ -127,5 +150,38 @@ class _EditAccountState extends State<EditAccount> {
         ),
       ),
     );
+  }
+  void takePhoto(ImageSource source) async {
+    final pickedFile = await _picker.getImage(
+      source: source,
+    );
+    setState(() {
+      _imageFile = pickedFile;
+    });
+  }
+
+  Widget bottomSheet(BuildContext context) {
+    return Container(
+        height: 25.0,
+        width: MediaQuery.of(context).size.width,
+        margin: EdgeInsets.symmetric(
+          horizontal: 20,
+          vertical: 20,
+        ),
+        child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+          FlatButton.icon(
+              onPressed: () {
+                takePhoto(ImageSource.camera);
+              },
+              icon: Icon(Icons.camera),
+              label: Text("Camera")),
+          SizedBox(width: 50),
+          FlatButton.icon(
+              onPressed: () {
+                takePhoto(ImageSource.gallery);
+              },
+              icon: Icon(Icons.image),
+              label: Text("Photo Library")),
+        ]));
   }
 }
