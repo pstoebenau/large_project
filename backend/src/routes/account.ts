@@ -206,11 +206,11 @@ router.post(
   });
 
   router.get("/changepassword/:token", (req, res) => {
-    res.sendFile(path.resolve('src/changepassword.html'));
+    res.sendFile(path.resolve('src/public/changepassword.html'));
     let token = req.params.token;
   });
 
-  router.post("/changepassword/:token", async function (req, res) {
+  router.post("/changepassword/", async function (req, res) {
     let token = req.params.token;
     let { password, passwordconfirm } = req.body;
 
