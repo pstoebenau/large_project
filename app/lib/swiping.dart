@@ -65,7 +65,7 @@ class DraggableFireWidget extends StatelessWidget {
       },
       builder: (context, incoming, rejected) {
         return new Container(
-          child: new Image.asset("assets/image 13.png",
+          child: new Image.asset("assets/fire 2.png",
               width: 70, height: 70, fit: BoxFit.fitHeight),
         );
       },
@@ -86,7 +86,7 @@ class DraggableTargetWidget extends StatelessWidget {
       },
       builder: (context, incoming, rejected) {
         return new Container(
-          child: new Image.asset("assets/image 7.png",
+          child: new Image.asset("assets/image 15.png",
               width: 70, height: 70, fit: BoxFit.fitHeight),
         );
       },
