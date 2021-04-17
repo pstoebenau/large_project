@@ -11,7 +11,7 @@ class SwipingPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             // This is the profile picture
-            SizedBox(height: 40),
+            SizedBox(height: 30),
             new Container(
               child: FlatButton(
                 padding: EdgeInsets.all(0.0),
@@ -29,13 +29,13 @@ class SwipingPage extends StatelessWidget {
                     width: 50, height: 50, fit: BoxFit.cover),
               ),
             ),
-            SizedBox(height: 20),
+            SizedBox(height: 16),
             new Draggable(
               maxSimultaneousDrags: 1,
               child: DraggableChild(),
               feedback: DraggableChildFeedback(),
             ),
-            SizedBox(height: 20),
+            SizedBox(height: 16),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [

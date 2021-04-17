@@ -18,7 +18,7 @@ class _EditAccountState extends State<EditAccount> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            SizedBox(height: 50),
+            SizedBox(height: 0),
             Align(
               alignment: Alignment(-1, 0),
               child: SizedBox(
@@ -135,6 +135,7 @@ class _EditAccountState extends State<EditAccount> {
                               //     builder: (context) => UploadSnippet(),
                               //   ),
                               // );
+                              Navigator.pop(context);
                             },
                             child: Image.asset(
                               'assets/update_button.png',

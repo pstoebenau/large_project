@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:url_strategy/url_strategy.dart';
 import 'package:large_project/navbar.dart';
 import 'login.dart';
-import './user-account.dart';
 
 void main() {
   setPathUrlStrategy();
@@ -20,7 +19,11 @@ class MyApp extends StatelessWidget {
         backgroundColor: Color(0xff292929),
         brightness: Brightness.dark,
       ),
-      home: UserAccountPage(), // Make sure to change this back to login and don't push
+      initialRoute: '/',
+      routes: {
+        '/': (context) => Login(),
+        '/swipe': (context) => Navbar(initialRoute: 'swipe'),
+      },
     );
   }
 }

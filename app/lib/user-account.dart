@@ -18,7 +18,7 @@ class _UserAccountPageState extends State<UserAccountPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            SizedBox(height: 50),
+            SizedBox(height: 0),
             SizedBox(
               width: 800,
               height: 600,
