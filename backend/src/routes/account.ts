@@ -137,7 +137,6 @@ router.post('/login', async function(req,res) {
     {
       res.status(200).json({
         message: "invalid password"
-        
       });
       return;
     }
@@ -148,12 +147,14 @@ router.post('/login', async function(req,res) {
       {
         token = jwt.sign({userId: user.id, firstname: user.firstName, username: user.username}, config.server.secret);
         res.status(200).json({token});
+        return;
       }
       else
       {
         res.status(200).json({
           message: "verify email"
         });
+        return;
       }
     }
 
