@@ -70,6 +70,7 @@ class _NavbarState extends State<Navbar> {
     ),
   ];
   MenuItem active;
+  double animDir = 1.0;
 
   @override
   void initState() {
@@ -102,7 +103,11 @@ class _NavbarState extends State<Navbar> {
     return Scaffold(
       body: Stack(
         children: [
-          active.route,
+          AnimatedSwitcher(
+            duration: const Duration(milliseconds: 200),
+            // transitionBuilder: navbarSlideTransition,
+            child: active.route,
+          ),
           Align(
             alignment: Alignment.bottomCenter,
             child: Container(
@@ -167,6 +172,38 @@ class _NavbarState extends State<Navbar> {
     );
   }
 
+  // Custom sliding animation for navbar transitions
+  Widget navbarSlideTransition(Widget child, Animation<double> animation) {
+    final inAnimation =
+      Tween<Offset>(begin: Offset(1.0*animDir, 0.0), end: Offset(0.0, 0.0))
+          .animate(animation);
+    final outAnimation =
+        Tween<Offset>(begin: Offset(-1.0*animDir, 0.0), end: Offset(0.0, 0.0))
+            .animate(animation);
+    
+    if (child == active.route) {
+      return ClipRect(
+        child: SlideTransition(
+          position: inAnimation,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: child,
+          ),
+        ),
+      );
+    } else {
+      return ClipRect(
+        child: SlideTransition(
+          position: outAnimation,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: child,
+          ),
+        ),
+      );
+    }
+  }
+
   // Handles animation on click
   Widget animatedItem(MenuItem item) {
     return GestureDetector(
@@ -178,7 +215,16 @@ class _NavbarState extends State<Navbar> {
       ),
       onTap: () {
         setState(() {
-          active = item;
+          if (active != item) {
+            // This determines what way to animate the navbar transition
+            if (active.xPos > item.xPos)
+              animDir = -1.0;
+            else
+              animDir = 1.0;
+            
+
+            active = item;
+          }
           item.artboard.addController(item.controller = SimpleAnimation('go'));
         });
       },
