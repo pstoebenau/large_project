@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import './swiping.dart';
 
 class Login extends StatelessWidget {
   const Login();
@@ -60,12 +59,7 @@ class Login extends StatelessWidget {
               height: 50,
               child: ElevatedButton(
                 onPressed: ()=>{
-                   Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => SwipingPage(),
-                    ),
-                  ),
+                  Navigator.pushReplacementNamed(context, '/swipe')
                 },
                 child: Text('Login'),
               ),
