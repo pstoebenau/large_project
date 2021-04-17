@@ -30,26 +30,7 @@ class SwipingPage extends StatelessWidget {
                 DraggableFireWidget(),
               ],
             ),
-            SizedBox(height: 10),
-            BottomNavigationBar(
-              items: const <BottomNavigationBarItem>[
-                BottomNavigationBarItem(icon: Icon(Icons.search), label: ''),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.favorite),
-                  label: '',
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.star),
-                  label: '',
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.settings),
-                  label: '',
-                ),
-              ],
-              selectedItemColor: Colors.teal,
-            ),
-            SizedBox(height: 10)
+            SizedBox(height: 100)
           ],
         ),
       ),
