@@ -37,11 +37,17 @@ class _LeaderBoardState extends State<LeaderBoard> {
                     SizedBox(height: 20),
                   ],
                 ),
-                codeSnippet(350, 32, 'HOTTEST'),
+                ConstrainedBox(
+                  constraints: new BoxConstraints(
+                    minHeight: 300,
+                    maxHeight: MediaQuery.of(context).size.height/2,
+                  ),
+                  child: codeSnippet(32, 'HOTTEST')
+                ),
               ]
             ),
             Container(
-              padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
+              padding: EdgeInsets.fromLTRB(25, 0, 25, 0),
               child: GridView.builder(
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
@@ -61,7 +67,7 @@ class _LeaderBoardState extends State<LeaderBoard> {
                   else
                     title = "Hot";
 
-                  return codeSnippet(500, 15, title);
+                  return codeSnippet(15, title);
                 },
               ),
             ),
@@ -72,14 +78,13 @@ class _LeaderBoardState extends State<LeaderBoard> {
     );
   }
 
-  Widget codeSnippet(double size, double fontSize, String description) {
+  Widget codeSnippet(double fontSize, String description) {
     return GestureDetector(
       onTap: () async {
         return alert(context, title: Text(description));
       },
-      child: Container(
-        height: size,
-        width: size*snippetRatio,
+      child: AspectRatio(
+        aspectRatio: snippetRatio,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
