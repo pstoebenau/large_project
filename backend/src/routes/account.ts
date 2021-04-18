@@ -206,25 +206,23 @@ router.post(
   });
 
   router.get("/changepassword/:token", (req, res) => {
-    res.sendFile(path.resolve('src/public/changepassword.html'));
-    let token = req.params.token;
+    return res.sendFile(path.resolve('src/public/changepassword.html'));
   });
 
-  router.post("/changepassword/", async function (req, res) {
-    let token = req.params.token;
-    let { password, passwordconfirm } = req.body;
-
+  router.post("/changepassword", async function (req, res) {
+    let { password, token } = req.body;
+    
     try {
+      const hash = await bcrypt.hash(password, 10);
       let data = jwt.decode(token) as any;
       let email = data.email;
   
-      let user = await User.findById(email).exec();
-      user?.updateOne({ active: true }, null, (err, res) => {});
-      console.log(user);
+      let user = await User.findOne({ email });
+      user?.updateOne({ password: hash }, null, (err, res) => {});
   
-      res.status(200).json({ user });
+      return res.status(200).json({ user });
     } catch (error) {
-      res.status(500).json({
+      return res.status(500).json({
         message: error.message,
       });
     }
