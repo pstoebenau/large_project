@@ -31,6 +31,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   alert_dialog: ^1.0.0
   url_strategy: ^0.2.0
+  provider: ^5.0.0
 
 dev_dependencies:
   flutter_test:

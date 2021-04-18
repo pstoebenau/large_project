@@ -13,9 +13,9 @@ class Snippet {
         score = json['score'];
 
   Map<String, dynamic> toJson() => {
-        'id': id,
-        'userID': userID,
-        'imageUrl': imageURL,
-        'score': score,
-      };
+    'id': id,
+    'userID': userID,
+    'imageUrl': imageURL,
+    'score': score,
+  };
 }
