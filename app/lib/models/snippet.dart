@@ -1,12 +1,12 @@
-class User {
-  final String id;
-  final String userID;
+class Snippet {
+  final int id;
+  final int userID;
   final String imageURL;
-  final String score;
+  final int score;
 
-  User(this.id, this.userID, this.imageURL, this.score);
+  Snippet(this.id, this.userID, this.imageURL, this.score);
 
-  User.fromJson(Map<String, dynamic> json)
+  Snippet.fromJson(Map<String, dynamic> json)
       : id = json['id'],
         userID = json['userID'],
         imageURL = json['imageURL'],
