@@ -31,6 +31,20 @@ router.post('/create', async (req: Request, res: Response, next: NextFunction) =
   }
 });
 
+router.get('/get-random', async (req, res, next) => {
+  try {
+    let count = await Snippet.count().exec();
+    let randIndex = Math.floor(Math.random() * count);
+    let snippet = await Snippet.findOne().skip(randIndex).exec();
+
+    return res.status(200).json(snippet);
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message
+    });
+  }
+});
+
 router.get('/find', async (req: Request, res: Response, next: NextFunction) => {
   try {
     let results = await Snippet.find().exec();
