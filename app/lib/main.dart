@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:large_project/models/token.dart';
+import 'package:large_project/models/userInfo.dart';
 import 'package:provider/provider.dart';
 import 'package:url_strategy/url_strategy.dart';
 import 'package:large_project/navbar.dart';
@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Provider(
-      create: (_) => Token(''),
+      create: (_) => UserInfo(''),
       child: MaterialApp(
         title: 'Chill Chili',
         theme: ThemeData(
@@ -27,6 +27,10 @@ class MyApp extends StatelessWidget {
         routes: {
           '/': (context) => Login(),
           '/swipe': (context) => Navbar(initialRoute: 'swipe'),
+          '/favorites': (context) => Navbar(initialRoute: 'favorites'),
+          '/addSnippet': (context) => Navbar(initialRoute: 'addSnippet'),
+          '/leaderboard': (context) => Navbar(initialRoute: 'leaderboard'),
+          '/account': (context) => Navbar(initialRoute: 'account'),
         },
       ),
     );

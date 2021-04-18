@@ -32,6 +32,7 @@ dependencies:
   alert_dialog: ^1.0.0
   url_strategy: ^0.2.0
   provider: ^5.0.0
+  http: ^0.13.1
 
 dev_dependencies:
   flutter_test:

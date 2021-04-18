@@ -1,7 +1,35 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
+import 'package:provider/provider.dart';
+import 'package:large_project/models/userInfo.dart';
 
-class Login extends StatelessWidget {
+class Login extends StatefulWidget {
   const Login();
+
+  @override
+  _LoginState createState() => _LoginState();
+}
+
+class _LoginState extends State<Login> {
+  UserInfo userInfo;
+
+  @override
+  void initState() {
+    super.initState();
+    userInfo = context.read<UserInfo>();
+  }
+
+  void login() async {
+    Response res = await post(
+      Uri.parse('http://127.0.0.1:8080/api/account/login'),
+      body: {
+        "username": "namejeff6",
+        "password": "password",
+      },
+    );
+
+    print(res.body);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -58,8 +86,9 @@ class Login extends StatelessWidget {
               width: 220,
               height: 50,
               child: ElevatedButton(
-                onPressed: ()=>{
-                  Navigator.pushReplacementNamed(context, '/swipe')
+                onPressed: () {
+                  login();
+                  Navigator.pushReplacementNamed(context, '/swipe');
                 },
                 child: Text('Login'),
               ),
