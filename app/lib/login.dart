@@ -58,7 +58,9 @@ class Login extends StatelessWidget {
               width: 220,
               height: 50,
               child: ElevatedButton(
-                onPressed: ()=>{},
+                onPressed: ()=>{
+                  Navigator.pushReplacementNamed(context, '/swipe')
+                },
                 child: Text('Login'),
               ),
             ),

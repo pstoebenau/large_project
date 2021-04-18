@@ -30,12 +30,12 @@
 import express, { NextFunction, Request, Response } from "express";
 import nodemailer, { createTestAccount } from "nodemailer";
 import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
-import User from "@schemas/user";
+import jwt from 'jsonwebtoken';
+import User from "@/schemas/user";
 import mongoose from "mongoose";
-import config from "@config/config";
-import UserFunctions from "../functions/users";
-import path from "path"
+import config from "@/config/config";
+import UserFunctions from "../functions/user";
+import path from "path";
 
 const router = express.Router();
 
@@ -110,13 +110,13 @@ router.get("/verify/:token", async function (req, res) {
     let userId = data.userId;
 
     let user = await User.findById(userId).exec();
-    user?.updateOne({ active: true }, null, (err, res) => {});
+    user?.updateOne({ active: true }, null);
     console.log(user);
 
-    res.status(200).json({ user });
+    return res.status(200).json({user});
   } catch (error) {
-    res.status(500).json({
-      message: error.message,
+    return res.status(500).json({
+      message: error.message
     });
   }
 });
@@ -128,37 +128,34 @@ router.post("/login", async function (req, res) {
   try {
     let user = await User.findOne({ username });
     console.log(user);
-    if (user == null || !user.password) {
-      res.status(200).json({
-        message: "invalid password",
+    if(user == null || !user.password)
+    {
+      return res.status(200).json({
+        message: "invalid password"
       });
-      return;
     }
 
-    if (bcrypt.compareSync(password, user.password)) {
-      if (user?.active) {
-        token = jwt.sign(
-          {
-            userId: user.id,
-            firstname: user.firstName,
-            username: user.username,
-          },
-          config.server.secret
-        );
-        res.status(200).json({ token });
-      } else {
-        res.status(200).json({
-          message: "verify email",
+    if (bcrypt.compareSync(password, user.password))
+    {
+      if (user?.active)
+      {
+        token = jwt.sign({userId: user.id, firstname: user.firstName, username: user.username}, config.server.secret);
+        return res.status(200).json({token});
+      }
+      else
+      {
+        return res.status(200).json({
+          message: "verify email"
         });
       }
     }
 
-    res.status(200).json({
-      message: "invalid password",
+    return res.status(200).json({
+      message: "invalid password"
     });
   } catch (error) {
-    res.status(500).json({
-      message: error.message,
+    return res.status(500).json({
+      message: error.message
     });
   }
 });
@@ -218,7 +215,7 @@ router.post(
       let email = data.email;
   
       let user = await User.findOne({ email });
-      user?.updateOne({ password: hash }, null, (err, res) => {});
+      user?.updateOne({ password: hash }, null);
   
       return res.status(200).json({ user });
     } catch (error) {
