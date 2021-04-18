@@ -1,3 +1,3 @@
 class Globals {
-  static const String apiUrl = "https://chillchili.herokuapp.com/";
+  static const String apiUrl = "https://chillchili.herokuapp.com";
 }
