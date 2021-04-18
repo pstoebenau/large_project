@@ -1,7 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:provider/provider.dart';
 import 'package:large_project/models/userInfo.dart';
+
+import 'globals.dart';
 
 class Login extends StatefulWidget {
   const Login();
@@ -20,15 +24,12 @@ class _LoginState extends State<Login> {
   }
 
   void login() async {
-    Response res = await post(
-      Uri.parse('http://127.0.0.1:8080/api/account/login'),
-      body: {
-        "username": "namejeff6",
-        "password": "password",
-      },
-    );
-
-    print(res.body);
+    var url = Uri.parse('${Globals.apiUrl}/api/account/login');
+    var response = await post(url, body: {
+      "username": "namejeff6",
+      "password": "password"
+    });
+    userInfo.token = json.decode(response.body)['token'];
   }
 
   @override
