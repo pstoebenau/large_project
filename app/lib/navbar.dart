@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:large_project/leaderboard.dart';
 import 'package:large_project/login.dart';
 import 'package:large_project/swiping.dart';
 import 'package:large_project/upload-snippet.dart';
@@ -67,7 +68,7 @@ class _NavbarState extends State<Navbar> {
       controller: null,
       iconName: 'star.riv',
       color: Colors.yellow,
-      route: Login(),
+      route: LeaderBoard(),
     ),
     MenuItem(
       xPos: 1.0,

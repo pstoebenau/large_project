@@ -10,6 +10,8 @@ import snippetRoutes from '@/routes/snippets';
 
 const app = express();
 
+app.use(express.static(__dirname+'/public'));
+
 // Connect to MongoDB database
 mongoose.connect(config.mongo.url, config.mongo.options)
   .then((result) => {

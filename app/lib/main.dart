@@ -23,6 +23,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (context) => Login(),
         '/swipe': (context) => Navbar(initialRoute: 'swipe'),
+        '/leaderboard': (context) => Navbar(initialRoute: 'leaderboard'),
       },
     );
   }
