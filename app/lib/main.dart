@@ -3,6 +3,7 @@ import 'package:url_strategy/url_strategy.dart';
 import 'package:large_project/navbar.dart';
 import 'login.dart';
 
+
 void main() {
   setPathUrlStrategy();
   runApp(MyApp());
