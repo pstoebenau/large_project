@@ -78,7 +78,7 @@ router.post(
 
       let token = jwt.sign({ userId: result.id }, config.server.secret);
 
-      let verifyLink = `http://${config.server.hostname}:${config.server.port}/api/account/verify/${token}`;
+      let verifyLink = `${config.server.hostname}:${config.server.port}/api/account/verify/${token}`;
       let send = await transporter.sendMail({
         from: '"Chill Midnight 👻" <mmidnight.magic@gmail.com>', // sender address
         to: email, // list of receivers
@@ -110,7 +110,7 @@ router.get("/verify/:token", async function (req, res) {
     let userId = data.userId;
 
     let user = await User.findById(userId).exec();
-    user?.updateOne({ active: true }, null);
+    user?.updateOne({ active: true }, null, (err, res) => {});
     console.log(user);
 
     return res.status(200).json({user});
@@ -180,7 +180,7 @@ router.post(
 
       let token = jwt.sign({ email }, config.server.secret);
 
-      let verifyLink = `http://${config.server.hostname}:${config.server.port}/api/account/changepassword/${token}`;
+      let verifyLink = `${config.server.hostname}:${config.server.port}/api/account/changepassword/${token}`;
       let send = await transporter.sendMail({
         from: '"Chill Midnight 👻" <mmidnight.magic@gmail.com>', // sender address
         to: email, // list of receivers
@@ -215,7 +215,7 @@ router.post(
       let email = data.email;
   
       let user = await User.findOne({ email });
-      user?.updateOne({ password: hash }, null);
+      user?.updateOne({ password: hash }, null, (err, res) => {});
   
       return res.status(200).json({ user });
     } catch (error) {
