@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:large_project/login.dart';
 import 'package:large_project/swiping.dart';
+import 'package:large_project/upload-snippet.dart';
 import 'package:large_project/user-account.dart';
 import 'package:rive/rive.dart';
 import 'hot_or_not.dart';
@@ -58,11 +59,7 @@ class _NavbarState extends State<Navbar> {
       controller: null,
       iconName: 'add_snippet.riv',
       color: Colors.greenAccent,
-      route: FlatButton(
-        onPressed: () {
-          takePhoto(ImageSource.gallery);
-        },
-      ),
+      route: UploadSnippet()
     ),
     MenuItem(
       xPos: 0.5,
