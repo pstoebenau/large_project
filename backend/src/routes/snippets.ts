@@ -53,7 +53,7 @@ router.post('/updateScore', async (req: Request, res: Response, next: NextFuncti
     let results = await Snippet.findOneAndUpdate({imageURL: req.body.imageURL}, {$inc : {score : 1}});
 
     return res.status(200).json({
-      message: "hot code"
+      message: "success"
     });
   } catch (error) {
     return res.status(500).json({
