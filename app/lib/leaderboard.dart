@@ -9,7 +9,7 @@ class LeaderBoard extends StatefulWidget {
 }
 
 class _LeaderBoardState extends State<LeaderBoard> {
-  
+  static const double snippetRatio = 10 / 14;
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +47,7 @@ class _LeaderBoardState extends State<LeaderBoard> {
                   crossAxisCount: 2,
                   mainAxisSpacing: 20,
                   crossAxisSpacing: 20,
-                  childAspectRatio: (10/12),
+                  childAspectRatio: snippetRatio,
                 ),
                 itemCount: 10,
                 shrinkWrap: true,
@@ -79,7 +79,7 @@ class _LeaderBoardState extends State<LeaderBoard> {
       },
       child: Container(
         height: size,
-        width: size*(10/12),
+        width: size*snippetRatio,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
