@@ -8,6 +8,10 @@ export default interface User extends Document {
   email: string;
   username: string;
   password: string;
+<<<<<<< HEAD
   about: string
+=======
+  about: string;
+>>>>>>> master
   active: boolean;
 }
