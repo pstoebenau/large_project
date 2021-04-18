@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-// import 'login.dart';
-import 'landing.dart';
+import 'login.dart';
+
 
 void main() {
   runApp(MyApp());
@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
         accentColor: Color(0xff003EF8),
         brightness: Brightness.dark,
       ),
-      home: Landing(),
+      home: Login(),
     );
   }
 }
