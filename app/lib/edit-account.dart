@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -39,8 +41,8 @@ class _EditAccountState extends State<EditAccount> {
                         ),
                       ),
                     ),
-                    InkWell(
-                      onTap: () {
+                    FlatButton(
+                      onPressed: () {
                         showModalBottomSheet(
                             context: context,
                             builder: ((builder) => bottomSheet(context)),
@@ -48,11 +50,11 @@ class _EditAccountState extends State<EditAccount> {
                       },
                       child: Align(
                         alignment: Alignment(0, -1),
-                        child: Container(
+                        child: CircleAvatar(
+                          radius: 45,
                           // This is the user profile picture
                           // This should grab the API user profile pic
-                          child: Image.asset("assets/joe.png",
-                              width: 90, height: 90, fit: BoxFit.cover),
+                          backgroundImage: _imageFile == null ? AssetImage("assets/joe.png") : (FileImage(File(_imageFile.path))),
                         ),
                       ),
                     ),

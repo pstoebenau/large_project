@@ -124,25 +124,6 @@ class _UserAccountPageState extends State<UserAccountPage> {
                       ),
                     ),
                   ),
-                  // Button to go to the upload snippet page insert here
-                  Align(
-                    alignment: Alignment(.8, 0.05),
-                    child: Container(
-                      child: FlatButton(
-                        padding: EdgeInsets.all(0.0),
-                        onPressed: () {
-                          showModalBottomSheet(
-                            context: context,
-                            builder: ((builder) => bottomSheet(context)),
-                          );
-                        },
-                        child: Text(
-                          '+',
-                          style: TextStyle(fontSize: 20),
-                        ),
-                      ),
-                    ),
-                  ),
                   Align(
                     alignment: Alignment(-.68, .35),
                     child: Container(

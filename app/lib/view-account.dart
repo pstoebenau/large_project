@@ -9,7 +9,7 @@ class ViewAccountPage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            SizedBox(height: 50),
+            SizedBox(height: 0),
             SizedBox(
               width: 700,
               height: 600,
