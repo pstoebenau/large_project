@@ -4,8 +4,6 @@ import 'package:provider/provider.dart';
 import 'package:url_strategy/url_strategy.dart';
 import 'package:large_project/navbar.dart';
 import 'login.dart';
-import 'new_password.dart';
-import 'new_password.dart';
 
 
 void main() {
@@ -36,8 +34,6 @@ class MyApp extends StatelessWidget {
           '/account': (context) => Navbar(initialRoute: 'account'),
         },
       ),
-
-      home: Login(),
     );
   }
 }
