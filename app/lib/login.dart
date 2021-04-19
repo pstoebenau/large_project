@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:http/http.dart';
 import 'package:provider/provider.dart';
 import 'package:large_project/models/userInfo.dart';
@@ -16,6 +17,7 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
   UserInfo userInfo;
+  final _formKey = GlobalKey<FormBuilderState>();
 
   @override
   void initState() {
@@ -58,8 +60,8 @@ class _LoginState extends State<Login> {
               ),
             ),
             SizedBox(height: 40),
-            new Container(
-              width: 350,
+            FormBuilder(
+              key: _formKey,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
@@ -79,19 +81,18 @@ class _LoginState extends State<Login> {
                       labelText: 'Password',
                     ),
                   ),
+                  SizedBox(
+                    width: 220,
+                    height: 50,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        login();
+                        Navigator.pushReplacementNamed(context, '/swipe');
+                      },
+                      child: Text('Login'),
+                    ),
+                  ),
                 ]
-              ),
-            ),
-            SizedBox(height: 60),
-            SizedBox(
-              width: 220,
-              height: 50,
-              child: ElevatedButton(
-                onPressed: () {
-                  login();
-                  Navigator.pushReplacementNamed(context, '/swipe');
-                },
-                child: Text('Login'),
               ),
             ),
             SizedBox(height: 60),
