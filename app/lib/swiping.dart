@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import './view-account.dart';
 
 class SwipingPage extends StatelessWidget {
   const SwipingPage();
@@ -10,18 +11,30 @@ class SwipingPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             // This is the profile picture
-            SizedBox(height: 40),
+            SizedBox(height: 30),
             new Container(
-              child: new Image.asset("assets/joe.png",
-                  width: 50, height: 50, fit: BoxFit.cover),
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ViewAccountPage(),
+                    ),
+                  );
+                },
+                // This should be replaced with user profile picture
+                // Associated with the snippet
+                child: new Image.asset("assets/joe.png",
+                    width: 50, height: 50, fit: BoxFit.cover),
+              ),
             ),
-            SizedBox(height: 20),
+            SizedBox(height: 16),
             new Draggable(
               maxSimultaneousDrags: 1,
               child: DraggableChild(),
               feedback: DraggableChildFeedback(),
             ),
-            SizedBox(height: 20),
+            SizedBox(height: 16),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -49,7 +62,6 @@ class DraggableFireWidget extends StatelessWidget {
       onAccept: (Container container) {
         // go to the next picture
       },
-
       builder: (context, incoming, rejected) {
         return new Container(
           child: new Image.asset("assets/fire 2.png",
