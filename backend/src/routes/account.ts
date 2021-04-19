@@ -141,7 +141,7 @@ router.post("/login", async function (req, res) {
     {
       if (user?.active)
       {
-        token = jwt.sign({userId: user.id, firstname: user.firstName, username: user.username}, config.server.secret);
+        token = jwt.sign({userId: user.id, firstName: user.firstName, username: user.username}, config.server.secret);
         return res.status(200).json({token});
       }
       else

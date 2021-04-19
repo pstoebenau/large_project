@@ -1,5 +1,6 @@
 import 'package:alert_dialog/alert_dialog.dart';
 import 'package:flutter/material.dart';
+import './view-account.dart';
 
 class SwipingPage extends StatelessWidget {
   const SwipingPage();
@@ -13,8 +14,20 @@ class SwipingPage extends StatelessWidget {
             // This is the profile picture
             SizedBox(height: 30),
             new Container(
-              child: new Image.asset("assets/joe.png",
-                  width: 50, height: 50, fit: BoxFit.cover),
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ViewAccountPage(),
+                    ),
+                  );
+                },
+                // This should be replaced with user profile picture
+                // Associated with the snippet
+                child: new Image.asset("assets/joe.png",
+                    width: 50, height: 50, fit: BoxFit.cover),
+              ),
             ),
             SizedBox(height: 20),
             Container(

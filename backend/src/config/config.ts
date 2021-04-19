@@ -11,13 +11,13 @@ const MONGO_OPTIONS = {
   retryWrites: false
 };
 
-const MONGO_HOST = process.env.MONGO_HOST || 'mongo';
+const MONGO_HOST = process.env.MONGO_HOST || 'localhost:27017';
 const MONGO_USERNAME = process.env.MONGO_USERNAME || '';
 const MONGO_PASSWORD = process.env.MONGO_PASSWORD || '';
 const MONGO_DATABASE = process.env.MONGO_DATABASE || 'hot_or_not';
 
 let mongoUrl = `mongodb+srv://${MONGO_USERNAME}:${MONGO_PASSWORD}@${MONGO_HOST}/${MONGO_DATABASE}`;
-if (MONGO_HOST == "mongo")
+if (MONGO_HOST == "localhost:27017")
   mongoUrl = `mongodb://${MONGO_HOST}/${MONGO_DATABASE}`;
 
 const MONGO = {
