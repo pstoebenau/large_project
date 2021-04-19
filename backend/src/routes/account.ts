@@ -106,7 +106,7 @@ router.post(
 
 router.get("/verify/:token", async function (req, res) {
   let token = req.params.token;
-  return res.sendFile(path.resolve('src/public/changepassword.html'));
+  res.sendFile(path.resolve('src/public/success.html'));
 
   try {
     let data = jwt.decode(token) as any;
