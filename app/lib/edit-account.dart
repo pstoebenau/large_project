@@ -38,8 +38,8 @@ class _EditAccountState extends State<EditAccount> {
                     child: Column(
                       children: [
                         SizedBox(height: 10),
-                        FlatButton(
-                          onPressed: () {
+                        GestureDetector(
+                          onTap: () {
                             showModalBottomSheet(
                               context: context,
                               builder: ((builder) => bottomSheet(context)),
@@ -55,14 +55,22 @@ class _EditAccountState extends State<EditAccount> {
                           ),
                         ),
                         SizedBox(height: 5),
-                        Container(
-                          child: Text(
-                            // Grab the description from the API
-                            'Change Profile Photo',
-                            style: TextStyle(
-                                fontSize: 12,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.blueAccent[400]),
+                        GestureDetector(
+                          onTap: () {
+                            showModalBottomSheet(
+                              context: context,
+                              builder: ((builder) => bottomSheet(context)),
+                            );
+                          },
+                          child: Container(
+                            child: Text(
+                              // Grab the description from the API
+                              'Change Profile Photo',
+                              style: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.blueAccent[400]),
+                            ),
                           ),
                         ),
                         SizedBox(height: 10),
@@ -113,43 +121,45 @@ class _EditAccountState extends State<EditAccount> {
                         ),
                         SizedBox(height: 10),
                         Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Container(
-                                width: 150,
-                                height: 50,
-                                child: FlatButton(
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                  },
-                                  child: Image.asset(
-                                    'assets/cancel.png',
-                                  ),
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Container(
+                              width: 150,
+                              height: 50,
+                              child: GestureDetector(
+                                onTap: () {
+                                  Navigator.pop(context);
+                                },
+                                child: Image.asset(
+                                  'assets/cancel.png',
                                 ),
                               ),
-                              SizedBox(width: 40),
-                              Container(
-                                width: 150,
-                                height: 50,
-                                child: FlatButton(
-                                  onPressed: () {
-                                    // Need API Endpoint connected here
-                                    // Navigator.push(
-                                    //   context,
-                                    //   MaterialPageRoute(
-                                    //     builder: (context) => UploadSnippet(),
-                                    //   ),
-                                    // );
-                                    Navigator.pop(context);
-                                  },
-                                  child: Image.asset(
-                                    'assets/update.png',
-                                  ),
+                            ),
+                            SizedBox(width: 40),
+                            Container(
+                              width: 150,
+                              height: 50,
+                              child: GestureDetector(
+                                onTap: () {
+                                  // Need API Endpoint connected here
+                                  // Navigator.push(
+                                  //   context,
+                                  //   MaterialPageRoute(
+                                  //     builder: (context) => UploadSnippet(),
+                                  //   ),
+                                  // );
+                                  Navigator.pop(context);
+                                },
+                                child: Image.asset(
+                                  'assets/update.png',
                                 ),
                               ),
-                            ]),
-                        FlatButton(
-                          onPressed: (){},
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 10),
+                        GestureDetector(
+                          onTap: () {},
                           child: Container(
                             child: Text(
                               // Grab the description from the API

@@ -62,7 +62,7 @@ class _UserAccountPageState extends State<UserAccountPage> {
                               child: Image.asset("assets/joe.png",
                                   width: 90, height: 90, fit: BoxFit.cover),
                             ),
-                            SizedBox(width: 40),
+                            SizedBox(width: 30),
                             Container(
                               child: Text(
                                 // Grab from API the user's name
@@ -70,11 +70,10 @@ class _UserAccountPageState extends State<UserAccountPage> {
                                 style: TextStyle(fontSize: 25),
                               ),
                             ),
-                            SizedBox(width: 40),
+                            SizedBox(width: 50),
                             Container(
-                              child: FlatButton(
-                                padding: EdgeInsets.all(0.0),
-                                onPressed: () {
+                              child: GestureDetector(
+                                onTap: () {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
@@ -91,7 +90,7 @@ class _UserAccountPageState extends State<UserAccountPage> {
                                 ),
                               ),
                             ),
-                            SizedBox(width: 20),
+                            SizedBox(width: 50),
                           ],
                         ),
                         Container(

@@ -13,9 +13,8 @@ class SwipingPage extends StatelessWidget {
             // This is the profile picture
             SizedBox(height: 30),
             new Container(
-              child: FlatButton(
-                padding: EdgeInsets.all(0.0),
-                onPressed: () {
+              child: GestureDetector(
+                onTap: () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
