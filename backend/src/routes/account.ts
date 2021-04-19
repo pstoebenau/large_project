@@ -157,18 +157,17 @@ router.post("/login", async function (req, res) {
       });
     }
 
-    if (bcrypt.compareSync(password, user.password)) {
-      if (user?.active) {
-        token = jwt.sign(
-          {
-            userId: user.id,
-            firstName: user.firstName,
-            username: user.username,
-          },
-          config.server.secret
-        );
-        return res.status(200).json({ token });
-      } else {
+
+    if (bcrypt.compareSync(password, user.password))
+    {
+      if (user?.active)
+      {
+        token = jwt.sign({userId: user.id, firstName: user.firstName, username: user.username}, config.server.secret);
+        return res.status(200).json({token, message: "success"});
+      }
+      else
+      {
+
         return res.status(200).json({
           message: "verify email",
         });
@@ -232,24 +231,26 @@ router.get("/changepassword/:token", (req, res) => {
   return res.sendFile(path.resolve("src/public/changepassword.html"));
 });
 
-router.post("/changepassword", async function (req, res) {
-  let { password, token } = req.body;
 
-  try {
-    const hash = await bcrypt.hash(password, 10);
-    let data = jwt.decode(token) as any;
-    let email = data.email;
+  router.post("/changepassword", async function (req, res) {
+    let { password, token } = req.body;
+    
+    try {
+      const hash = await bcrypt.hash(password, 10);
+      let data = jwt.decode(token) as any;
+      let email = data.email;
+  
+      let user = await User.findOne({ email });
+      user?.updateOne({ password: hash }, null, (err, res) => {});
+  
+      return res.status(200).json({ user, message: "success" });
+    } catch (error) {
+      return res.status(500).json({
+        message: error.message,
+      });
+    }
+  });
 
-    let user = await User.findOne({ email });
-    user?.updateOne({ password: hash }, null, (err, res) => {});
-
-    return res.status(200).json({ user });
-  } catch (error) {
-    return res.status(500).json({
-      message: error.message,
-    });
-  }
-});
 
 // Assumes that all fields are instantiated
 router.post("/account-edit", async function (req, res) {
