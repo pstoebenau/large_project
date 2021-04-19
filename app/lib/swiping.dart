@@ -1,3 +1,4 @@
+import 'package:alert_dialog/alert_dialog.dart';
 import 'package:flutter/material.dart';
 
 class SwipingPage extends StatelessWidget {
@@ -10,104 +11,43 @@ class SwipingPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             // This is the profile picture
-            SizedBox(height: 40),
+            SizedBox(height: 30),
             new Container(
               child: new Image.asset("assets/joe.png",
                   width: 50, height: 50, fit: BoxFit.cover),
             ),
             SizedBox(height: 20),
-            new Draggable(
-              maxSimultaneousDrags: 1,
-              child: DraggableChild(),
-              feedback: DraggableChildFeedback(),
+            Container(
+              child: new Image.asset("assets/bogosort.png",
+                  width: 350, height: 400, fit: BoxFit.contain),
             ),
-            SizedBox(height: 20),
+            SizedBox(height: 13),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                DraggableTargetWidget(),
+                GestureDetector(
+                  onTap: () async {
+                    return alert(context, title: Text("Trash!"));
+                  },
+                  child: Container(
+                    child: new Image.asset("assets/image 15.png",
+                        width: 70, height: 70, fit: BoxFit.fitHeight),
+                  ),
+                ),
                 SizedBox(width: 200),
-                DraggableFireWidget(),
+                GestureDetector(
+                  onTap: () async {
+                    return alert(context, title: Text("Fire!"));
+                  },
+                  child: Container(
+                    child: new Image.asset("assets/fire 2.png",
+                        width: 70, height: 70, fit: BoxFit.fitHeight),
+                  ),
+                ),
               ],
             ),
             SizedBox(height: 100)
           ],
-        ),
-      ),
-    );
-  }
-}
-
-class DraggableFireWidget extends StatelessWidget {
-  const DraggableFireWidget({
-    Key key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return DragTarget<Container>(
-      onAccept: (Container container) {
-        // go to the next picture
-      },
-
-      builder: (context, incoming, rejected) {
-        return new Container(
-          child: new Image.asset("assets/fire 2.png",
-              width: 70, height: 70, fit: BoxFit.fitHeight),
-        );
-      },
-    );
-  }
-}
-
-class DraggableTargetWidget extends StatelessWidget {
-  const DraggableTargetWidget({
-    Key key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return DragTarget(
-      onAccept: (Container container) {
-        // go to the next picture
-      },
-      builder: (context, incoming, rejected) {
-        return new Container(
-          child: new Image.asset("assets/image 15.png",
-              width: 70, height: 70, fit: BoxFit.fitHeight),
-        );
-      },
-    );
-  }
-}
-
-class DraggableChild extends StatelessWidget {
-  const DraggableChild({
-    Key key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return new Container(
-      child: new Image.asset("assets/bogosort.png",
-          width: 350, height: 400, fit: BoxFit.contain),
-    );
-  }
-}
-
-class DraggableChildFeedback extends StatelessWidget {
-  const DraggableChildFeedback({
-    Key key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Opacity(
-      opacity: 0.7,
-      child: Material(
-        child: new Container(
-          child: new Image.asset("assets/bogosort.png",
-              width: 350, height: 400, fit: BoxFit.contain),
         ),
       ),
     );
