@@ -42,7 +42,8 @@ router.post(
       let results = await snippet.save();
 
       return res.status(200).json({
-        snippet: results,
+        message: "success"
+        //snippet: results
       });
     } catch (error) {
       return res.status(500).json({
@@ -81,7 +82,6 @@ router.get('/find', async (req: Request, res: Response, next: NextFunction) => {
   }
 });
 
-<<<<<<< HEAD
 router.post('/updateScore', async (req: Request, res: Response, next: NextFunction) => {
   let { imageURL } = req.body;
 
@@ -97,7 +97,6 @@ router.post('/updateScore', async (req: Request, res: Response, next: NextFuncti
     });
   }
 });
-=======
 router.post(
   "/deleteSnippet",
   async (req: Request, res: Response, next: NextFunction) => {
@@ -105,7 +104,8 @@ router.post(
     try {
       let results = await Snippet.findByIdAndRemove(test).exec();
       return res.status(200).json({
-        snippet: results,
+        message: "success"
+        //snippet: results,
       });
     } catch (error) {
       return res.status(500).json({
@@ -114,6 +114,5 @@ router.post(
     }
   }
 );
->>>>>>> eada76e053aebf94cf5725af3b94f503d68ea5a6
 
 export default router;
