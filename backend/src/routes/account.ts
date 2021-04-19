@@ -142,7 +142,7 @@ router.post("/login", async function (req, res) {
       if (user?.active)
       {
         token = jwt.sign({userId: user.id, firstName: user.firstName, username: user.username}, config.server.secret);
-        return res.status(200).json({token});
+        return res.status(200).json({token, message: "success"});
       }
       else
       {
@@ -219,7 +219,7 @@ router.post(
       let user = await User.findOne({ email });
       user?.updateOne({ password: hash }, null, (err, res) => {});
   
-      return res.status(200).json({ user });
+      return res.status(200).json({ user, message: "success" });
     } catch (error) {
       return res.status(500).json({
         message: error.message,
