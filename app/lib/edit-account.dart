@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:image_picker/image_picker.dart';
 
 class EditAccount extends StatefulWidget {
@@ -11,6 +12,7 @@ class _EditAccountState extends State<EditAccount> {
   String fullName = 'Joe Mama'; // Grab from API
   PickedFile _imageFile;
   final ImagePicker _picker = ImagePicker();
+  final _formKey = GlobalKey<FormBuilderState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,22 +39,65 @@ class _EditAccountState extends State<EditAccount> {
                   Center(
                     child: Column(
                       children: [
-                        SizedBox(height: 10),
-                        GestureDetector(
-                          onTap: () {
-                            showModalBottomSheet(
-                              context: context,
-                              builder: ((builder) => bottomSheet(context)),
-                            );
-                          },
-                          child: CircleAvatar(
-                            radius: 45,
-                            // This is the user profile picture
-                            // This should grab the API user profile pic
-                            backgroundImage: _imageFile == null
-                                ? AssetImage("assets/joe.png")
-                                : (FileImage(File(_imageFile.path))),
-                          ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Container(
+                              child: GestureDetector(
+                                onTap: () {
+                                  Navigator.pop(context);
+                                },
+                                child: Text(
+                                  // Grab the description from the API
+                                  'Cancel',
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            SizedBox(width: 75),
+                            GestureDetector(
+                              onTap: () {
+                                showModalBottomSheet(
+                                  context: context,
+                                  builder: ((builder) => bottomSheet(context)),
+                                );
+                              },
+                              child: CircleAvatar(
+                                radius: 45,
+                                // This is the user profile picture
+                                // This should grab the API user profile pic
+                                backgroundImage: _imageFile == null
+                                    ? AssetImage("assets/joe.png")
+                                    : (FileImage(File(_imageFile.path))),
+                              ),
+                            ),
+                            SizedBox(width: 75),
+                            Container(
+                              child: GestureDetector(
+                                onTap: () {
+                                  // Need API Endpoint connected here
+                                  // Navigator.push(
+                                  //   context,
+                                  //   MaterialPageRoute(
+                                  //     builder: (context) => UploadSnippet(),
+                                  //   ),
+                                  // );
+                                  Navigator.pop(context);
+                                },
+                                child: Text(
+                                  // Grab the description from the API
+                                  'Done',
+                                  style: TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.blueAccent[400]),
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                         SizedBox(height: 5),
                         GestureDetector(
@@ -74,88 +119,87 @@ class _EditAccountState extends State<EditAccount> {
                           ),
                         ),
                         SizedBox(height: 10),
-                        Container(
-                          width: 300,
-                          child: TextField(
-                            decoration: const InputDecoration(
-                              border: OutlineInputBorder(),
-                              labelText: 'First Name',
-                            ),
-                            autocorrect: false,
-                            onChanged: (String value) {
-                              fullName = value;
-                            },
-                          ),
-                        ),
-                        SizedBox(height: 10),
-                        Container(
-                          width: 300,
-                          child: TextField(
-                            decoration: InputDecoration(
-                              border: OutlineInputBorder(),
-                              labelText: 'Last Name',
-                            ),
-                          ),
-                        ),
-                        SizedBox(height: 10),
-                        Container(
-                          width: 300,
-                          child: TextField(
-                            decoration: InputDecoration(
-                              border: OutlineInputBorder(),
-                              labelText: 'Email',
-                            ),
-                          ),
-                        ),
-                        SizedBox(height: 10),
-                        Container(
-                          width: 300,
-                          child: TextField(
-                            maxLines: 4,
-                            maxLength: 300,
-                            decoration: InputDecoration(
-                              border: OutlineInputBorder(),
-                              labelText: 'About Me',
-                            ),
-                          ),
-                        ),
-                        SizedBox(height: 10),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Container(
-                              width: 150,
-                              height: 50,
-                              child: GestureDetector(
-                                onTap: () {
-                                  Navigator.pop(context);
-                                },
-                                child: Image.asset(
-                                  'assets/cancel.png',
+                        FormBuilder(
+                          key: _formKey,
+                          child: Column(
+                            children: [
+                              Container(
+                                width: 300,
+                                child: FormBuilderTextField(
+                                  name: 'firstName',
+                                  decoration: const InputDecoration(
+                                    border: OutlineInputBorder(),
+                                    labelText: 'First Name',
+                                  ),
+                                  autocorrect: false,
+                                  validator:
+                                      FormBuilderValidators.required(context),
                                 ),
                               ),
-                            ),
-                            SizedBox(width: 40),
-                            Container(
-                              width: 150,
-                              height: 50,
-                              child: GestureDetector(
-                                onTap: () {
-                                  // Need API Endpoint connected here
-                                  // Navigator.push(
-                                  //   context,
-                                  //   MaterialPageRoute(
-                                  //     builder: (context) => UploadSnippet(),
-                                  //   ),
-                                  // );
-                                  Navigator.pop(context);
-                                },
-                                child: Image.asset(
-                                  'assets/update.png',
+                              SizedBox(height: 10),
+                              Container(
+                                width: 300,
+                                child: FormBuilderTextField(
+                                  name: 'lastName',
+                                  decoration: InputDecoration(
+                                    border: OutlineInputBorder(),
+                                    labelText: 'Last Name',
+                                  ),
+                                  validator:
+                                      FormBuilderValidators.required(context),
                                 ),
                               ),
-                            ),
-                          ],
+                              SizedBox(height: 10),
+                              Container(
+                                width: 300,
+                                child: FormBuilderTextField(
+                                  name: 'username',
+                                  decoration: InputDecoration(
+                                    border: OutlineInputBorder(),
+                                    labelText: 'Username',
+                                  ),
+                                  validator:
+                                      FormBuilderValidators.required(context),
+                                ),
+                              ),
+                              SizedBox(height: 10),
+                              Container(
+                                width: 300,
+                                child: FormBuilderTextField(
+                                  name: 'email',
+                                  decoration: InputDecoration(
+                                    border: OutlineInputBorder(),
+                                    labelText: 'Email',
+                                  ),
+                                  validator:
+                                      FormBuilderValidators.required(context),
+                                ),
+                              ),
+                              SizedBox(height: 10),
+                              Container(
+                                width: 300,
+                                child: FormBuilderTextField(
+                                  name: "aboutMe",
+                                  maxLines: 4,
+                                  maxLength: 300,
+                                  decoration: InputDecoration(
+                                    border: OutlineInputBorder(),
+                                    labelText: 'About Me',
+                                  ),
+                                  validator:
+                                      FormBuilderValidators.required(context),
+                                ),
+                              ),
+                            ],
+                          ),
+                          // Fill with user's previous input from API
+                          initialValue: {
+                            'firstName': 'Joe',
+                            'lastName': 'Mama',
+                            'username': 'joe_mama',
+                            'email': 'joe@mama.com',
+                            'aboutMe': 'You\'ve never had it Joe good'
+                          },
                         ),
                         SizedBox(height: 10),
                         GestureDetector(
