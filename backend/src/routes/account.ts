@@ -27,6 +27,24 @@
 //   token: string
 // }
 
+
+/**
+ *  input: Will assume fields are instantiated and not empty.
+ * {
+    "token": string,
+    "profileImage": string,
+    "firstName": string,
+    "lastName": string,
+    "email" : string,
+    "about" : string,
+    "newUserName": string
+ * }
+ *  
+ *   output
+ * {
+ *    message : string
+ * }
+ */
 import express, { NextFunction, Request, Response } from "express";
 import nodemailer, { createTestAccount } from "nodemailer";
 import bcrypt from "bcrypt";
@@ -231,20 +249,16 @@ router.post("/changepassword", async function (req, res) {
 
 // Assumes that all fields are instantiated
 router.post("/account-edit", async function (req, res) {
-  let { token } /*, lastName, email, imageURL, aboutMe }*/ = req.body;
+  let { token, profileImage, firstName, lastName, email, about, newUserName } = req.body;
   let data = jwt.verify(token, config.server.secret) as Token;
   console.log(data);
-  let name = data.firstName;
-  console.log(name);
+  let id = data.userId;
+  console.log(id);
   try {
-    // const hash = await bcrypt.hash(password, 10);
-    // let data = jwt.decode(token) as any;
-    // let email = data.email;
+     let user = await User.findOne({ _id:id });
+     user?.updateOne({username:newUserName, firstName:firstName, lastName:lastName, email:email, profileImage:profileImage, about: about}, null, (err, res) => {});
 
-    // let user = await User.findOne({ email });
-    // user?.updateOne({ password: hash }, null, (err, res) => {});
-
-    return res.status(200).json({ name });
+    return res.status(200).json({ message: "success" });
   } catch (error) {
     return res.status(500).json({
       message: error.message,
