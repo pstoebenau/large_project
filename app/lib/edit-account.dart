@@ -123,7 +123,7 @@ class _EditAccountState extends State<EditAccount> {
                                 Navigator.pop(context);
                               },
                               child: Image.asset(
-                                'assets/A. Text-1.png',
+                                'assets/cancel.png',
                               ),
                             ),
                           ),
@@ -143,7 +143,7 @@ class _EditAccountState extends State<EditAccount> {
                                 Navigator.pop(context);
                               },
                               child: Image.asset(
-                                'assets/A. Text.png',
+                                'assets/update.png',
                               ),
                             ),
                           ),
