@@ -25,7 +25,8 @@ router.post('/create', async (req: Request, res: Response, next: NextFunction) =
     let result = await user.save()
     
     return res.status(201).json({
-      user: result
+      user: result,
+      message: "success"
     });
   } catch (error) {
     return res.status(500).json({
@@ -41,7 +42,8 @@ router.get('/getAll', async (req: Request, res: Response, next: NextFunction) =>
 
     return res.status(200).json({
       users: results,
-      count: results.length
+      count: results.length,
+      message: "success"
     });
   } catch (error) {
     return res.status(500).json({
