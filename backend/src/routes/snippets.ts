@@ -43,6 +43,7 @@ router.post(
 
       return res.status(200).json({
         snippet: results,
+        message: "success"
       });
     } catch (error) {
       return res.status(500).json({
@@ -58,7 +59,7 @@ router.get('/get-random', async (req, res, next) => {
     let randIndex = Math.floor(Math.random() * count);
     let snippet = await Snippet.findOne().skip(randIndex).exec();
 
-    return res.status(200).json(snippet);
+    return res.status(200).json({snippet, message: "success"});
   } catch (error) {
     return res.status(500).json({
       message: error.message
@@ -73,6 +74,7 @@ router.get('/find', async (req: Request, res: Response, next: NextFunction) => {
     return res.status(200).json({
       snippet: results,
       count: results.length,
+      message: "success"
     });
   } catch (error) {
     return res.status(500).json({
@@ -89,6 +91,7 @@ router.post(
       let results = await Snippet.findByIdAndRemove(test).exec();
       return res.status(200).json({
         snippet: results,
+        message: "success"
       });
     } catch (error) {
       return res.status(500).json({
