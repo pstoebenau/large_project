@@ -247,11 +247,4 @@ class _NavbarState extends State<Navbar> {
       },
     );
   }
-
-  static void takePhoto(ImageSource source) async {
-    ImagePicker picker;
-    final pickedFile = await picker.getImage(
-      source: source,
-    );
-  }
 }

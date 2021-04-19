@@ -103,7 +103,7 @@ class _EditAccountState extends State<EditAccount> {
                         Container(
                           width: 300,
                           child: TextField(
-                            maxLines: 5,
+                            maxLines: 4,
                             maxLength: 300,
                             decoration: InputDecoration(
                               border: OutlineInputBorder(),
@@ -113,41 +113,54 @@ class _EditAccountState extends State<EditAccount> {
                         ),
                         SizedBox(height: 10),
                         Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                          Container(
-                            width: 150,
-                            height: 50,
-                            child: FlatButton(
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                              child: Image.asset(
-                                'assets/cancel.png',
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Container(
+                                width: 150,
+                                height: 50,
+                                child: FlatButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: Image.asset(
+                                    'assets/cancel.png',
+                                  ),
+                                ),
                               ),
+                              SizedBox(width: 40),
+                              Container(
+                                width: 150,
+                                height: 50,
+                                child: FlatButton(
+                                  onPressed: () {
+                                    // Need API Endpoint connected here
+                                    // Navigator.push(
+                                    //   context,
+                                    //   MaterialPageRoute(
+                                    //     builder: (context) => UploadSnippet(),
+                                    //   ),
+                                    // );
+                                    Navigator.pop(context);
+                                  },
+                                  child: Image.asset(
+                                    'assets/update.png',
+                                  ),
+                                ),
+                              ),
+                            ]),
+                        FlatButton(
+                          onPressed: (){},
+                          child: Container(
+                            child: Text(
+                              // Grab the description from the API
+                              'Change Password',
+                              style: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.blueAccent[400]),
                             ),
                           ),
-                          SizedBox(width: 40),
-                          Container(
-                            width: 150,
-                            height: 50,
-                            child: FlatButton(
-                              onPressed: () {
-                                // Need API Endpoint connected here
-                                // Navigator.push(
-                                //   context,
-                                //   MaterialPageRoute(
-                                //     builder: (context) => UploadSnippet(),
-                                //   ),
-                                // );
-                                Navigator.pop(context);
-                              },
-                              child: Image.asset(
-                                'assets/update.png',
-                              ),
-                            ),
-                          ),
-                        ]),
+                        ),
                       ],
                     ),
                   ),
