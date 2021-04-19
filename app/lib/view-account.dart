@@ -53,14 +53,16 @@ class _ViewAccountPageState extends State<ViewAccountPage> {
                     // ),
                     Column(
                       children: [
-                        Align(
-                          alignment: Alignment.topLeft,
-                          child: FlatButton.icon(
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                            icon: Icon(Icons.arrow_back),
-                            label: Text(''),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Align(
+                            alignment: Alignment.topLeft,
+                            child: GestureDetector(
+                              onTap: () {
+                                Navigator.pop(context);
+                              },
+                              child: Icon(Icons.arrow_back),
+                            ),
                           ),
                         ),
                         Row(
