@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -104,6 +103,8 @@ class _EditAccountState extends State<EditAccount> {
                         Container(
                           width: 300,
                           child: TextField(
+                            maxLines: 5,
+                            maxLength: 300,
                             decoration: InputDecoration(
                               border: OutlineInputBorder(),
                               labelText: 'About Me',
@@ -111,8 +112,24 @@ class _EditAccountState extends State<EditAccount> {
                           ),
                         ),
                         SizedBox(height: 10),
-                        Container(
-                            width: 260,
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                          Container(
+                            width: 150,
+                            height: 50,
+                            child: FlatButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              child: Image.asset(
+                                'assets/A. Text-1.png',
+                              ),
+                            ),
+                          ),
+                          SizedBox(width: 40),
+                          Container(
+                            width: 150,
                             height: 50,
                             child: FlatButton(
                               onPressed: () {
@@ -126,9 +143,11 @@ class _EditAccountState extends State<EditAccount> {
                                 Navigator.pop(context);
                               },
                               child: Image.asset(
-                                'assets/update_button.png',
+                                'assets/A. Text.png',
                               ),
-                            )),
+                            ),
+                          ),
+                        ]),
                       ],
                     ),
                   ),
@@ -153,13 +172,15 @@ class _EditAccountState extends State<EditAccount> {
 
   Widget bottomSheet(BuildContext context) {
     return Container(
-        height: 25.0,
-        width: MediaQuery.of(context).size.width,
-        margin: EdgeInsets.symmetric(
-          horizontal: 20,
-          vertical: 20,
-        ),
-        child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+      height: 25.0,
+      width: MediaQuery.of(context).size.width,
+      margin: EdgeInsets.symmetric(
+        horizontal: 20,
+        vertical: 20,
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
           FlatButton.icon(
               onPressed: () {
                 takePhoto(ImageSource.camera);
@@ -173,6 +194,8 @@ class _EditAccountState extends State<EditAccount> {
               },
               icon: Icon(Icons.image),
               label: Text("Photo Library")),
-        ]));
+        ],
+      ),
+    );
   }
 }
