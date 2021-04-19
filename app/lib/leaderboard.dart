@@ -1,7 +1,12 @@
 import 'package:alert_dialog/alert_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
+import 'package:http/http.dart';
+import 'package:large_project/globals.dart';
+import 'package:large_project/models/userInfo.dart';
 import 'models/snippet.dart';
+import 'models/userInfo.dart';
+import 'package:provider/provider.dart';
 
 class LeaderBoard extends StatefulWidget {
   LeaderBoard({Key key}) : super(key: key);
@@ -22,6 +27,22 @@ class _LeaderBoardState extends State<LeaderBoard> {
     Snippet(1, 1, 'https://i.ibb.co/D8ZgZT5/Elevation-l-Container.png', 100),
     Snippet(1, 1, 'https://i.ibb.co/D8ZgZT5/Elevation-l-Container.png', 100),
   ];
+  UserInfo userInfo;
+
+  @override
+  void initState() {
+    super.initState();
+    userInfo = context.read<UserInfo>();
+    getLeaderboard();
+  }
+
+  void getLeaderboard() async {
+    var url = Uri.parse('${Globals.apiUrl}/api/snippet/get-random');
+    
+    var response = await get(url);
+    print('Response status: ${response.statusCode}');
+    print('Response body: ${response.body}');
+  }
 
   @override
   Widget build(BuildContext context) {

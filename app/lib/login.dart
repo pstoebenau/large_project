@@ -1,7 +1,36 @@
-import 'package:flutter/material.dart';
+import 'dart:convert';
 
-class Login extends StatelessWidget {
+import 'package:flutter/material.dart';
+import 'package:http/http.dart';
+import 'package:provider/provider.dart';
+import 'package:large_project/models/userInfo.dart';
+
+import 'globals.dart';
+
+class Login extends StatefulWidget {
   const Login();
+
+  @override
+  _LoginState createState() => _LoginState();
+}
+
+class _LoginState extends State<Login> {
+  UserInfo userInfo;
+
+  @override
+  void initState() {
+    super.initState();
+    userInfo = context.read<UserInfo>();
+  }
+
+  void login() async {
+    var url = Uri.parse('${Globals.apiUrl}/api/account/login');
+    var response = await post(url, body: {
+      "username": "namejeff6",
+      "password": "password"
+    });
+    userInfo.token = json.decode(response.body)['token'];
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -58,8 +87,9 @@ class Login extends StatelessWidget {
               width: 220,
               height: 50,
               child: ElevatedButton(
-                onPressed: ()=>{
-                  Navigator.pushReplacementNamed(context, '/swipe')
+                onPressed: () {
+                  login();
+                  Navigator.pushReplacementNamed(context, '/swipe');
                 },
                 child: Text('Login'),
               ),
