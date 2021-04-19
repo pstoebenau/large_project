@@ -2,8 +2,12 @@ import 'package:alert_dialog/alert_dialog.dart';
 import 'package:flutter/material.dart';
 import './view-account.dart';
 
-class SwipingPage extends StatelessWidget {
-  const SwipingPage();
+class SwipingPage extends StatefulWidget {
+  @override
+  _SwipingPageState createState() => _SwipingPageState();
+}
+
+class _SwipingPageState extends State<SwipingPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
