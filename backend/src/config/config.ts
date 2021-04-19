@@ -32,10 +32,17 @@ const SERVER_HOSTNAME = process.env.SERVER_HOSTNAME || 'http://localhost';
 const SERVER_PORT = process.env.PORT || 8080;
 const SERVER_SECRET = "verysecretwow";
 
+let serverUrl = "";
+if (SERVER_HOSTNAME == 'http://localhost')
+  serverUrl = SERVER_HOSTNAME + ":" + SERVER_PORT;
+else
+  serverUrl = SERVER_HOSTNAME;
+
 const SERVER = {
   hostname: SERVER_HOSTNAME,
   port: SERVER_PORT,
-  secret: SERVER_SECRET
+  secret: SERVER_SECRET,
+  url: serverUrl
 }
 
 const config = {

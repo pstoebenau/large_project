@@ -118,6 +118,7 @@ class _NavbarState extends State<Navbar> {
   Widget build(BuildContext context) {
     double w = MediaQuery.of(context).size.width;
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Stack(
         children: [
           AnimatedSwitcher(
