@@ -154,7 +154,7 @@ router.post("/login", async function (req, res) {
     console.log(user);
     if (user == null || !user.password) {
       return res.status(200).json({
-        message: "invalid password",
+        message: "invalid password/username",
       });
     }
 
