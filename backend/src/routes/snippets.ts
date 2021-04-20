@@ -128,4 +128,20 @@ router.post(
   }
 );
 
+router.post("/get-by-score", async (req, res, next) => {
+  try {
+    let { startIndex, numSnippets } = req.body;
+    let results = await Snippet.find().sort({'score': 'desc'}).skip(startIndex).limit(numSnippets).exec();
+    
+    return res.status(200).json({
+      snippets: results,
+      message: "success"
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message,
+    });
+  }
+});
+
 export default router;

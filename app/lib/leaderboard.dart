@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:alert_dialog/alert_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
@@ -17,16 +18,7 @@ class LeaderBoard extends StatefulWidget {
 
 class _LeaderBoardState extends State<LeaderBoard> {
   static const double snippetRatio = 10 / 14;
-  List<Snippet> hotSnippets = [
-    Snippet(1, 1, 'https://i.ibb.co/D8ZgZT5/Elevation-l-Container.png', 100),
-    Snippet(1, 1, 'https://i.ibb.co/D8ZgZT5/Elevation-l-Container.png', 100),
-    Snippet(1, 1, 'https://i.ibb.co/D8ZgZT5/Elevation-l-Container.png', 100),
-    Snippet(1, 1, 'https://i.ibb.co/D8ZgZT5/Elevation-l-Container.png', 100),
-    Snippet(1, 1, 'https://i.ibb.co/D8ZgZT5/Elevation-l-Container.png', 100),
-    Snippet(1, 1, 'https://i.ibb.co/D8ZgZT5/Elevation-l-Container.png', 100),
-    Snippet(1, 1, 'https://i.ibb.co/D8ZgZT5/Elevation-l-Container.png', 100),
-    Snippet(1, 1, 'https://i.ibb.co/D8ZgZT5/Elevation-l-Container.png', 100),
-  ];
+  List<Snippet> hotSnippets = [];
   UserInfo userInfo;
 
   @override
@@ -37,17 +29,31 @@ class _LeaderBoardState extends State<LeaderBoard> {
   }
 
   void getLeaderboard() async {
-    var url = Uri.parse('${Globals.apiUrl}/api/snippet/get-random');
-    
-    var response = await get(url);
-    print('Response status: ${response.statusCode}');
-    print('Response body: ${response.body}');
+    final url = Uri.parse('${Globals.apiUrl}/api/snippet/get-by-score');
+    final response = await post(url, body: json.encode({
+      "startIndex": 0,
+      "numSnippets": 4
+    }));
+
+    if (response.statusCode != 200)
+      return;
+
+    final resObj = json.decode(response.body);
+    if (resObj['message'] == 'success') {
+      setState(() {
+        for (Map<String, dynamic> snippet in resObj['snippets']) {
+          hotSnippets.add(Snippet.fromJson(snippet));
+        }
+      });
+    } else {
+      return alert(context, content: Text(resObj['message']));
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
+      body: hotSnippets.length == 0 ? null : SingleChildScrollView(
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
