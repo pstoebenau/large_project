@@ -127,6 +127,7 @@ router.post(
 
 router.get("/verify/:token", async function (req, res) {
   let token = req.params.token;
+  res.sendFile(path.resolve('src/public/success.html'));
 
   try {
     let data = jwt.decode(token) as any;
@@ -153,7 +154,7 @@ router.post("/login", async function (req, res) {
     console.log(user);
     if (user == null || !user.password) {
       return res.status(200).json({
-        message: "invalid password",
+        message: "invalid password/username",
       });
     }
 

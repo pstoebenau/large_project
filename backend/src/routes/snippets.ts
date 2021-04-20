@@ -8,6 +8,9 @@ import fs from "fs";
 import crypto from "crypto";
 import { execSync } from "child_process";
 import snippets from "@/schemas/snippets";
+import { Storage } from '@google-cloud/storage';
+import { createReadStream } from "node:fs";
+import path from "path";
 
 // /api/snippet/deleteSnippet
 
@@ -39,11 +42,15 @@ import snippets from "@/schemas/snippets";
 //   "message": string,
 // }
 
+const gc = new Storage({
+  keyFilename: 'chillchili-a1903a0fdbb3.json',
+  projectId: 'chillchili'
+});
+const uploadBucket = gc.bucket('chillchilli-uploads');
+
 const router = express.Router();
 
-router.post(
-  "/create",
-  async (req: Request, res: Response, next: NextFunction) => {
+router.post("/create", async (req: Request, res: Response, next: NextFunction) => {
     try {
       let { token, codeText } = req.body;
 
@@ -54,15 +61,21 @@ router.post(
         return res.status(400).json({message: "Snippet too long"});
 
       // Use carbon-now-cli to convert text to image
-      const dir = "src/public/uploads/";
+      const dir = "";
       const uuid = crypto.randomBytes(16).toString("hex");
       fs.writeFileSync(dir + uuid, codeText);
       execSync(`npx carbon-now ${dir}${uuid} -t ${dir}${uuid} -h --config carbon-now.json`);
+      
+      // Upload to GCloud bucket
+      const response = await uploadBucket.upload(`${dir}${uuid}.png`);
+      const imageURL = response[0].metadata.mediaLink;
+      
       fs.unlinkSync(dir + uuid);
+      fs.unlinkSync(`${dir}${uuid}.png`);
 
       const snippet = new Snippet({
         userId: data.userId,
-        imageURL: `${config.server.url}/uploads/${uuid}.png`,
+        imageURL,
         score: 0,
       });
 
