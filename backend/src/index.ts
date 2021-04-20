@@ -25,6 +25,12 @@ app.get('/', (req, res) => {
 });
 
 // Server headers
+router.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-with, Content-Type, Accept, Authorization');
+
+  next();
+});
 
 // Parse body of requests
 app.use(express.urlencoded({ extended: true }));
