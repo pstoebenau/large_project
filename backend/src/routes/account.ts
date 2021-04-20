@@ -255,7 +255,6 @@ router.post("/changepassword", async function (req, res) {
 router.post("/account-edit", async function (req, res) {
   let {
     token,
-    profileImage,
     firstName,
     lastName,
     email,
@@ -276,7 +275,6 @@ router.post("/account-edit", async function (req, res) {
         firstName: firstName,
         lastName: lastName,
         email: email,
-        profileImage: profileImage,
         about: about,
       },
       null,
