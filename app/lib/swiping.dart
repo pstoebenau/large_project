@@ -41,8 +41,6 @@ class _SwipingPageState extends State<SwipingPage> {
       alert(context, title: Text('${response.statusCode}'), content: Text('$err'));
       return;
     }
-    print(resObj['message']);
-
     if (resObj['message'] == 'success') {
       setState(() {
           hotSnippet.push(Snippet.fromJson(resObj["snippet"]));
