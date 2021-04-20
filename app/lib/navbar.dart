@@ -3,8 +3,11 @@ import 'package:flutter/services.dart';
 import 'package:large_project/leaderboard.dart';
 import 'package:large_project/login.dart';
 import 'package:large_project/swiping.dart';
+import 'package:large_project/upload-snippet.dart';
+import 'package:large_project/user-account.dart';
 import 'package:rive/rive.dart';
 import 'hot_or_not.dart';
+import 'package:image_picker/image_picker.dart';
 
 class MenuItem {
   Artboard artboard;
@@ -13,14 +16,20 @@ class MenuItem {
   final Color color;
   final double xPos;
   dynamic route;
-  
-  MenuItem({this.artboard, this.controller, this.iconName, this.color, this.xPos, this.route});
+
+  MenuItem(
+      {this.artboard,
+      this.controller,
+      this.iconName,
+      this.color,
+      this.xPos,
+      this.route});
 }
 
 class Navbar extends StatefulWidget {
   final String initialRoute;
 
-  const Navbar({ Key key, this.initialRoute }): super(key: key);
+  const Navbar({Key key, this.initialRoute}) : super(key: key);
 
   @override
   _NavbarState createState() => _NavbarState();
@@ -35,7 +44,7 @@ class _NavbarState extends State<Navbar> {
       controller: null,
       iconName: 'fire.riv',
       color: Colors.lightBlue[100],
-      route: Swiper(),
+      route: SwipingPage(),
     ),
     MenuItem(
       xPos: -0.5,
@@ -43,7 +52,7 @@ class _NavbarState extends State<Navbar> {
       controller: null,
       iconName: 'heart.riv',
       color: Colors.pink,
-      route: SwipingPage(),
+      route: Swiper(),
     ),
     MenuItem(
       xPos: -0.0,
@@ -51,7 +60,7 @@ class _NavbarState extends State<Navbar> {
       controller: null,
       iconName: 'add_snippet.riv',
       color: Colors.greenAccent,
-      route: Login(),
+      route: UploadSnippet()
     ),
     MenuItem(
       xPos: 0.5,
@@ -67,7 +76,7 @@ class _NavbarState extends State<Navbar> {
       controller: null,
       iconName: 'head.riv',
       color: Colors.purple,
-      route: Login(),
+      route: UserAccountPage(),
     ),
   ];
   MenuItem active;
@@ -78,9 +87,15 @@ class _NavbarState extends State<Navbar> {
     super.initState();
 
     // Get initial route from this mapping
-    List<String> routeStrs = ['swipe', 'favorites', 'addSnippet', 'leaderboard', 'account'];
+    List<String> routeStrs = [
+      'swipe',
+      'favorites',
+      'addSnippet',
+      'leaderboard',
+      'account'
+    ];
     active = items[routeStrs.indexOf(this.widget.initialRoute)];
-    
+
     for (MenuItem item in items) {
       loadRiveAsset(item);
     }
@@ -93,7 +108,8 @@ class _NavbarState extends State<Navbar> {
         final file = RiveFile.import(data);
         setState(() {
           item.artboard = file.mainArtboard;
-          item.artboard.addController(item.controller = SimpleAnimation('idle'));
+          item.artboard
+              .addController(item.controller = SimpleAnimation('idle'));
         });
       },
     );
@@ -124,17 +140,17 @@ class _NavbarState extends State<Navbar> {
                   BoxShadow(
                     blurRadius: 10,
                     color: Colors.black.withOpacity(0.14),
-                    offset: Offset(0,8),
+                    offset: Offset(0, 8),
                   ),
                   BoxShadow(
                     blurRadius: 14,
                     color: Colors.black.withOpacity(0.12),
-                    offset: Offset(0,3),
+                    offset: Offset(0, 3),
                   ),
                   BoxShadow(
                     blurRadius: 5,
                     color: Colors.black.withOpacity(0.2),
-                    offset: Offset(0,5),
+                    offset: Offset(0, 5),
                   ),
                 ],
               ),
@@ -149,7 +165,7 @@ class _NavbarState extends State<Navbar> {
                       child: AnimatedContainer(
                         duration: Duration(milliseconds: 200),
                         height: 8,
-                        width: w*0.15,
+                        width: w * 0.15,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.all(Radius.circular(5)),
                           color: active.color,
@@ -177,12 +193,12 @@ class _NavbarState extends State<Navbar> {
   // Custom sliding animation for navbar transitions
   Widget navbarSlideTransition(Widget child, Animation<double> animation) {
     final inAnimation =
-      Tween<Offset>(begin: Offset(1.0*animDir, 0.0), end: Offset(0.0, 0.0))
-          .animate(animation);
-    final outAnimation =
-        Tween<Offset>(begin: Offset(-1.0*animDir, 0.0), end: Offset(0.0, 0.0))
+        Tween<Offset>(begin: Offset(1.0 * animDir, 0.0), end: Offset(0.0, 0.0))
             .animate(animation);
-    
+    final outAnimation =
+        Tween<Offset>(begin: Offset(-1.0 * animDir, 0.0), end: Offset(0.0, 0.0))
+            .animate(animation);
+
     if (child == active.route) {
       return ClipRect(
         child: SlideTransition(
@@ -223,7 +239,6 @@ class _NavbarState extends State<Navbar> {
               animDir = -1.0;
             else
               animDir = 1.0;
-            
 
             active = item;
           }
