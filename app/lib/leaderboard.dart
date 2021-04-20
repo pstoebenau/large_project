@@ -20,6 +20,9 @@ class _LeaderBoardState extends State<LeaderBoard> {
   static const double snippetRatio = 10 / 14;
   List<Snippet> hotSnippets = [];
   UserInfo userInfo;
+  int snippetCache = 4;
+  int snippetIndex = 0;
+  final _scrollController = ScrollController();
 
   @override
   void initState() {
@@ -29,16 +32,26 @@ class _LeaderBoardState extends State<LeaderBoard> {
   }
 
   void getLeaderboard() async {
-    final url = Uri.parse('${Globals.apiUrl}/api/snippet/get-by-score');
-    final response = await post(url, body: json.encode({
-      "startIndex": 0,
-      "numSnippets": 4
-    }));
-
-    if (response.statusCode != 200)
+    // No need to call api if there are no more snippets
+    if (hotSnippets.length < snippetIndex)
       return;
+    
+    final url = Uri.parse('${Globals.apiUrl}/api/snippet/get-by-score');
+    var response = await post(url,
+      headers: { "Content-Type": "application/json" },
+      body: json.encode({
+        "startIndex": snippetIndex,
+        "numSnippets": snippetIndex == 0 ? snippetCache+1 : snippetCache,
+      })
+    );
 
-    final resObj = json.decode(response.body);
+    var resObj = json.decode(response.body);
+    if (response.statusCode != 200) {
+      String err = resObj["message"];
+      alert(context, title: Text('${response.statusCode}'), content: Text('$err'));
+      return;
+    }
+
     if (resObj['message'] == 'success') {
       setState(() {
         for (Map<String, dynamic> snippet in resObj['snippets']) {
@@ -52,82 +65,106 @@ class _LeaderBoardState extends State<LeaderBoard> {
 
   @override
   Widget build(BuildContext context) {
+    if (hotSnippets.length == 0) {
+      return Scaffold(
+        body: Align(
+          alignment: Alignment.center,
+          child: SizedBox(
+            width: 80,
+            height: 80,
+            child: CircularProgressIndicator(
+              strokeWidth: 8,
+            ),
+          ),
+        ),
+      );
+    }
+
     return Scaffold(
-      body: hotSnippets.length == 0 ? null : SingleChildScrollView(
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SizedBox(height: 40),
-              Stack(
-                alignment: AlignmentDirectional.bottomCenter,
-                children: [
-                  Column(
-                    children: [
-                      Container(
-                        height: MediaQuery.of(context).size.height/2,
-                        width: MediaQuery.of(context).size.height*snippetRatio/2 + 75,
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                            image: AssetImage('assets/fire.png'),
-                            fit: BoxFit.fill,
+      body: NotificationListener<ScrollEndNotification>(
+        onNotification: (notification) {
+          if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent) {
+            snippetIndex += snippetCache;
+            getLeaderboard();
+          }
+        },
+        child: SingleChildScrollView(
+          controller: _scrollController,
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(height: 40),
+                Stack(
+                  alignment: AlignmentDirectional.bottomCenter,
+                  children: [
+                    Column(
+                      children: [
+                        Container(
+                          height: MediaQuery.of(context).size.height/2,
+                          width: MediaQuery.of(context).size.height*snippetRatio/2 + 75,
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                              image: AssetImage('assets/fire.png'),
+                              fit: BoxFit.fill,
+                            ),
                           ),
                         ),
-                      ),
-                      SizedBox(height: 20),
-                    ],
-                  ),
-                  ConstrainedBox(
-                    constraints: BoxConstraints(
-                      minHeight: 300,
-                      maxHeight: MediaQuery.of(context).size.height/2,
+                        SizedBox(height: 20),
+                      ],
                     ),
-                    child: AspectRatio(
-                      aspectRatio: snippetRatio,
-                      child: codeSnippet(
-                        snippet: hotSnippets[0],
-                        description: 'HOTTEST',
-                        fontSize: 32,
+                    ConstrainedBox(
+                      constraints: BoxConstraints(
+                        minHeight: 300,
+                        maxHeight: MediaQuery.of(context).size.height/2,
+                      ),
+                      child: AspectRatio(
+                        aspectRatio: snippetRatio,
+                        child: codeSnippet(
+                          snippet: hotSnippets[0],
+                          description: 'HOTTEST',
+                          fontSize: 32,
+                        ),
                       ),
                     ),
-                  ),
-                ]
-              ),
-              SizedBox(height: 25),
-              Container(
-                padding: EdgeInsets.fromLTRB(25, 0, 25, 0),
-                constraints: BoxConstraints(
-                  maxWidth: 500,
+                  ]
                 ),
-                child: GridView.builder(
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    mainAxisSpacing: 20,
-                    crossAxisSpacing: 20,
-                    childAspectRatio: snippetRatio,
+                SizedBox(height: 25),
+                Container(
+                  padding: EdgeInsets.fromLTRB(25, 0, 25, 0),
+                  constraints: BoxConstraints(
+                    maxWidth: 500,
                   ),
-                  itemCount: hotSnippets.length-1,
-                  shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  itemBuilder: (_, index) {
-                    String title = "";
-                    if (index == 0)
-                      title = "Slighty Less Hot";
-                    else if (index == 1)
-                      title = "Mildly Hot";
-                    else
-                      title = "Hot";
+                  child: GridView.builder(
+                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      mainAxisSpacing: 20,
+                      crossAxisSpacing: 20,
+                      childAspectRatio: snippetRatio,
+                    ),
+                    itemCount: hotSnippets.length-1,
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    itemBuilder: (_, index) {
+                      String title = "";
+                      if (index == 0)
+                        title = "Slighty Less Hot";
+                      else if (index == 1)
+                        title = "Mildly Hot";
+                      else
+                        title = "Hot";
 
-                    return codeSnippet(
-                      snippet: hotSnippets[index+1],
-                      description: title,
-                      fontSize: 14,
-                    );
-                  },
+                      return codeSnippet(
+                        snippet: hotSnippets[index+1],
+                        description: title,
+                        fontSize: 14,
+                      );
+                    },
+                  ),
                 ),
-              ),
-              SizedBox(height: 100),
-            ],
+                SizedBox(height: 100),
+              ],
+            ),
           ),
         ),
       ),
