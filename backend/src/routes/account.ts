@@ -294,25 +294,4 @@ router.post("/account-edit", async function (req, res) {
     });
   }
 });
-
-router.post("/getuser", async function (req, res) {
-  let { token } = req.body;
-  let data = jwt.decode(token) as any;
-  let userId = data.userId;
-
-  try {
-    let user = await User.findOne({ _id: userId });
-
-    return res
-      .status(200)
-      .json({
-        user,
-        message: "success",
-      });
-  } catch (error) {
-    return res.status(500).json({
-      message: error.message,
-    });
-  }
-});
 export default router;
