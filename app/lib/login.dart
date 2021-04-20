@@ -48,6 +48,7 @@ class _LoginState extends State<Login> {
       resizeToAvoidBottomInset: false,
       body: Center(
         child: Container(
+          constraints: BoxConstraints(maxWidth: 400),
           width: MediaQuery.of(context).size.width * 0.8,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
