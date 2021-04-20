@@ -19,18 +19,22 @@ mongoose.connect(config.mongo.url, config.mongo.options)
   }).catch((err) => {
     console.log("NOT CONNECTED");
   });
+  
+// Server headers
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+
+  if (req.method == 'OPTIONS') {
+      res.header('Access-Control-Allow-Methods', 'PUT, POST, PATCH, DELETE, GET');
+      return res.status(200).json({});
+  }
+
+  next();
+});
 
 app.get('/', (req, res) => {
   res.send('<h1>THIS IS NOT AN APP!<br>THIS IS A REST API!</h1>');
-});
-
-// Server headers
-router.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', 'https://chillchili.ml');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
-
-  next();
 });
 
 // Parse body of requests
