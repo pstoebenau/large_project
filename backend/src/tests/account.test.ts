@@ -1,6 +1,5 @@
 import axios from 'axios';
 import config from '../config/config';
-import jwt from "jsonwebtoken";
 
 const url = config.server.hostname + ":" + config.server.port;
 
@@ -48,7 +47,7 @@ test('Forgot password', async () => {
     email: `namejeff${randNum}@mailinator.com`,
     username: `namejeff${randNum}`,
     password: "password"
-  });
+});
 
   expect(res.data.message).toBe("success");
 
@@ -67,26 +66,15 @@ test('Forgot password', async () => {
 });
 
 test('Change password', async () => {
-  let randNum = Math.ceil(Math.random() * 99999);
 
-  let res = await axios.post(`${url}/api/account/signup`, {
-    firstName: "name",
-    lastName: "jeff",
-    email: `namejeff${randNum}@mailinator.com`,
-    username: `namejeff${randNum}`,
-    password: "password"
+  let res = await axios.post(`${url}/api/account/login`, {
+    "username": "verifiedUsername",
+    "password": "verifiedPassword"
   });
+
+  let token = res.data.token;
 
   expect(res.data.message).toBe("success");
-
-  res = await axios.post(`${url}/api/account/login`, {
-    "username": `namejeff${randNum}`,
-    "password": "password"
-  });
-
-  expect(res.data.message).toBe("verify email");
-
-  let token = jwt.sign({ userId: `namejeff${randNum}` }, config.server.secret);
 
   res = await axios.post(`${url}/api/account/changepassword`, {
     password: "newpassword",
@@ -97,26 +85,15 @@ test('Change password', async () => {
 });
 
 test('Create snippet', async () => {
-  let randNum = Math.ceil(Math.random() * 99999);
 
-  let res = await axios.post(`${url}/api/account/signup`, {
-    firstName: "name",
-    lastName: "jeff",
-    email: `namejeff${randNum}@mailinator.com`,
-    username: `namejeff${randNum}`,
-    password: "password"
+  let res = await axios.post(`${url}/api/account/login`, {
+    "username": "verifiedUsername",
+    "password": "verifiedPassword"
   });
+
+  let token = res.data.token;
 
   expect(res.data.message).toBe("success");
-
-  res = await axios.post(`${url}/api/account/login`, {
-    "username": `namejeff${randNum}`,
-    "password": "password"
-  });
-
-  expect(res.data.message).toBe("verify email");
-
-  let token = jwt.sign({ userId: `namejeff${randNum}` }, config.server.secret);
 
   res = await axios.post(`${url}/api/snippet/create`, {
     token: token,
@@ -127,72 +104,53 @@ test('Create snippet', async () => {
 });
 
 test('Delete snippet', async () => {
-  let randNum = Math.ceil(Math.random() * 99999);
 
-  let res = await axios.post(`${url}/api/account/signup`, {
-    firstName: "name",
-    lastName: "jeff",
-    email: `namejeff${randNum}@mailinator.com`,
-    username: `namejeff${randNum}`,
-    password: "password"
+  let res = await axios.post(`${url}/api/account/login`, {
+    "username": "verifiedUsername",
+    "password": "verifiedPassword"
   });
+
+  let token = res.data.token;
 
   expect(res.data.message).toBe("success");
 
-  res = await axios.post(`${url}/api/account/login`, {
-    "username": `namejeff${randNum}`,
-    "password": "password"
-  });
-
-  expect(res.data.message).toBe("verify email");
-
-  let token = jwt.sign({ userId: `namejeff${randNum}` }, config.server.secret);
-
   res = await axios.post(`${url}/api/snippet/create`, {
     token: token,
-    imageURL: "image"
+    imageURL: "snippet"
   });
+
+  let id = res.data.snippet;
 
   expect(res.data.message).toBe("success");
 
   res = await axios.post(`${url}/api/snippet/deleteSnippet`, {
-    _id: "607c94b717e587002cabadfd" 
+    _id: id
   });
 
   expect(res.data.message).toBe("success");
 });
 
 test('Update score', async () => {
-  let randNum = Math.ceil(Math.random() * 99999);
 
-  let res = await axios.post(`${url}/api/account/signup`, {
-    firstName: "name",
-    lastName: "jeff",
-    email: `namejeff${randNum}@mailinator.com`,
-    username: `namejeff${randNum}`,
-    password: "password"
+  let res = await axios.post(`${url}/api/account/login`, {
+    "username": "verifiedUsername",
+    "password": "verifiedPassword"
   });
+
+  let token = res.data.token;
 
   expect(res.data.message).toBe("success");
-
-  res = await axios.post(`${url}/api/account/login`, {
-    "username": `namejeff${randNum}`,
-    "password": "password"
-  });
-
-  expect(res.data.message).toBe("verify email");
-
-  let token = jwt.sign({ userId: `namejeff${randNum}` }, config.server.secret);
 
   res = await axios.post(`${url}/api/snippet/create`, {
     token: token,
-    imageURL: "image"
+    imageURL: "snippet"
   });
 
+  let id = res.data.snippet;
+  console.log(id);
   expect(res.data.message).toBe("success");
-
   res = await axios.post(`${url}/api/snippet/updateScore`, {
-    imageURL: "image"
+    _id: id
   });
 
   expect(res.data.message).toBe("success");

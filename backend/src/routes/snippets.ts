@@ -42,8 +42,8 @@ router.post(
       let results = await snippet.save();
 
       return res.status(200).json({
+        snippet: results._id,
         message: "success"
-        //snippet: results
       });
     } catch (error) {
       return res.status(500).json({
@@ -67,26 +67,11 @@ router.get('/get-random', async (req, res, next) => {
   }
 });
 
-router.get('/find', async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    let results = await Snippet.find().exec();
-
-    return res.status(200).json({
-      snippet: results,
-      count: results.length,
-    });
-  } catch (error) {
-    return res.status(500).json({
-      message: error.message,
-    });
-  }
-});
-
 router.post('/updateScore', async (req: Request, res: Response, next: NextFunction) => {
-  let { imageURL } = req.body;
+  let _id = req.body;
 
   try {
-    let results = await Snippet.findOneAndUpdate({imageURL: req.body.imageURL}, {$inc : {score : 1}});
+    let results = await Snippet.findOneAndUpdate({_id: req.body._id}, {$inc : {score : 1}});
 
     return res.status(200).json({
       message: "success"
