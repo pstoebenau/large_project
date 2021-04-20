@@ -61,7 +61,7 @@ router.post("/create", async (req: Request, res: Response, next: NextFunction) =
         return res.status(400).json({message: "Snippet too long"});
 
       // Use carbon-now-cli to convert text to image
-      const dir = "src/public/uploads/";
+      const dir = "";
       const uuid = crypto.randomBytes(16).toString("hex");
       fs.writeFileSync(dir + uuid, codeText);
       execSync(`npx carbon-now ${dir}${uuid} -t ${dir}${uuid} -h --config carbon-now.json`);
