@@ -27,15 +27,35 @@
 //   token: string
 // }
 
+/**
+ *  input: Will assume fields are instantiated and not empty. newPassword is excluded. If it is empty or just white space
+ *  it will not update.
+ * {
+    "token": string,
+    "profileImage": string,
+    "firstName": string,
+    "lastName": string,
+    "email" : string,
+    "about" : string,
+    "newUserName": string
+    "newPassword" : string
+ * }
+ *  
+ *   output
+ * {
+ *    message : string
+ * }
+ */
 import express, { NextFunction, Request, Response } from "express";
 import nodemailer, { createTestAccount } from "nodemailer";
 import bcrypt from "bcrypt";
-import jwt from 'jsonwebtoken';
+import jwt from "jsonwebtoken";
 import User from "@/schemas/user";
 import mongoose from "mongoose";
 import config from "@/config/config";
 import UserFunctions from "../functions/user";
 import path from "path";
+import Token from "@/models/token";
 
 const router = express.Router();
 
@@ -53,7 +73,8 @@ router.post(
     const hash = await bcrypt.hash(password, 10);
 
     const user = new User({
-      profileImage: "https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_1280.png",
+      profileImage:
+        "https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_1280.png",
       firstName,
       lastName,
       email,
@@ -80,7 +101,7 @@ router.post(
 
       let token = jwt.sign({ userId: result.id }, config.server.secret);
 
-      let verifyLink = `${config.server.hostname}:${config.server.port}/api/account/verify/${token}`;
+      let verifyLink = `${config.server.url}/api/account/verify/${token}`;
       let send = await transporter.sendMail({
         from: '"Chill Midnight 👻" <mmidnight.magic@gmail.com>', // sender address
         to: email, // list of receivers
@@ -106,6 +127,7 @@ router.post(
 
 router.get("/verify/:token", async function (req, res) {
   let token = req.params.token;
+  res.sendFile(path.resolve('src/public/success.html'));
 
   try {
     let data = jwt.decode(token) as any;
@@ -115,10 +137,10 @@ router.get("/verify/:token", async function (req, res) {
     user?.updateOne({ active: true }, null, (err, res) => {});
     console.log(user);
 
-    return res.status(200).json({user});
+    return res.status(200).json({ user });
   } catch (error) {
     return res.status(500).json({
-      message: error.message
+      message: error.message,
     });
   }
 });
@@ -130,34 +152,39 @@ router.post("/login", async function (req, res) {
   try {
     let user = await User.findOne({ username });
     console.log(user);
-    if(user == null || !user.password)
-    {
+    if (user == null || !user.password) {
       return res.status(200).json({
-        message: "invalid password"
+        message: "invalid password/username",
       });
     }
+
 
     if (bcrypt.compareSync(password, user.password))
     {
       if (user?.active)
       {
+<<<<<<< HEAD
         token = jwt.sign({userId: user.id, firstname: user.firstName, username: user.username}, config.server.secret);
+=======
+        token = jwt.sign({userId: user.id, firstName: user.firstName, username: user.username}, config.server.secret);
+>>>>>>> master
         return res.status(200).json({token, message: "success"});
       }
       else
       {
+
         return res.status(200).json({
-          message: "verify email"
+          message: "verify email",
         });
       }
     }
 
     return res.status(200).json({
-      message: "invalid password"
+      message: "invalid password",
     });
   } catch (error) {
     return res.status(500).json({
-      message: error.message
+      message: error.message,
     });
   }
 });
@@ -182,7 +209,7 @@ router.post(
 
       let token = jwt.sign({ email }, config.server.secret);
 
-      let verifyLink = `${config.server.hostname}:${config.server.port}/api/account/changepassword/${token}`;
+      let verifyLink = `${config.server.url}/api/account/changepassword/${token}`;
       let send = await transporter.sendMail({
         from: '"Chill Midnight 👻" <mmidnight.magic@gmail.com>', // sender address
         to: email, // list of receivers
@@ -202,11 +229,13 @@ router.post(
         message: error.message,
       });
     }
-  });
+  }
+);
 
-  router.get("/changepassword/:token", (req, res) => {
-    return res.sendFile(path.resolve('src/public/changepassword.html'));
-  });
+router.get("/changepassword/:token", (req, res) => {
+  return res.sendFile(path.resolve("src/public/changepassword.html"));
+});
+
 
   router.post("/changepassword", async function (req, res) {
     let { password, token } = req.body;
@@ -219,8 +248,12 @@ router.post(
       let user = await User.findOne({ email });
       user?.updateOne({ password: hash }, null, (err, res) => {});
   
+<<<<<<< HEAD
       return res.status(200).json({ user, message: "success" },
         );
+=======
+      return res.status(200).json({ user, message: "success" });
+>>>>>>> master
     } catch (error) {
       return res.status(500).json({
         message: error.message,
@@ -228,4 +261,48 @@ router.post(
     }
   });
 
+
+// Assumes that all fields are instantiated
+router.post("/account-edit", async function (req, res) {
+  let {
+    token,
+    profileImage,
+    firstName,
+    lastName,
+    email,
+    about,
+    newUserName,
+    newPassword,
+  } = req.body;
+  const hash = await bcrypt.hash(newPassword.trim(), 10);
+  let data = jwt.verify(token, config.server.secret) as Token;
+  console.log(data);
+  let id = data.userId;
+  console.log(id);
+  try {
+    let user = await User.findOne({ _id: id });
+    user?.updateOne(
+      {
+        username: newUserName,
+        firstName: firstName,
+        lastName: lastName,
+        email: email,
+        profileImage: profileImage,
+        about: about,
+      },
+      null,
+      (err, res) => {}
+    );
+    if (newPassword.length > 0 && newPassword.trim().length > 0)
+     { 
+       user?.updateOne({ password: hash }, null, (err, res) => {});
+       return res.status(200).json({ message: "success with password change" });
+     }
+    return res.status(200).json({ message: "success" });
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message,
+    });
+  }
+});
 export default router;
