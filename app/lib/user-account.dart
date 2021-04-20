@@ -15,14 +15,14 @@ class _UserAccountPageState extends State<UserAccountPage> {
   PickedFile _imageFile;
   static const double snippetRatio = 10 / 14;
   List<Snippet> hotSnippets = [
-    Snippet(1, 1, 'https://i.ibb.co/D8ZgZT5/Elevation-l-Container.png', 100),
-    Snippet(1, 1, 'https://i.ibb.co/D8ZgZT5/Elevation-l-Container.png', 100),
-    Snippet(1, 1, 'https://i.ibb.co/D8ZgZT5/Elevation-l-Container.png', 100),
-    Snippet(1, 1, 'https://i.ibb.co/D8ZgZT5/Elevation-l-Container.png', 100),
-    Snippet(1, 1, 'https://i.ibb.co/D8ZgZT5/Elevation-l-Container.png', 100),
-    Snippet(1, 1, 'https://i.ibb.co/D8ZgZT5/Elevation-l-Container.png', 100),
-    Snippet(1, 1, 'https://i.ibb.co/D8ZgZT5/Elevation-l-Container.png', 100),
-    Snippet(1, 1, 'https://i.ibb.co/D8ZgZT5/Elevation-l-Container.png', 100),
+    Snippet('', '', 'https://i.ibb.co/D8ZgZT5/Elevation-l-Container.png', 100),
+    Snippet('', '', 'https://i.ibb.co/D8ZgZT5/Elevation-l-Container.png', 100),
+    Snippet('', '', 'https://i.ibb.co/D8ZgZT5/Elevation-l-Container.png', 100),
+    Snippet('', '', 'https://i.ibb.co/D8ZgZT5/Elevation-l-Container.png', 100),
+    Snippet('', '', 'https://i.ibb.co/D8ZgZT5/Elevation-l-Container.png', 100),
+    Snippet('', '', 'https://i.ibb.co/D8ZgZT5/Elevation-l-Container.png', 100),
+    Snippet('', '', 'https://i.ibb.co/D8ZgZT5/Elevation-l-Container.png', 100),
+    Snippet('', '', 'https://i.ibb.co/D8ZgZT5/Elevation-l-Container.png', 100),
   ];
   final ImagePicker _picker = ImagePicker();
   @override
