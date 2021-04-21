@@ -234,6 +234,18 @@ router.post(
         },
       };
 
+      let user = await User.findOne({ email });
+
+      if (user === null)
+      {
+        return res.status(500).json({
+          message: "not a valid email",
+          user
+        });
+      }
+      
+      
+
       var transporter = nodemailer.createTransport(smtpConfig);
 
       let token = jwt.sign({ email }, config.server.secret);
@@ -252,6 +264,7 @@ router.post(
 
       return res.status(201).json({
         message: "success",
+        user
       });
     } catch (error) {
       res.status(500).json({
