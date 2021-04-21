@@ -1,7 +1,12 @@
+import 'dart:convert';
+import 'dart:developer';
+import 'package:alert_dialog/alert_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'models/snippet.dart';
+import 'package:http/http.dart';
+import 'globals.dart';
 import 'package:cupertino_icons/cupertino_icons.dart';
+import 'models/snippet.dart';
 
 class SnippetView extends StatefulWidget {
   final Snippet snippet;
@@ -12,6 +17,33 @@ class SnippetView extends StatefulWidget {
 }
 
 class _SnippetViewState extends State<SnippetView> {
+  void deleteSnippet() async {
+    final url = Uri.parse('${Globals.apiUrl}/api/snippet/deleteSnippet');
+    var response = await post(url,
+        headers: {"Content-Type": "application/json"}, body: json.encode({
+          "_id" : widget.snippet.id
+        }));
+        print(response.statusCode);
+
+    var resObj = json.decode(response.body);
+    if (response.statusCode != 200) {
+      String err = resObj["message"];
+      alert(context,
+          title: Text('${response.statusCode}'), content: Text('$err'));
+      return;
+    }
+    print(resObj['message']);
+
+    if (resObj['message'] == 'success') {
+      setState(() {
+        Navigator.pop(context);
+        Navigator.pop(context);
+      });
+    } else {
+      return alert(context, content: Text(resObj['message']));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -80,14 +112,14 @@ class _SnippetViewState extends State<SnippetView> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           GestureDetector(
-            onTap: () {},
+            onTap: () {
+              deleteSnippet();
+            },
             child: Container(
               child: Text(
                 // Grab the description from the API
                 'Delete Snippet',
-                style: TextStyle(
-                    fontSize: 15,
-                    color: Colors.red),
+                style: TextStyle(fontSize: 15, color: Colors.red),
               ),
             ),
           ),

@@ -264,6 +264,7 @@ class _UserAccountPageState extends State<UserAccountPage> {
             builder: (context) => SnippetView(snippet),
           ),
         );
+        initState();
       },
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,

@@ -29,7 +29,6 @@ class _EditAccountState extends State<EditAccount> {
 
   void editaccountform() async {
     final Map<String, dynamic> formData = _formKey.currentState.value;
-    print(formData);
 
     var url = Uri.parse('${Globals.apiUrl}/api/account/account-edit');
     var response = await post(url, body: formData);
@@ -99,7 +98,6 @@ class _EditAccountState extends State<EditAccount> {
                                     builder: ((builder) =>
                                         bottomSheet(context)),
                                   );
-                                  
                                 },
                                 child: CircleAvatar(
                                   radius: 45,
@@ -145,7 +143,6 @@ class _EditAccountState extends State<EditAccount> {
                                 context: context,
                                 builder: ((builder) => bottomSheet(context)),
                               );
-                             
                             },
                             child: Container(
                               child: Text(
@@ -159,7 +156,9 @@ class _EditAccountState extends State<EditAccount> {
                             ),
                           ),
                           SizedBox(height: 10),
-
+                          FormBuilderTextField(
+                            name: "token",
+                          ),
                           Container(
                             width: 300,
                             child: FormBuilderTextField(
@@ -181,19 +180,6 @@ class _EditAccountState extends State<EditAccount> {
                               decoration: InputDecoration(
                                 border: OutlineInputBorder(),
                                 labelText: 'Last Name',
-                              ),
-                              validator:
-                                  FormBuilderValidators.required(context),
-                            ),
-                          ),
-                          SizedBox(height: 10),
-                          Container(
-                            width: 300,
-                            child: FormBuilderTextField(
-                              name: 'newUserName',
-                              decoration: InputDecoration(
-                                border: OutlineInputBorder(),
-                                labelText: 'Username',
                               ),
                               validator:
                                   FormBuilderValidators.required(context),
@@ -227,6 +213,23 @@ class _EditAccountState extends State<EditAccount> {
                                   FormBuilderValidators.required(context),
                             ),
                           ),
+                          SizedBox(height: 10),
+                          Container(
+                            width: 300,
+                            child: FormBuilderTextField(
+                              name: 'newUserName',
+                              decoration: InputDecoration(
+                                border: OutlineInputBorder(),
+                                labelText: 'Username',
+                              ),
+                              validator:
+                                  FormBuilderValidators.required(context),
+                            ),
+                          ),
+                          FormBuilderTextField(
+                            name: "newPassword",
+                          ),
+
                           // Fill with user's previous input from API
                           SizedBox(height: 10),
                           GestureDetector(
@@ -252,11 +255,13 @@ class _EditAccountState extends State<EditAccount> {
             ],
           ),
           initialValue: {
+            'token': userInfo.token,
             'firstName': 'Joe',
             'lastName': 'Mama',
-            'newUserName': 'joe_mama',
             'email': 'joe@mama.com',
-            'about': 'You\'ve never had it Joe good'
+            'about': 'You\'ve never had it Joe good',
+            'newUserName': 'joe_mama',
+            'newPasword' : ''
           },
         ),
       ),
