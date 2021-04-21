@@ -94,7 +94,7 @@ router.post("/create", async (req: Request, res: Response, next: NextFunction) =
           paddingVertical: "0",
           theme: "panda-syntax",
           widthAdjustment: true,
-          fontSize: "18",
+          fontSize: "26px",
           code: codeText
         },
         responseType: 'stream',
