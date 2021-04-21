@@ -263,4 +263,23 @@ router.post("/get-user-snippets-token", async (req, res, next) => {
   }
 });
 
+router.post("/hottest-snippet", async (req, res, next) => {
+  try {
+    let { token } = req.body;
+
+    let data = jwt.decode(token) as any
+    
+    let results = await Snippet.findOne({ userId: data.userId } ).sort({'score': 'desc'}).limit(1).exec();
+    
+    return res.status(200).json({
+      snippets: results,
+      message: "success"
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message,
+    });
+  }
+});
+
 export default router;
