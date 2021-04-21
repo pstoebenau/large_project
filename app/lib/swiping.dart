@@ -129,76 +129,79 @@ class _SwipingPageState extends State<SwipingPage> {
     }
     return Scaffold(
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            // This is the profile picture
-            SizedBox(height: 30),
-            new Container(
-              child: GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => ViewAccountPage(hotSnippet.userId),
+        child: SizedBox(
+          height: MediaQuery.of(context).size.height,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              // This is the profile picture
+              SizedBox(height: 30),
+              Container(
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ViewAccountPage(hotSnippet.userId),
+                      ),
+                    );
+                  },
+                  child: Container(
+                    // Grab from API a profile picture
+                    child: CircleAvatar(
+                      radius: 25,
+                      // This is the user profile picture
+                      // This should grab the API user profile pic
+                      backgroundImage: NetworkImage(
+                          'https://t3.ftcdn.net/jpg/00/64/67/52/240_F_64675209_7ve2XQANuzuHjMZXP3aIYIpsDKEbF5dD.jpg'),
                     ),
-                  );
-                },
-                child: Container(
-                  // Grab from API a profile picture
-                  child: CircleAvatar(
-                    radius: 25,
-                    // This is the user profile picture
-                    // This should grab the API user profile pic
-                    backgroundImage: NetworkImage(
-                        'https://t3.ftcdn.net/jpg/00/64/67/52/240_F_64675209_7ve2XQANuzuHjMZXP3aIYIpsDKEbF5dD.jpg'),
                   ),
                 ),
               ),
-            ),
-            SizedBox(height: 5),
-            Text(
-              // Grab the description from the API
-              user.username,
-              style: TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white),
-            ),
-            SizedBox(height: 5),
-            // API here, need to replace with new photo everytime a widget is clicked, Needs to be initialized?
-            AnimatedSwitcher(
-              duration: Duration(milliseconds: 2000),
-              child: codeSnippet(snippet: hotSnippet),
-            ),
-            SizedBox(height: 13),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                GestureDetector(
-                  onTap: () async {
-                    getNextSnippet();
-                  },
-                  child: Container(
-                    child: new Image.asset("assets/image 15.png",
-                        width: 70, height: 70, fit: BoxFit.fitHeight),
+              SizedBox(height: 5),
+              Text(
+                // Grab the description from the API
+                user.username,
+                style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white),
+              ),
+              SizedBox(height: 5),
+              // API here, need to replace with new photo everytime a widget is clicked, Needs to be initialized?
+              AnimatedSwitcher(
+                duration: Duration(milliseconds: 2000),
+                child: codeSnippet(snippet: hotSnippet),
+              ),
+              SizedBox(height: 13),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  GestureDetector(
+                    onTap: () async {
+                      getNextSnippet();
+                    },
+                    child: Container(
+                      child: Image.asset("assets/image 15.png",
+                          width: 70, height: 70, fit: BoxFit.fitHeight),
+                    ),
                   ),
-                ),
-                SizedBox(width: 200),
-                GestureDetector(
-                  onTap: () async {
-                    await updateScore(hotSnippet);
-                    getNextSnippet();
-                  },
-                  child: Container(
-                    child: new Image.asset("assets/fire 2.png",
-                        width: 70, height: 70, fit: BoxFit.fitHeight),
+                  SizedBox(width: 200),
+                  GestureDetector(
+                    onTap: () async {
+                      await updateScore(hotSnippet);
+                      getNextSnippet();
+                    },
+                    child: Container(
+                      child: Image.asset("assets/fire 2.png",
+                          width: 70, height: 70, fit: BoxFit.fitHeight),
+                    ),
                   ),
-                ),
-              ],
-            ),
-            SizedBox(height: 96)
-          ],
+                ],
+              ),
+              SizedBox(height: 96)
+            ],
+          ),
         ),
       ),
     );
