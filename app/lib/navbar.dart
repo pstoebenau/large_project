@@ -55,13 +55,12 @@ class _NavbarState extends State<Navbar> {
       route: Swiper(),
     ),
     MenuItem(
-      xPos: -0.0,
-      artboard: null,
-      controller: null,
-      iconName: 'add_snippet.riv',
-      color: Colors.greenAccent,
-      route: UploadSnippet()
-    ),
+        xPos: -0.0,
+        artboard: null,
+        controller: null,
+        iconName: 'add_snippet.riv',
+        color: Colors.greenAccent,
+        route: UploadSnippet()),
     MenuItem(
       xPos: 0.5,
       artboard: null,
@@ -106,6 +105,7 @@ class _NavbarState extends State<Navbar> {
     rootBundle.load('assets/rive/${item.iconName}').then(
       (data) async {
         final file = RiveFile.import(data);
+        if (!mounted) dispose();
         setState(() {
           item.artboard = file.mainArtboard;
           item.artboard
@@ -232,6 +232,8 @@ class _NavbarState extends State<Navbar> {
             : Rive(artboard: item.artboard),
       ),
       onTap: () {
+        if (!mounted)
+          dispose();
         setState(() {
           if (active != item) {
             // This determines what way to animate the navbar transition

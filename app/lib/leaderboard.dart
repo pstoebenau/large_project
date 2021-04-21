@@ -53,6 +53,9 @@ class _LeaderBoardState extends State<LeaderBoard> {
       return;
     }
 
+    if (!mounted)
+      dispose();
+
     if (resObj['message'] == 'success') {
       setState(() {
         for (Map<String, dynamic> snippet in resObj['snippets']) {

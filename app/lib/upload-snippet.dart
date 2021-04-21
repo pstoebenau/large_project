@@ -30,6 +30,9 @@ class _UploadSnippetState extends State<UploadSnippet> {
       "codeText": formData["codeText"],
     });
 
+    if (!mounted)
+      dispose();
+
     setState(() {
       isLoading = true;
     });
@@ -41,6 +44,9 @@ class _UploadSnippetState extends State<UploadSnippet> {
       body: realFormData
     );
     final resObj = json.decode(response.body);
+
+    if (!mounted)
+      dispose();
 
     setState(() {
       isLoading = false;

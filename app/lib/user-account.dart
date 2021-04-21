@@ -53,7 +53,10 @@ class _UserAccountPageState extends State<UserAccountPage> {
       return;
     }
 
-    if (resObj['message'] == 'success' && mounted) {
+    if (!mounted)
+      dispose();
+
+    if (resObj['message'] == 'success') {
       setState(() {
         user = User.fromJson(resObj["user"]);
       });
@@ -90,7 +93,10 @@ class _UserAccountPageState extends State<UserAccountPage> {
       return;
     }
 
-    if (resObj['message'] == 'success' && mounted) {
+    if (!mounted)
+      dispose();
+
+    if (resObj['message'] == 'success') {
       setState(() {
         for (Map<String, dynamic> snippet in resObj['snippets']) {
           hotSnippets.add(Snippet.fromJson(snippet));
@@ -209,6 +215,8 @@ class _UserAccountPageState extends State<UserAccountPage> {
                                         user = User.empty();
                                         getUserInfo();
                                       });
+                                    else
+                                      dispose();
                                   },
                                   // This should be replaced with user profile picture
                                   // Associated with the snippet
@@ -342,6 +350,8 @@ class _UserAccountPageState extends State<UserAccountPage> {
             getUserSnippets(userInfo.token);
           });
         }
+        else
+          dispose();
       },
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,

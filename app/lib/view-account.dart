@@ -33,7 +33,7 @@ class _ViewAccountPageState extends State<ViewAccountPage> {
 
   @override
   void initState() {
-    if (!mounted) return;
+    if (!mounted) dispose();
     super.initState();
     userInfo = context.read<UserInfo>();
     getUserEverything();
@@ -58,12 +58,15 @@ class _ViewAccountPageState extends State<ViewAccountPage> {
       return;
     }
 
-    if (resObj['message'] == 'success' && mounted) {
+    if (!mounted)
+      dispose();
+
+    if (resObj['message'] == 'success') {
       setState(() {
         user = User.fromJson(resObj["user"]);
       });
     } else {
-      return alert(context, content: Text(resObj['message']));
+      alert(context, content: Text(resObj['message']));
     }
   }
 
@@ -88,7 +91,10 @@ class _ViewAccountPageState extends State<ViewAccountPage> {
       return;
     }
 
-    if (resObj['message'] == 'success' && mounted) {
+    if (!mounted)
+      dispose();
+
+    if (resObj['message'] == 'success') {
       setState(() {
         for (Map<String, dynamic> snippet in resObj['snippets']) {
           hotSnippets.add(Snippet.fromJson(snippet));
@@ -152,20 +158,22 @@ class _ViewAccountPageState extends State<ViewAccountPage> {
                       // ),
                       Column(
                         children: [
-                          Row(mainAxisAlignment: MainAxisAlignment.center,children: [
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: GestureDetector(
-                                onTap: () {
-                                  Navigator.pop(context);
-                                },
-                                child: Icon(Icons.arrow_back),
-                              ),
-                            ),
-                            SizedBox(
-                              width: 370,
-                            ),
-                          ]),
+                          Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      Navigator.pop(context);
+                                    },
+                                    child: Icon(Icons.arrow_back),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 370,
+                                ),
+                              ]),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [

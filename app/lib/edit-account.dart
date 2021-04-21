@@ -4,7 +4,6 @@ import 'package:alert_dialog/alert_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:http/http.dart';
-import 'package:image_picker/image_picker.dart';
 import 'globals.dart';
 import 'models/user.dart';
 import 'models/userInfo.dart';
@@ -16,8 +15,6 @@ class EditAccount extends StatefulWidget {
 }
 
 class _EditAccountState extends State<EditAccount> {
-  PickedFile _imageFile;
-  final ImagePicker _picker = ImagePicker();
   final _formKey = GlobalKey<FormBuilderState>();
   UserInfo userInfo;
   User user = User.empty();
@@ -42,6 +39,9 @@ class _EditAccountState extends State<EditAccount> {
           title: Text('${response.statusCode}'), content: Text('$err'));
       return;
     }
+
+    if (!mounted)
+      dispose();
 
     if (resObj['message'] == 'success') {
       setState(() {
@@ -292,44 +292,6 @@ class _EditAccountState extends State<EditAccount> {
             },
           ),
         ),
-      ),
-    );
-  }
-
-  void takePhoto(ImageSource source) async {
-    final pickedFile = await _picker.getImage(
-      source: source,
-    );
-    setState(() {
-      _imageFile = pickedFile;
-    });
-  }
-
-  Widget bottomSheet(BuildContext context) {
-    return Container(
-      height: 25.0,
-      width: MediaQuery.of(context).size.width,
-      margin: EdgeInsets.symmetric(
-        horizontal: 20,
-        vertical: 20,
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          FlatButton.icon(
-              onPressed: () {
-                takePhoto(ImageSource.camera);
-              },
-              icon: Icon(Icons.camera),
-              label: Text("Camera")),
-          SizedBox(width: 50),
-          FlatButton.icon(
-              onPressed: () {
-                takePhoto(ImageSource.gallery);
-              },
-              icon: Icon(Icons.image),
-              label: Text("Photo Library")),
-        ],
       ),
     );
   }

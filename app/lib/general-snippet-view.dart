@@ -33,7 +33,10 @@ class _SnippetGeneralViewState extends State<SnippetViewGeneral> {
     }
     print(resObj['message']);
 
-    if (resObj['message'] == 'success' && mounted) {
+    if (!mounted)
+      dispose();
+
+    if (resObj['message'] == 'success') {
       setState(() {
         Navigator.pop(context);
         Navigator.pop(context);
