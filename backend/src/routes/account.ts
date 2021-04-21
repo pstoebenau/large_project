@@ -256,7 +256,6 @@ router.post("/changepassword", async function (req, res) {
 router.post("/account-edit", async function (req, res) {
   let {
     token,
-    profileImage,
     firstName,
     lastName,
     email,
@@ -277,7 +276,6 @@ router.post("/account-edit", async function (req, res) {
         firstName: firstName,
         lastName: lastName,
         email: email,
-        profileImage: profileImage,
         about: about,
       },
       null,
@@ -285,7 +283,9 @@ router.post("/account-edit", async function (req, res) {
     );
     if (newPassword.length > 0 && newPassword.trim().length > 0) {
       user?.updateOne({ password: hash }, null, (err, res) => {});
+
       return res.status(200).json({ message: "success with password change" });
+
     }
     return res.status(200).json({ message: "success" });
   } catch (error) {
