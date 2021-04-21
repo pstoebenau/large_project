@@ -6,6 +6,7 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:http/http.dart';
 import 'package:image_picker/image_picker.dart';
 import 'globals.dart';
+import 'models/user.dart';
 import 'models/userInfo.dart';
 import 'package:provider/provider.dart';
 
@@ -15,23 +16,54 @@ class EditAccount extends StatefulWidget {
 }
 
 class _EditAccountState extends State<EditAccount> {
-  String fullName = 'Joe Mama'; // Grab from API
   PickedFile _imageFile;
   final ImagePicker _picker = ImagePicker();
   final _formKey = GlobalKey<FormBuilderState>();
   UserInfo userInfo;
+  User user = User.empty();
 
   @override
   void initState() {
     super.initState();
     userInfo = context.read<UserInfo>();
+    getUserInfo();
+  }
+
+  void getUserInfo() async {
+    final url = Uri.parse('${Globals.apiUrl}/api/user/getuser');
+    var response = await post(url,
+        headers: {"Content-Type": "application/json"},
+        body: json.encode({"token": userInfo.token}));
+    var resObj = json.decode(response.body);
+
+    if (response.statusCode != 200) {
+      String err = resObj["message"];
+      alert(context,
+          title: Text('${response.statusCode}'), content: Text('$err'));
+      return;
+    }
+
+    if (resObj['message'] == 'success') {
+      setState(() {
+        user = User.fromJson(resObj["user"]);
+      });
+    } else {
+      return alert(context, content: Text(resObj['message']));
+    }
   }
 
   void editaccountform() async {
-    final Map<String, dynamic> formData = _formKey.currentState.value;
+    Map<String, dynamic> formData = _formKey.currentState.value;
+    Map<String, dynamic> realFormData = {};
+
+    formData.forEach((key, value) {
+      realFormData.putIfAbsent(key, () => value);
+    });
+    realFormData.putIfAbsent("token", () => userInfo.token);
+    realFormData.putIfAbsent("newPassword", () => "");
 
     var url = Uri.parse('${Globals.apiUrl}/api/account/account-edit');
-    var response = await post(url, body: formData);
+    var response = await post(url, body: realFormData);
     print(response);
 
     if (response.statusCode != 200) return;
@@ -46,223 +78,231 @@ class _EditAccountState extends State<EditAccount> {
 
   @override
   Widget build(BuildContext context) {
+    if (user.email == "") {
+      return Scaffold(
+        body: Align(
+          alignment: Alignment.center,
+          child: SizedBox(
+            width: 80,
+            height: 80,
+            child: CircularProgressIndicator(
+              strokeWidth: 8,
+            ),
+          ),
+        ),
+      );
+    }
     return Scaffold(
-      body: Center(
-        child: FormBuilder(
-          key: _formKey,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              SizedBox(height: 0),
-              SizedBox(
-                width: 800,
-                height: 600,
-                child: Stack(
-                  children: <Widget>[
-                    // This is the rectangle background
-                    Center(
-                      child: Container(
-                        child: Image.asset(
-                          "assets/Rectangle 27.png",
-                          width: 550,
-                          height: 550,
+      body: SingleChildScrollView(
+        child: Center(
+          child: FormBuilder(
+            key: _formKey,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                SizedBox(height: 40),
+                SizedBox(
+                  width: 800,
+                  height: 600,
+                  child: Stack(
+                    children: <Widget>[
+                      // This is the rectangle background
+                      Center(
+                        child: Container(
+                          child: Image.asset(
+                            "assets/Rectangle 27.png",
+                            width: 550,
+                            height: 550,
+                          ),
                         ),
                       ),
-                    ),
-                    Center(
-                      child: Column(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Container(
-                                child: GestureDetector(
-                                  onTap: () {
-                                    Navigator.pop(context);
-                                  },
-                                  child: Text(
-                                    // Grab the description from the API
-                                    'Cancel',
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      color: Colors.white,
+                      Center(
+                        child: Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Container(
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      Navigator.pop(context);
+                                    },
+                                    child: Text(
+                                      // Grab the description from the API
+                                      'Cancel',
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        color: Colors.white,
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
-                              SizedBox(width: 75),
-                              GestureDetector(
-                                onTap: () {
-                                  showModalBottomSheet(
-                                    context: context,
-                                    builder: ((builder) =>
-                                        bottomSheet(context)),
-                                  );
-                                },
-                                child: CircleAvatar(
-                                  radius: 45,
-                                  // This is the user profile picture
-                                  // This should grab the API user profile pic
-                                  backgroundImage: _imageFile == null
-                                      ? AssetImage("assets/joe.png")
-                                      : (FileImage(File(_imageFile.path))),
-                                ),
-                              ),
-                              SizedBox(width: 75),
-                              Container(
-                                child: GestureDetector(
-                                  onTap: () {
-                                    // Need API Endpoint connected here
-                                    // Navigator.push(
-                                    //   context,
-                                    //   MaterialPageRoute(
-                                    //     builder: (context) => UploadSnippet(),
-                                    //   ),
-                                    // );
-                                    if (!_formKey.currentState.validate())
-                                      return;
-                                    _formKey.currentState.save();
-                                    editaccountform();
-                                  },
-                                  child: Text(
-                                    // Grab the description from the API
-                                    'Done',
-                                    style: TextStyle(
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.blueAccent[400]),
+                                SizedBox(width: 75),
+                                GestureDetector(
+                                  // onTap: () {
+                                  //   showModalBottomSheet(
+                                  //     context: context,
+                                  //     builder: ((builder) =>
+                                  //         bottomSheet(context)),
+                                  //   );
+                                  //},
+                                  child: CircleAvatar(
+                                    radius: 45,
+                                    // This is the user profile picture
+                                    // This should grab the API user profile pic
+                                    backgroundImage: NetworkImage(
+                                        'https://t3.ftcdn.net/jpg/00/64/67/52/240_F_64675209_7ve2XQANuzuHjMZXP3aIYIpsDKEbF5dD.jpg'),
                                   ),
                                 ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(height: 5),
-                          GestureDetector(
-                            onTap: () {
-                              showModalBottomSheet(
-                                context: context,
-                                builder: ((builder) => bottomSheet(context)),
-                              );
-                            },
-                            child: Container(
-                              child: Text(
-                                // Grab the description from the API
-                                'Change Profile Photo',
-                                style: TextStyle(
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.blueAccent[400]),
+                                SizedBox(width: 75),
+                                Container(
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      // Need API Endpoint connected here
+                                      // Navigator.push(
+                                      //   context,
+                                      //   MaterialPageRoute(
+                                      //     builder: (context) => UploadSnippet(),
+                                      //   ),
+                                      // );
+                                      if (!_formKey.currentState.validate())
+                                        return;
+                                      _formKey.currentState.save();
+                                      editaccountform();
+                                    },
+                                    child: Text(
+                                      // Grab the description from the API
+                                      'Done',
+                                      style: TextStyle(
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.blueAccent[400]),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 5),
+                            // GestureDetector(
+                            //   onTap: () {
+                            //     showModalBottomSheet(
+                            //       context: context,
+                            //       builder: ((builder) => bottomSheet(context)),
+                            //     );
+                            //   },
+                            //   child: Container(
+                            //     child: Text(
+                            //       // Grab the description from the API
+                            //       'Change Profile Photo',
+                            //       style: TextStyle(
+                            //           fontSize: 12,
+                            //           fontWeight: FontWeight.bold,
+                            //           color: Colors.blueAccent[400]),
+                            //     ),
+                            //   ),
+                            // ),
+                            SizedBox(height: 10),
+                            Container(
+                              width: 300,
+                              child: FormBuilderTextField(
+                                name: 'firstName',
+                                decoration: const InputDecoration(
+                                  border: OutlineInputBorder(),
+                                  labelText: 'First Name',
+                                ),
+                                autocorrect: false,
+                                validator:
+                                    FormBuilderValidators.required(context),
                               ),
                             ),
-                          ),
-                          SizedBox(height: 10),
-                          FormBuilderTextField(
-                            name: "token",
-                          ),
-                          Container(
-                            width: 300,
-                            child: FormBuilderTextField(
-                              name: 'firstName',
-                              decoration: const InputDecoration(
-                                border: OutlineInputBorder(),
-                                labelText: 'First Name',
+                            SizedBox(height: 10),
+                            Container(
+                              width: 300,
+                              child: FormBuilderTextField(
+                                name: 'lastName',
+                                decoration: InputDecoration(
+                                  border: OutlineInputBorder(),
+                                  labelText: 'Last Name',
+                                ),
+                                validator:
+                                    FormBuilderValidators.required(context),
                               ),
-                              autocorrect: false,
-                              validator:
-                                  FormBuilderValidators.required(context),
                             ),
-                          ),
-                          SizedBox(height: 10),
-                          Container(
-                            width: 300,
-                            child: FormBuilderTextField(
-                              name: 'lastName',
-                              decoration: InputDecoration(
-                                border: OutlineInputBorder(),
-                                labelText: 'Last Name',
+                            SizedBox(height: 10),
+                            Container(
+                              width: 300,
+                              child: FormBuilderTextField(
+                                name: 'email',
+                                decoration: InputDecoration(
+                                  border: OutlineInputBorder(),
+                                  labelText: 'Email',
+                                ),
+                                validator:
+                                    FormBuilderValidators.required(context),
                               ),
-                              validator:
-                                  FormBuilderValidators.required(context),
                             ),
-                          ),
-                          SizedBox(height: 10),
-                          Container(
-                            width: 300,
-                            child: FormBuilderTextField(
-                              name: 'email',
-                              decoration: InputDecoration(
-                                border: OutlineInputBorder(),
-                                labelText: 'Email',
+                            SizedBox(height: 10),
+                            Container(
+                              width: 300,
+                              child: FormBuilderTextField(
+                                name: 'newUserName',
+                                decoration: InputDecoration(
+                                  border: OutlineInputBorder(),
+                                  labelText: 'Username',
+                                ),
+                                validator:
+                                    FormBuilderValidators.required(context),
                               ),
-                              validator:
-                                  FormBuilderValidators.required(context),
                             ),
-                          ),
-                          SizedBox(height: 10),
-                          Container(
-                            width: 300,
-                            child: FormBuilderTextField(
-                              name: "about",
-                              maxLines: 4,
-                              maxLength: 300,
-                              decoration: InputDecoration(
-                                border: OutlineInputBorder(),
-                                labelText: 'About Me',
-                              ),
-                              validator:
-                                  FormBuilderValidators.required(context),
-                            ),
-                          ),
-                          SizedBox(height: 10),
-                          Container(
-                            width: 300,
-                            child: FormBuilderTextField(
-                              name: 'newUserName',
-                              decoration: InputDecoration(
-                                border: OutlineInputBorder(),
-                                labelText: 'Username',
-                              ),
-                              validator:
-                                  FormBuilderValidators.required(context),
-                            ),
-                          ),
-                          FormBuilderTextField(
-                            name: "newPassword",
-                          ),
+                            SizedBox(height: 10),
 
-                          // Fill with user's previous input from API
-                          SizedBox(height: 10),
-                          GestureDetector(
-                            onTap: () {},
-                            child: Container(
-                              child: Text(
-                                // Grab the description from the API
-                                'Change Password',
-                                style: TextStyle(
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.blueAccent[400]),
+                            Container(
+                              width: 300,
+                              child: FormBuilderTextField(
+                                name: "about",
+                                maxLines: 4,
+                                maxLength: 300,
+                                decoration: InputDecoration(
+                                  border: OutlineInputBorder(),
+                                  labelText: 'About Me',
+                                ),
+                                validator:
+                                    FormBuilderValidators.required(context),
                               ),
                             ),
-                          ),
-                        ],
+                            // Fill with user's previous input from API
+                            SizedBox(height: 10),
+                            GestureDetector(
+                              onTap: () {},
+                              child: Container(
+                                child: Text(
+                                  // Grab the description from the API
+                                  'Change Password',
+                                  style: TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.blueAccent[400]),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-              SizedBox(height: 0),
-            ],
+                SizedBox(height: 0),
+              ],
+            ),
+            initialValue: {
+              'token': userInfo.token,
+              'firstName': user.firstName,
+              'lastName': user.lastName,
+              'email': user.email,
+              'about': user.about,
+              'newUserName': user.username,
+            },
           ),
-          initialValue: {
-            'token': userInfo.token,
-            'firstName': 'Joe',
-            'lastName': 'Mama',
-            'email': 'joe@mama.com',
-            'about': 'You\'ve never had it Joe good',
-            'newUserName': 'joe_mama',
-            'newPasword' : ''
-          },
         ),
       ),
     );

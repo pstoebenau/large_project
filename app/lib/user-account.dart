@@ -10,6 +10,7 @@ import 'package:provider/provider.dart';
 import 'globals.dart';
 import 'models/snippet.dart';
 import 'models/userInfo.dart';
+import 'models/user.dart';
 
 class UserAccountPage extends StatefulWidget {
   @override
@@ -23,12 +24,37 @@ class _UserAccountPageState extends State<UserAccountPage> {
   int snippetCache = 4;
   int snippetIndex = 0;
   final _scrollController = ScrollController();
+  User user = User.empty();
 
   @override
   void initState() {
     super.initState();
     userInfo = context.read<UserInfo>();
+    getUserInfo();
     getUserSnippets();
+  }
+
+  void getUserInfo() async {
+    final url = Uri.parse('${Globals.apiUrl}/api/user/getuser');
+    var response = await post(url,
+        headers: {"Content-Type": "application/json"},
+        body: json.encode({"token": userInfo.token}));
+    var resObj = json.decode(response.body);
+
+    if (response.statusCode != 200) {
+      String err = resObj["message"];
+      alert(context,
+          title: Text('${response.statusCode}'), content: Text('$err'));
+      return;
+    }
+
+    if (resObj['message'] == 'success') {
+      setState(() {
+        user = User.fromJson(resObj["user"]);
+      });
+    } else {
+      return alert(context, content: Text(resObj['message']));
+    }
   }
 
   void getUserSnippets() async {
@@ -64,7 +90,7 @@ class _UserAccountPageState extends State<UserAccountPage> {
 
   @override
   Widget build(BuildContext context) {
-    if (hotSnippets.length == 0) {
+    if (hotSnippets.length == 0 || user.email == "") {
       return Scaffold(
         body: Align(
           alignment: Alignment.center,
@@ -120,27 +146,36 @@ class _UserAccountPageState extends State<UserAccountPage> {
                               SizedBox(width: 10),
                               Container(
                                 // Grab from API a profile picture
-                                child: Image.asset("assets/joe.png",
-                                    width: 90, height: 90, fit: BoxFit.cover),
+                                child: CircleAvatar(
+                                    radius: 45,
+                                    // This is the user profile picture
+                                    // This should grab the API user profile pic
+                                    backgroundImage: NetworkImage(
+                                        'https://t3.ftcdn.net/jpg/00/64/67/52/240_F_64675209_7ve2XQANuzuHjMZXP3aIYIpsDKEbF5dD.jpg'),
+                                  ),
                               ),
                               SizedBox(width: 30),
                               Container(
                                 child: Text(
                                   // Grab from API the user's name
-                                  'Joe Mama',
+                                  user.firstName + " " + user.lastName,
                                   style: TextStyle(fontSize: 25),
                                 ),
                               ),
                               SizedBox(width: 50),
                               Container(
                                 child: GestureDetector(
-                                  onTap: () {
-                                    Navigator.push(
+                                  onTap: () async{
+                                    await Navigator.push(
                                       context,
                                       MaterialPageRoute(
                                         builder: (context) => EditAccount(),
                                       ),
                                     );
+                                    setState(() {
+                                      user = User.empty();
+                                      getUserInfo();
+                                    });
                                   },
                                   // This should be replaced with user profile picture
                                   // Associated with the snippet
@@ -159,7 +194,7 @@ class _UserAccountPageState extends State<UserAccountPage> {
                           Container(
                             child: Text(
                               // Grab this from API too
-                              'username: Joe_Mama',
+                              'username: ' + user.username,
                               style: TextStyle(fontSize: 17),
                             ),
                           ),
@@ -167,7 +202,7 @@ class _UserAccountPageState extends State<UserAccountPage> {
                           Container(
                             child: Text(
                               // Grab this from the API
-                              'email: joe@mama.com',
+                              'email: ' + user.email,
                               style: TextStyle(fontSize: 17),
                             ),
                           ),
@@ -185,10 +220,12 @@ class _UserAccountPageState extends State<UserAccountPage> {
                                   children: [
                                     SizedBox(height: 10),
                                     Container(
+                                      width: 250,
+                                      height: 110,
                                       child: Text(
                                         // This is the user description, it should
                                         // Grab from the API the user description
-                                        'About Me: You\'ve never had it Joe good',
+                                        'About Me: ' + user.about,
                                         style: TextStyle(fontSize: 12),
                                       ),
                                     ),
@@ -258,13 +295,17 @@ class _UserAccountPageState extends State<UserAccountPage> {
       @required String description}) {
     return GestureDetector(
       onTap: () async {
-        Navigator.push(
+        await Navigator.push(
           context,
           MaterialPageRoute(
             builder: (context) => SnippetView(snippet),
           ),
         );
-        initState();
+        setState(() {
+          snippetIndex = 0;
+          hotSnippets.clear();
+          getUserSnippets();
+        });
       },
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,

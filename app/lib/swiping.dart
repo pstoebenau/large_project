@@ -25,8 +25,13 @@ class SwipingPage extends StatelessWidget {
                 },
                 // This should be replaced with user profile picture
                 // Associated with the snippet
-                child: new Image.asset("assets/joe.png",
-                    width: 50, height: 50, fit: BoxFit.cover),
+                child: CircleAvatar(
+                  radius: 25,
+                  // This is the user profile picture
+                  // This should grab the API user profile pic
+                  backgroundImage: NetworkImage(
+                      'https://t3.ftcdn.net/jpg/00/64/67/52/240_F_64675209_7ve2XQANuzuHjMZXP3aIYIpsDKEbF5dD.jpg'),
+                ),
               ),
             ),
             SizedBox(height: 20),

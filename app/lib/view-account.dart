@@ -131,8 +131,13 @@ class _ViewAccountPageState extends State<ViewAccountPage> {
                             children: [
                               Container(
                                 // Grab from API a profile picture
-                                child: Image.asset("assets/joe.png",
-                                    width: 90, height: 90, fit: BoxFit.cover),
+                                child: CircleAvatar(
+                                    radius: 45,
+                                    // This is the user profile picture
+                                    // This should grab the API user profile pic
+                                    backgroundImage: NetworkImage(
+                                        'https://t3.ftcdn.net/jpg/00/64/67/52/240_F_64675209_7ve2XQANuzuHjMZXP3aIYIpsDKEbF5dD.jpg'),
+                                  ),
                               ),
                               SizedBox(width: 40),
                               Container(
