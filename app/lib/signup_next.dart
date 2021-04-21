@@ -134,7 +134,7 @@ class _SignupNextState extends State<SignupNext> {
                   ),
                   Spacer(flex: 2),
                   GestureDetector(
-                    onTap: () => Navigator.pushReplacementNamed(context, "/login"),
+                    onTap: () => Navigator.pushNamed(context, "/login"),
                     child: Text(
                       "Login to an existing account",
                       style: TextStyle(decoration: TextDecoration.underline),

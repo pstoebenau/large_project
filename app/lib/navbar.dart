@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:large_project/favorite.dart';
 import 'package:large_project/leaderboard.dart';
-import 'package:large_project/login.dart';
 import 'package:large_project/swiping.dart';
 import 'package:large_project/upload-snippet.dart';
 import 'package:large_project/user-account.dart';
 import 'package:rive/rive.dart';
-import 'hot_or_not.dart';
-import 'package:image_picker/image_picker.dart';
 
 class MenuItem {
   Artboard artboard;
@@ -52,7 +50,7 @@ class _NavbarState extends State<Navbar> {
       controller: null,
       iconName: 'heart.riv',
       color: Colors.pink,
-      route: Swiper(),
+      route: Favorite(),
     ),
     MenuItem(
       xPos: -0.0,
