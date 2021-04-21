@@ -8,15 +8,15 @@ import 'globals.dart';
 import 'package:cupertino_icons/cupertino_icons.dart';
 import 'models/snippet.dart';
 
-class SnippetView extends StatefulWidget {
+class SnippetViewOwn extends StatefulWidget {
   final Snippet snippet;
 
-  const SnippetView(this.snippet);
+  const SnippetViewOwn(this.snippet);
   @override
-  _SnippetViewState createState() => _SnippetViewState();
+  _SnippetOwnViewState createState() => _SnippetOwnViewState();
 }
 
-class _SnippetViewState extends State<SnippetView> {
+class _SnippetOwnViewState extends State<SnippetViewOwn> {
   void deleteSnippet() async {
     final url = Uri.parse('${Globals.apiUrl}/api/snippet/deleteSnippet');
     var response = await post(url,
@@ -92,7 +92,7 @@ class _SnippetViewState extends State<SnippetView> {
                     image: NetworkImage(
                       widget.snippet.imageURL,
                     ),
-                    fit: BoxFit.contain)),
+                    fit: BoxFit.fitWidth)),
           ),
           SizedBox(height: 70),
         ],

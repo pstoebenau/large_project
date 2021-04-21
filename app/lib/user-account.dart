@@ -298,7 +298,7 @@ class _UserAccountPageState extends State<UserAccountPage> {
         await Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => SnippetView(snippet),
+            builder: (context) => SnippetViewOwn(snippet),
           ),
         );
         setState(() {
