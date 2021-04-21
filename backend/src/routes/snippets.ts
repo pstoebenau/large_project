@@ -59,6 +59,21 @@ import { OutputFileType } from "typescript";
 //   "snippets": snippets,
 //   "message": string
 // }
+
+// /api/snippets/get-user-token
+
+// input
+// {
+//   "userId": string,
+//   "startIndex": integer,
+//   "numSnippets": integer
+// }
+
+// output
+// {
+//   "snippets": snippets,
+//   "message": string
+// }
 let gc;
 
 if (process.env["CREDS"]) {
@@ -217,6 +232,25 @@ router.post("/get-user-snippets", async (req, res, next) => {
     let { userId, startIndex, numSnippets } = req.body;
     
     let results = await Snippet.find( userId ).sort({'_id': 'desc'}).skip(startIndex).limit(numSnippets).exec();
+    
+    return res.status(200).json({
+      snippets: results,
+      message: "success"
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message,
+    });
+  }
+});
+
+router.post("/get-user-snippets-token", async (req, res, next) => {
+  try {
+    let { token, startIndex, numSnippets } = req.body;
+
+    let data = jwt.decode(token) as any
+    
+    let results = await Snippet.find( data.userId ).sort({'_id': 'desc'}).skip(startIndex).limit(numSnippets).exec();
     
     return res.status(200).json({
       snippets: results,
