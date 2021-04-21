@@ -20,10 +20,9 @@ class _SnippetOwnViewState extends State<SnippetViewOwn> {
   void deleteSnippet() async {
     final url = Uri.parse('${Globals.apiUrl}/api/snippet/deleteSnippet');
     var response = await post(url,
-        headers: {"Content-Type": "application/json"}, body: json.encode({
-          "_id" : widget.snippet.id
-        }));
-        print(response.statusCode);
+        headers: {"Content-Type": "application/json"},
+        body: json.encode({"_id": widget.snippet.id}));
+    print(response.statusCode);
 
     var resObj = json.decode(response.body);
     if (response.statusCode != 200) {
@@ -47,55 +46,56 @@ class _SnippetOwnViewState extends State<SnippetViewOwn> {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Column(
-        children: [
-          SizedBox(height: 30),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+      child: SizedBox(
+        height: MediaQuery.of(context).size.height * 1,
+              child: SingleChildScrollView(
+                child: Column(
             children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Align(
-                  alignment: Alignment.topLeft,
-                  child: GestureDetector(
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                    child: Icon(Icons.arrow_back),
+              SizedBox(height: 30),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Align(
+                      alignment: Alignment.topLeft,
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
+                        child: Icon(Icons.arrow_back),
+                      ),
+                    ),
                   ),
-                ),
-              ),
-              SizedBox(width: 320),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Align(
-                  alignment: Alignment.topRight,
-                  child: GestureDetector(
-                    onTap: () {
-                      showModalBottomSheet(
-                        context: context,
-                        builder: ((builder) => bottomSheet(context)),
-                      );
-                    },
-                    child: Icon(CupertinoIcons.ellipsis_vertical),
+                  SizedBox(width: 320),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Align(
+                      alignment: Alignment.topRight,
+                      child: GestureDetector(
+                        onTap: () {
+                          showModalBottomSheet(
+                            context: context,
+                            builder: ((builder) => bottomSheet(context)),
+                          );
+                        },
+                        child: Icon(CupertinoIcons.ellipsis_vertical),
+                      ),
+                    ),
                   ),
-                ),
+                ],
               ),
+              SizedBox(height: 30),
+              Image(
+                  width: 500,
+                  image: NetworkImage(
+                    widget.snippet.imageURL,
+                  ),
+                  fit: BoxFit.fitWidth),
+              SizedBox(height: 70),
             ],
           ),
-          SizedBox(height: 30),
-          Container(
-            width: 500,
-            height: 500,
-            decoration: BoxDecoration(
-                image: DecorationImage(
-                    image: NetworkImage(
-                      widget.snippet.imageURL,
-                    ),
-                    fit: BoxFit.fitWidth)),
-          ),
-          SizedBox(height: 70),
-        ],
+        ),
       ),
     );
   }
