@@ -80,7 +80,7 @@ class _ViewAccountPageState extends State<ViewAccountPage> {
         body: json.encode({
           "userId": userId,
           "startIndex": snippetIndex,
-          "numSnippets": snippetIndex == 0 ? snippetCache + 1 : snippetCache,
+          "numSnippets": snippetCache,
         }));
 
     var resObj = json.decode(response.body);
@@ -249,7 +249,7 @@ class _ViewAccountPageState extends State<ViewAccountPage> {
                                 crossAxisSpacing: 20,
                                 childAspectRatio: snippetRatio,
                               ),
-                              itemCount: hotSnippets.length - 1,
+                              itemCount: hotSnippets.length,
                               shrinkWrap: true,
                               physics: NeverScrollableScrollPhysics(),
                               itemBuilder: (_, index) {

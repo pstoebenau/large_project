@@ -75,14 +75,14 @@ class _UserAccountPageState extends State<UserAccountPage> {
     print(json.encode({
       "token": userId,
       "startIndex": snippetIndex,
-      "numSnippets": snippetIndex == 0 ? snippetCache + 1 : snippetCache,
+      "numSnippets": snippetCache,
     }));
     var response = await post(url,
         headers: {"Content-Type": "application/json"},
         body: json.encode({
           "token": userId,
           "startIndex": snippetIndex,
-          "numSnippets": snippetIndex == 0 ? snippetCache + 1 : snippetCache,
+          "numSnippets": snippetCache,
         }));
 
     var resObj = json.decode(response.body);
@@ -296,7 +296,7 @@ class _UserAccountPageState extends State<UserAccountPage> {
                                 crossAxisSpacing: 20,
                                 childAspectRatio: snippetRatio,
                               ),
-                              itemCount: hotSnippets.length - 1,
+                              itemCount: hotSnippets.length,
                               shrinkWrap: true,
                               physics: NeverScrollableScrollPhysics(),
                               itemBuilder: (_, index) {
@@ -309,7 +309,7 @@ class _UserAccountPageState extends State<UserAccountPage> {
                                   title = "Hot";
 
                                 return codeSnippet(
-                                  snippet: hotSnippets[index + 1],
+                                  snippet: hotSnippets[index],
                                   description: title,
                                   fontSize: 14,
                                 );
