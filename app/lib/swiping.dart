@@ -89,22 +89,22 @@ class _SwipingPageState extends State<SwipingPage> {
           children: <Widget>[
             // This is the profile picture
             SizedBox(height: 30),
-            new Container(
-              child: GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => ViewAccountPage(),
-                    ),
-                  );
-                },
-                // This should be replaced with user profile picture
-                // Associated with the snippet
-                child: new Image.asset("assets/joe.png",
-                    width: 50, height: 50, fit: BoxFit.fitWidth),
-              ),
-            ),
+            // new Container(
+            //   child: GestureDetector(
+            //     onTap: () {
+            //       Navigator.push(
+            //         context,
+            //         MaterialPageRoute(
+            //           builder: (context) => ViewAccountPage(),
+            //         ),
+            //       );
+            //     },
+            //     // This should be replaced with user profile picture
+            //     // Associated with the snippet
+            //     child: new Image.asset("assets/joe.png",
+            //         width: 50, height: 50, fit: BoxFit.fitWidth),
+            //   ),
+            // ),
             SizedBox(height: 20),
             // API here, need to replace with new photo everytime a widget is clicked, Needs to be initialized?
             AnimatedSwitcher(
