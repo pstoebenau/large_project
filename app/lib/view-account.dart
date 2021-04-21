@@ -21,26 +21,26 @@ class ViewAccountPage extends StatefulWidget {
 }
 
 class _ViewAccountPageState extends State<ViewAccountPage> {
-    UserInfo userInfo;
+  UserInfo userInfo;
   static const double snippetRatio = 10 / 14;
   List<Snippet> hotSnippets = [];
   int snippetCache = 4;
   int snippetIndex = 0;
   final _scrollController = ScrollController();
   User user;
+  bool loading = true;
 
   @override
   void initState() {
-    if (!mounted)
-      return;
+    if (!mounted) return;
     super.initState();
     userInfo = context.read<UserInfo>();
     getUserEverything();
   }
 
   void getUserEverything() async {
-    await getUserInfo(widget.userId);
-    getUserSnippets(widget.userId);
+    getUserInfo(widget.userId);
+    await getUserSnippets(widget.userId);
   }
 
   Future<void> getUserInfo(String userId) async {
@@ -66,7 +66,7 @@ class _ViewAccountPageState extends State<ViewAccountPage> {
     }
   }
 
-  void getUserSnippets(String userId) async {
+  Future<void> getUserSnippets(String userId) async {
     // No need to call api if there are no more snippets
     if (hotSnippets.length < snippetIndex) return;
 
@@ -74,7 +74,7 @@ class _ViewAccountPageState extends State<ViewAccountPage> {
     var response = await post(url,
         headers: {"Content-Type": "application/json"},
         body: json.encode({
-          "_id": userId,
+          "userId": userId,
           "startIndex": snippetIndex,
           "numSnippets": snippetIndex == 0 ? snippetCache + 1 : snippetCache,
         }));
@@ -92,6 +92,7 @@ class _ViewAccountPageState extends State<ViewAccountPage> {
         for (Map<String, dynamic> snippet in resObj['snippets']) {
           hotSnippets.add(Snippet.fromJson(snippet));
         }
+        loading = false;
       });
     } else {
       return alert(context, content: Text(resObj['message']));
@@ -100,7 +101,7 @@ class _ViewAccountPageState extends State<ViewAccountPage> {
 
   @override
   Widget build(BuildContext context) {
-    if (hotSnippets.length == 0) {
+    if (loading) {
       return Scaffold(
         body: Align(
           alignment: Alignment.center,
@@ -163,17 +164,18 @@ class _ViewAccountPageState extends State<ViewAccountPage> {
                             ),
                           ),
                           Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.start,
                             children: [
+                              SizedBox(width: 10),
                               Container(
                                 // Grab from API a profile picture
                                 child: CircleAvatar(
-                                    radius: 45,
-                                    // This is the user profile picture
-                                    // This should grab the API user profile pic
-                                    backgroundImage: NetworkImage(
-                                        'https://t3.ftcdn.net/jpg/00/64/67/52/240_F_64675209_7ve2XQANuzuHjMZXP3aIYIpsDKEbF5dD.jpg'),
-                                  ),
+                                  radius: 45,
+                                  // This is the user profile picture
+                                  // This should grab the API user profile pic
+                                  backgroundImage: NetworkImage(
+                                      'https://t3.ftcdn.net/jpg/00/64/67/52/240_F_64675209_7ve2XQANuzuHjMZXP3aIYIpsDKEbF5dD.jpg'),
+                                ),
                               ),
                               SizedBox(width: 40),
                               Container(
@@ -183,7 +185,7 @@ class _ViewAccountPageState extends State<ViewAccountPage> {
                                   style: TextStyle(fontSize: 25),
                                 ),
                               ),
-                              SizedBox(width: 135),
+                              SizedBox(width: 60),
                             ],
                           ),
                           SizedBox(height: 10),

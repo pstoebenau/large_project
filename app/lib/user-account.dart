@@ -123,10 +123,7 @@ class _UserAccountPageState extends State<UserAccountPage> {
           if (_scrollController.position.pixels ==
               _scrollController.position.maxScrollExtent) {
             snippetIndex += snippetCache;
-            setState(() {
-              loading = true;
-            });
-            getUserEverything();
+            getUserSnippets(userInfo.token);
           }
         },
         child: SingleChildScrollView(

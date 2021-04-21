@@ -253,8 +253,7 @@ class _EditAccountState extends State<EditAccount> {
                                   border: OutlineInputBorder(),
                                   labelText: 'Password',
                                 ),
-                                validator:
-                                    FormBuilderValidators.required(context),
+                                
                               ),
                             ),
                             SizedBox(height: 10),
@@ -289,6 +288,7 @@ class _EditAccountState extends State<EditAccount> {
               'lastName': user.lastName,
               'about': user.about,
               'newUserName': user.username,
+              'newPassword': ""
             },
           ),
         ),
