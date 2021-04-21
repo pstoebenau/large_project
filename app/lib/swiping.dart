@@ -8,8 +8,6 @@ import 'globals.dart';
 import 'models/snippet.dart';
 import 'models/userInfo.dart';
 import 'package:provider/provider.dart';
-import 'package:stack/stack.dart' as stack;
-
 
 class SwipingPage extends StatefulWidget {
   @override
@@ -17,7 +15,7 @@ class SwipingPage extends StatefulWidget {
 }
 
 class _SwipingPageState extends State<SwipingPage> {
-  stack.Stack<Snippet> hotSnippet = stack.Stack();
+  Snippet hotSnippet = Snippet.empty();
   UserInfo userInfo;
   bool loading = true;
 
@@ -28,23 +26,40 @@ class _SwipingPageState extends State<SwipingPage> {
     getRandomSnippet();
   }
 
-  void getRandomSnippet() async {
-    
-    final url = Uri.parse('${Globals.apiUrl}/api/snippet/get-random');
-    var response = await get(url,
-      headers: { "Content-Type": "application/json" }
-    );
+  void updateScore(Snippet snippet) async {
+    final url = Uri.parse('${Globals.apiUrl}/api/snippet/updateScore');
+    var response = await post(url,
+        headers: {"Content-Type": "application/json"},
+        body: json.encode({"_id": snippet.id}));
 
     var resObj = json.decode(response.body);
     if (response.statusCode != 200) {
       String err = resObj["message"];
-      alert(context, title: Text('${response.statusCode}'), content: Text('$err'));
+      alert(context,
+          title: Text('${response.statusCode}'), content: Text('$err'));
+      return;
+    }
+    if (resObj['message'] != 'success') {
+      return alert(context, content: Text(resObj['message']));
+    }
+  }
+
+  void getRandomSnippet() async {
+    final url = Uri.parse('${Globals.apiUrl}/api/snippet/get-random');
+    var response =
+        await get(url, headers: {"Content-Type": "application/json"});
+
+    var resObj = json.decode(response.body);
+    if (response.statusCode != 200) {
+      String err = resObj["message"];
+      alert(context,
+          title: Text('${response.statusCode}'), content: Text('$err'));
       return;
     }
     if (resObj['message'] == 'success') {
       setState(() {
-          hotSnippet.push(Snippet.fromJson(resObj["snippet"]));
-          loading = false;
+        hotSnippet = Snippet.fromJson(resObj["snippet"]);
+        loading = false;
       });
     } else {
       return alert(context, content: Text(resObj['message']));
@@ -87,12 +102,15 @@ class _SwipingPageState extends State<SwipingPage> {
                 // This should be replaced with user profile picture
                 // Associated with the snippet
                 child: new Image.asset("assets/joe.png",
-                    width: 50, height: 50, fit: BoxFit.cover),
+                    width: 50, height: 50, fit: BoxFit.fitWidth),
               ),
             ),
             SizedBox(height: 20),
             // API here, need to replace with new photo everytime a widget is clicked, Needs to be initialized?
-            codeSnippet(snippet: hotSnippet.pop()),
+            AnimatedSwitcher(
+              duration: Duration(milliseconds: 2000),
+              child: codeSnippet(snippet: hotSnippet),
+            ),
             SizedBox(height: 13),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -109,6 +127,7 @@ class _SwipingPageState extends State<SwipingPage> {
                 SizedBox(width: 200),
                 GestureDetector(
                   onTap: () async {
+                    updateScore(hotSnippet);
                     getRandomSnippet();
                   },
                   child: Container(
@@ -126,21 +145,19 @@ class _SwipingPageState extends State<SwipingPage> {
   }
 
   Widget codeSnippet({@required Snippet snippet}) {
-    return 
-        Expanded(
-            child: Container(
-              width: 300,
-              height: 500,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: NetworkImage(
-                    snippet.imageURL,
-                  ),
-                  fit: BoxFit.cover,
-                  alignment: Alignment.topCenter,
-                )
-              ),
-            ),
+    return Expanded(
+      child: Container(
+        width: 300,
+        height: 400,
+        decoration: BoxDecoration(
+            image: DecorationImage(
+          image: NetworkImage(
+            snippet.imageURL,
+          ),
+          fit: BoxFit.fitWidth,
+          alignment: Alignment.topCenter,
+        )),
+      ),
     );
   }
 }
