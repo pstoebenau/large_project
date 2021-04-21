@@ -111,7 +111,7 @@ class _LeaderBoardState extends State<LeaderBoard> {
                         decoration: BoxDecoration(
                           image: DecorationImage(
                             image: AssetImage('assets/fire.png'),
-                            fit: BoxFit.fill,
+                            fit: BoxFit.fitWidth,
                           ),
                         ),
                       ),

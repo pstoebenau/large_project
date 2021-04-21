@@ -14,7 +14,7 @@ class Landing extends StatelessWidget {
             children: <Widget>[
               new Container(
                 child: new Image.asset("assets/chili.png",
-                    width: 200, height: 200, fit: BoxFit.cover),
+                    width: 200, height: 200, fit: BoxFit.fitWidth),
               ),
               SizedBox(height: 40),
               Text(

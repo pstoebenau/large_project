@@ -311,7 +311,7 @@ class _ViewAccountPageState extends State<ViewAccountPage> {
                 image: NetworkImage(
                   snippet.imageURL,
                 ),
-                fit: BoxFit.cover,
+                fit: BoxFit.fitWidth,
                 alignment: Alignment.topCenter,
               )),
             ),

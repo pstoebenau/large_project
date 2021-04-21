@@ -57,7 +57,7 @@ class _LoginState extends State<Login> {
                 Spacer(),
                 Container(
                   child: new Image.asset("assets/chili.png",
-                      width: 150, height: 150, fit: BoxFit.cover),
+                      width: 150, height: 150, fit: BoxFit.fitWidth),
                 ),
                 SizedBox(height: 40),
                 Text(

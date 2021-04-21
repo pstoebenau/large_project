@@ -185,7 +185,7 @@ class _SwipingPageState extends State<SwipingPage> {
                     },
                     child: Container(
                       child: Image.asset("assets/image 15.png",
-                          width: 70, height: 70, fit: BoxFit.fitHeight),
+                          width: 70, height: 70, fit: BoxFit.fitWidth),
                     ),
                   ),
                   SizedBox(width: 200),
@@ -196,7 +196,7 @@ class _SwipingPageState extends State<SwipingPage> {
                     },
                     child: Container(
                       child: Image.asset("assets/fire 2.png",
-                          width: 70, height: 70, fit: BoxFit.fitHeight),
+                          width: 70, height: 70, fit: BoxFit.fitWidth),
                     ),
                   ),
                 ],

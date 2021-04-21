@@ -225,7 +225,7 @@ class _UserAccountPageState extends State<UserAccountPage> {
                                     child: Image.asset("assets/edit.png",
                                         width: 30,
                                         height: 30,
-                                        fit: BoxFit.cover),
+                                        fit: BoxFit.fitWidth),
                                   ),
                                 ),
                               ),
@@ -367,7 +367,7 @@ class _UserAccountPageState extends State<UserAccountPage> {
                 image: NetworkImage(
                   snippet.imageURL,
                 ),
-                fit: BoxFit.cover,
+                fit: BoxFit.fitWidth,
                 alignment: Alignment.topCenter,
               )),
             ),
