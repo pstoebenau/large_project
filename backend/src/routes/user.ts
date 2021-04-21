@@ -23,6 +23,33 @@
 // },
 // "message": "success"
 // }
+
+
+// /api/user/getuserbyId
+
+// input
+// {
+//   "_id": string;
+// }
+
+// output
+// {
+//   "user": {
+    //   "_id": string,
+    //   "profileImage": string,
+    //   "firstName": string,
+    //   "lastName": string,
+    //   "email": string,
+    //   "username": string,
+    //   "password": string,
+    //   "about": string,
+    //   "active": boolean,
+    //   "createdAt": "2021-04-20T18:43:39.732Z",
+    //   "updatedAt": "2021-04-20T18:43:52.378Z",
+    //   "__v": 0
+// },
+// "message": "success"
+// }
 import express, { NextFunction, Request, Response } from 'express';
 import User from '@/schemas/user';
 import mongoose from 'mongoose';
@@ -86,6 +113,25 @@ router.post("/getuser", async function (req, res) {
 
   try {
     let user = await User.findOne({ _id: userId });
+
+    return res
+      .status(200)
+      .json({
+        user,
+        message: "success",
+      });
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message,
+    });
+  }
+});
+
+router.post("/getuserbyId", async function (req, res) {
+  let { _id } = req.body;
+
+  try {
+    let user = await User.findById( _id ).exec();
 
     return res
       .status(200)
