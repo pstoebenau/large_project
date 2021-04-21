@@ -11,6 +11,7 @@ import snippets from "@/schemas/snippets";
 import { Storage } from '@google-cloud/storage';
 import { createReadStream } from "node:fs";
 import path from "path";
+import axios from "axios";
 
 // /api/snippet/deleteSnippet
 
@@ -61,17 +62,37 @@ router.post("/create", async (req: Request, res: Response, next: NextFunction) =
         return res.status(400).json({message: "Snippet too long"});
 
       // Use carbon-now-cli to convert text to image
-      const dir = "";
       const uuid = crypto.randomBytes(16).toString("hex");
-      fs.writeFileSync(dir + uuid, codeText);
-      execSync(`npx carbon-now ${dir}${uuid} -t ${dir}${uuid} -h --config carbon-now.json`);
+      // execSync(`npx carbon-now ${dir}${uuid} -t ${dir}${uuid} -h --config carbon-now.json`);
 
+      let image = await axios({
+        method: "POST",
+        url: "https://carbonara.vercel.app/api/cook",
+        data: {
+          backgroundColor: "rgba(0, 0, 0, 0)",
+          paddingHorizontal: "0",
+          paddingVertical: "0",
+          theme: "panda-syntax",
+          widthAdjustment: true,
+          fontSize: "18",
+          code: codeText
+        },
+        responseType: 'stream',
+      });
+
+      // Download image from stream
+      image.data.pipe(fs.createWriteStream(`${uuid}.png`));
+      await new Promise<void>((resolve, reject) => {
+        image.data.on('end', () => resolve());
+        image.data.on('error', (err: Error) => reject(err));
+      });
+      
       // Upload to GCloud bucket
-      const response = await uploadBucket.upload(`${dir}${uuid}.png`);
+      const response = await uploadBucket.upload(`${uuid}.png`);
       const imageURL = response[0].metadata.mediaLink;
       
-      fs.unlinkSync(dir + uuid);
-      fs.unlinkSync(`${dir}${uuid}.png`);
+      // fs.unlinkSync(dir + uuid);
+      fs.unlinkSync(`${uuid}.png`);
 
       const snippet = new Snippet({
         userId: data.userId,
