@@ -33,9 +33,6 @@ class _ForgotPasswordState extends State<ForgotPassword> {
       return;
     }
 
-    if (response.statusCode != 201)
-      return;
-
     if (resObj['message'] == 'success') {
       alert(context, title: Text("Success"), content: Text("We sent you an email!"));
       Navigator.pushReplacementNamed(context, '/login');
