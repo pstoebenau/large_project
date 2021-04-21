@@ -17,7 +17,7 @@ class _SignupState extends State<Signup> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
-        child: SizedBox(
+        child: Container(
           height: MediaQuery.of(context).size.height,
           child: Center(
             child: FormBuilder(
@@ -25,9 +25,10 @@ class _SignupState extends State<Signup> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: <Widget>[
+                  Spacer(),
                   SizedBox(height: 50),
-                  new Container(
-                    child: new Image.asset("assets/chili.png",
+                  Container(
+                    child: Image.asset("assets/chili.png",
                         width: 150, height: 150, fit: BoxFit.cover),
                   ),
                   SizedBox(height: 40),
@@ -36,48 +37,49 @@ class _SignupState extends State<Signup> {
                     style: TextStyle(fontSize: 32, letterSpacing: 15),
                   ),
                   SizedBox(height: 40),
-                  new Container(
+                  Container(
                     width: 350,
                     child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          FormBuilderTextField(
-                            name: "firstName",
-                            validator: FormBuilderValidators.compose([
-                              FormBuilderValidators.required(context),
-                              FormBuilderValidators.match(context, r"^[a-zA-Z]+$", errorText: "Value must contain only letters"),
-                            ]),
-                            decoration: InputDecoration(
-                              border: OutlineInputBorder(),
-                              labelText: 'First Name',
-                            ),
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        FormBuilderTextField(
+                          name: "firstName",
+                          validator: FormBuilderValidators.compose([
+                            FormBuilderValidators.required(context),
+                            FormBuilderValidators.match(context, r"^[a-zA-Z]+$", errorText: "Value must contain only letters"),
+                          ]),
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                            labelText: 'First Name',
                           ),
-                          SizedBox(height: 20),
-                          FormBuilderTextField(
-                            name: "lastName",
-                            validator: FormBuilderValidators.compose([
-                              FormBuilderValidators.required(context),
-                              FormBuilderValidators.match(context, r"^[a-zA-Z]+$", errorText: "Value must contain only letters"),
-                            ]),
-                            decoration: InputDecoration(
-                              border: OutlineInputBorder(),
-                              labelText: 'Last Name',
-                            ),
+                        ),
+                        SizedBox(height: 20),
+                        FormBuilderTextField(
+                          name: "lastName",
+                          validator: FormBuilderValidators.compose([
+                            FormBuilderValidators.required(context),
+                            FormBuilderValidators.match(context, r"^[a-zA-Z]+$", errorText: "Value must contain only letters"),
+                          ]),
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                            labelText: 'Last Name',
                           ),
-                          SizedBox(height: 20),
-                          FormBuilderTextField(
-                            name: "email",
-                            validator: FormBuilderValidators.compose([
-                              FormBuilderValidators.required(context),
-                              FormBuilderValidators.email(context),
-                            ]),
-                            decoration: InputDecoration(
-                              border: OutlineInputBorder(),
-                              labelText: 'Email',
-                              suffixIcon: Icon(Icons.mail),
-                            ),
+                        ),
+                        SizedBox(height: 20),
+                        FormBuilderTextField(
+                          name: "email",
+                          validator: FormBuilderValidators.compose([
+                            FormBuilderValidators.required(context),
+                            FormBuilderValidators.email(context),
+                          ]),
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                            labelText: 'Email',
+                            suffixIcon: Icon(Icons.mail),
                           ),
-                        ]),
+                        ),
+                      ]
+                    ),
                   ),
                   SizedBox(height: 20),
                   SizedBox(
@@ -96,7 +98,7 @@ class _SignupState extends State<Signup> {
                       child: Text('Next'),
                     ),
                   ),
-                  Spacer(),
+                  Spacer(flex: 2),
                   GestureDetector(
                     onTap: () => Navigator.pushReplacementNamed(context, "/login"),
                     child: Text(
