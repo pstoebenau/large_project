@@ -158,23 +158,6 @@ router.post("/login", async function (req, res) {
       });
     }
 
-<<<<<<< HEAD
-
-    if (bcrypt.compareSync(password, user.password))
-    {
-      if (user?.active)
-      {
-<<<<<<< HEAD
-        token = jwt.sign({userId: user.id, firstname: user.firstName, username: user.username}, config.server.secret);
-=======
-        token = jwt.sign({userId: user.id, firstName: user.firstName, username: user.username}, config.server.secret);
->>>>>>> master
-        return res.status(200).json({token, message: "success"});
-      }
-      else
-      {
-
-=======
     if (bcrypt.compareSync(password, user.password)) {
       if (user?.active) {
         token = jwt.sign(
@@ -187,7 +170,6 @@ router.post("/login", async function (req, res) {
         );
         return res.status(200).json({ token, message: "success" });
       } else {
->>>>>>> origin
         return res.status(200).json({
           message: "verify email",
         });
@@ -253,37 +235,10 @@ router.get("/changepassword/:token", (req, res) => {
 
 router.post("/changepassword", async function (req, res) {
   let { password, token } = req.body;
-
-<<<<<<< HEAD
-  router.post("/changepassword", async function (req, res) {
-    let { password, token } = req.body;
-    
-    try {
-      const hash = await bcrypt.hash(password, 10);
-      let data = jwt.decode(token) as any;
-      let email = data.email;
-  
-      let user = await User.findOne({ email });
-      user?.updateOne({ password: hash }, null, (err, res) => {});
-  
-<<<<<<< HEAD
-      return res.status(200).json({ user, message: "success" },
-        );
-=======
-      return res.status(200).json({ user, message: "success" });
->>>>>>> master
-    } catch (error) {
-      return res.status(500).json({
-        message: error.message,
-      });
-    }
-  });
-=======
   try {
     const hash = await bcrypt.hash(password, 10);
     let data = jwt.decode(token) as any;
     let email = data.email;
->>>>>>> origin
 
     let user = await User.findOne({ email });
     user?.updateOne({ password: hash }, null, (err, res) => {});
@@ -309,9 +264,9 @@ router.post("/account-edit", async function (req, res) {
   } = req.body;
   const hash = await bcrypt.hash(newPassword.trim(), 10);
   let data = jwt.verify(token, config.server.secret) as Token;
-  console.log(data);
+
   let id = data.userId;
-  console.log(id);
+
   try {
     let user = await User.findOne({ _id: id });
     user?.updateOne(
