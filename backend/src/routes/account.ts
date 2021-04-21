@@ -127,7 +127,7 @@ router.post(
 
 router.get("/verify/:token", async function (req, res) {
   let token = req.params.token;
-  res.sendFile(path.resolve('src/public/success.html'));
+  res.sendFile(path.resolve("src/public/success.html"));
 
   try {
     let data = jwt.decode(token) as any;
@@ -158,6 +158,7 @@ router.post("/login", async function (req, res) {
       });
     }
 
+<<<<<<< HEAD
 
     if (bcrypt.compareSync(password, user.password))
     {
@@ -173,6 +174,20 @@ router.post("/login", async function (req, res) {
       else
       {
 
+=======
+    if (bcrypt.compareSync(password, user.password)) {
+      if (user?.active) {
+        token = jwt.sign(
+          {
+            userId: user.id,
+            firstName: user.firstName,
+            username: user.username,
+          },
+          config.server.secret
+        );
+        return res.status(200).json({ token, message: "success" });
+      } else {
+>>>>>>> origin
         return res.status(200).json({
           message: "verify email",
         });
@@ -236,7 +251,10 @@ router.get("/changepassword/:token", (req, res) => {
   return res.sendFile(path.resolve("src/public/changepassword.html"));
 });
 
+router.post("/changepassword", async function (req, res) {
+  let { password, token } = req.body;
 
+<<<<<<< HEAD
   router.post("/changepassword", async function (req, res) {
     let { password, token } = req.body;
     
@@ -260,7 +278,23 @@ router.get("/changepassword/:token", (req, res) => {
       });
     }
   });
+=======
+  try {
+    const hash = await bcrypt.hash(password, 10);
+    let data = jwt.decode(token) as any;
+    let email = data.email;
+>>>>>>> origin
 
+    let user = await User.findOne({ email });
+    user?.updateOne({ password: hash }, null, (err, res) => {});
+
+    return res.status(200).json({ user, message: "success" });
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message,
+    });
+  }
+});
 
 // Assumes that all fields are instantiated
 router.post("/account-edit", async function (req, res) {
@@ -293,11 +327,10 @@ router.post("/account-edit", async function (req, res) {
       null,
       (err, res) => {}
     );
-    if (newPassword.length > 0 && newPassword.trim().length > 0)
-     { 
-       user?.updateOne({ password: hash }, null, (err, res) => {});
-       return res.status(200).json({ message: "success with password change" });
-     }
+    if (newPassword.length > 0 && newPassword.trim().length > 0) {
+      user?.updateOne({ password: hash }, null, (err, res) => {});
+      return res.status(200).json({ message: "success with password change" });
+    }
     return res.status(200).json({ message: "success" });
   } catch (error) {
     return res.status(500).json({
