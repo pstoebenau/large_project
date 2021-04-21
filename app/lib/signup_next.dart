@@ -89,23 +89,35 @@ class _SignupNextState extends State<SignupNext> {
                         SizedBox(height: 20),
                         FormBuilderTextField(
                           name: "password",
-                          validator: FormBuilderValidators.required(context),
+                          validator: FormBuilderValidators.compose([
+                            FormBuilderValidators.required(context),
+                            FormBuilderValidators.minLength(context, 6),
+                          ]),
                           decoration: InputDecoration(
                             border: OutlineInputBorder(),
                             labelText: 'Password',
                             suffixIcon: Icon(Icons.remove_red_eye),
                           ),
+                          obscureText: true,
+                          enableSuggestions: false,
+                          autocorrect: false,
                         ),
                         SizedBox(height: 20),
                         FormBuilderTextField(
                           name: "confirmPassword",
-                          validator: FormBuilderValidators.required(context),
+                          validator: FormBuilderValidators.compose([
+                            FormBuilderValidators.required(context),
+                            FormBuilderValidators.minLength(context, 6),
+                          ]),
                           decoration: InputDecoration(
                             border: OutlineInputBorder(),
                             labelText: 'Confirm Password',
                             suffixIcon: Icon(Icons.remove_red_eye),
                             errorText: _confirmPasswordError,
                           ),
+                          obscureText: true,
+                          enableSuggestions: false,
+                          autocorrect: false,
                         ),
                       ]),
                   SizedBox(height: 30),

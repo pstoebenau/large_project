@@ -50,13 +50,13 @@ class _UploadSnippetState extends State<UploadSnippet> {
       });
 
     if (response.statusCode != 200) {
-      return alert(context, content: Text(resObj['message']));
+      return alert(context, title: Text("Error"), content: Text(resObj['message']));
     }
 
     if (resObj['message'] == 'success') {
-      return alert(context, content: Text("Your snippet was uploaded!"));
+      return alert(context, title: Text("Success"), content: Text("Your snippet was uploaded!"));
     } else {
-      return alert(context, content: Text(resObj['message']));
+      return alert(context, title: Text("Error"), content: Text(resObj['message']));
     }
   }
 
