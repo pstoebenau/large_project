@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:alert_dialog/alert_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
+import 'package:large_project/snippet-view.dart';
 import './upload-snippet.dart';
 import './edit-account.dart';
 import 'package:image_picker/image_picker.dart';
@@ -257,7 +258,12 @@ class _UserAccountPageState extends State<UserAccountPage> {
       @required String description}) {
     return GestureDetector(
       onTap: () async {
-        return alert(context, title: Text(description));
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => SnippetView(snippet),
+          ),
+        );
       },
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,

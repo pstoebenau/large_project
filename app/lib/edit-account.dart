@@ -33,7 +33,7 @@ class _EditAccountState extends State<EditAccount> {
 
     var url = Uri.parse('${Globals.apiUrl}/api/account/account-edit');
     var response = await post(url, body: formData);
-    print(response.statusCode);
+    print(response);
 
     if (response.statusCode != 200) return;
 
