@@ -78,7 +78,7 @@ router.post("/create", async (req: Request, res: Response, next: NextFunction) =
       const data = jwt.verify(token, config.server.secret) as Token;
 
       // Verify code length
-      if (codeText.length >= 1000)
+      if (codeText.length >= 2000)
         return res.status(400).json({message: "Snippet too long"});
 
       // Use carbon-now-cli to convert text to image
