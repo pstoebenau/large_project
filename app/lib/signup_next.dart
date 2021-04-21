@@ -60,7 +60,7 @@ class _SignupNextState extends State<SignupNext> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: <Widget>[
-                  SizedBox(height: 50),
+                  Spacer(),
                   Container(
                     child: Image.asset("assets/chili.png",
                         width: 150, height: 150, fit: BoxFit.cover),
@@ -132,7 +132,7 @@ class _SignupNextState extends State<SignupNext> {
                       child: Text('CREATE ACCOUNT'),
                     ),
                   ),
-                  SizedBox(height: 60),
+                  Spacer(flex: 2),
                   GestureDetector(
                     onTap: () => Navigator.pushReplacementNamed(context, "/login"),
                     child: Text(
