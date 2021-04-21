@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:alert_dialog/alert_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
+import 'package:large_project/landing.dart';
 import './edit-account.dart';
 import 'package:provider/provider.dart';
 import 'globals.dart';
@@ -133,6 +134,24 @@ class _UserAccountPageState extends State<UserAccountPage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 SizedBox(height: 50),
+                Row(
+                  children: [
+                    SizedBox(width: 290),
+                    ElevatedButton(
+                      
+                      onPressed: () {
+                        Navigator.pushReplacementNamed(context, '/');
+                      },
+
+                      style: ElevatedButton.styleFrom(primary: Colors.grey[900]),
+                      child: Text(
+                        "Logout",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, color: Colors.red),
+                      ),
+                    ),
+                  ],
+                ),
                 SizedBox(
                   child: Stack(
                     children: <Widget>[

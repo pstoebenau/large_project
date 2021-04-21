@@ -59,30 +59,24 @@ class _SnippetOwnViewState extends State<SnippetViewOwn> {
                       children: [
                         Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: Align(
-                            alignment: Alignment.topLeft,
-                            child: GestureDetector(
-                              onTap: () {
-                                Navigator.pop(context);
-                              },
-                              child: Icon(Icons.arrow_back),
-                            ),
+                          child: GestureDetector(
+                            onTap: () {
+                              Navigator.pop(context);
+                            },
+                            child: Icon(Icons.arrow_back),
                           ),
                         ),
                         SizedBox(width: 320),
                         Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: Align(
-                            alignment: Alignment.topRight,
-                            child: GestureDetector(
-                              onTap: () {
-                                showModalBottomSheet(
-                                  context: context,
-                                  builder: ((builder) => bottomSheet(context)),
-                                );
-                              },
-                              child: Icon(CupertinoIcons.ellipsis_vertical),
-                            ),
+                          child: GestureDetector(
+                            onTap: () {
+                              showModalBottomSheet(
+                                context: context,
+                                builder: ((builder) => bottomSheet(context)),
+                              );
+                            },
+                            child: Icon(CupertinoIcons.ellipsis_vertical),
                           ),
                         ),
                       ],

@@ -47,17 +47,16 @@ class _SnippetGeneralViewState extends State<SnippetViewGeneral> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
-          body: Center(
+      body: Center(
         child: SizedBox(
           height: MediaQuery.of(context).size.height * 1,
           child: SingleChildScrollView(
-                  child: Column(
+            child: Column(
               children: [
                 SizedBox(height: 30),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Align(
-                    alignment: Alignment.topLeft,
+                Row(children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
                     child: GestureDetector(
                       onTap: () {
                         Navigator.pop(context);
@@ -65,12 +64,15 @@ class _SnippetGeneralViewState extends State<SnippetViewGeneral> {
                       child: Icon(Icons.arrow_back),
                     ),
                   ),
-                ),
+                  SizedBox(width: 320,),
+                ]),
                 SizedBox(height: 30),
-                 Image(width: 500, image: NetworkImage(
-                            widget.snippet.imageURL,
-                          ),
-                          fit: BoxFit.fitWidth),
+                Image(
+                    width: 500,
+                    image: NetworkImage(
+                      widget.snippet.imageURL,
+                    ),
+                    fit: BoxFit.fitWidth),
                 SizedBox(height: 70),
               ],
             ),
