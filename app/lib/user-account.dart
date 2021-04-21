@@ -1,10 +1,14 @@
+import 'dart:convert';
 import 'package:alert_dialog/alert_dialog.dart';
 import 'package:flutter/material.dart';
-import './upload-snippet.dart';
+import 'package:http/http.dart';
 import './edit-account.dart';
-import 'package:image_picker/image_picker.dart';
-
+import 'package:provider/provider.dart';
+import 'globals.dart';
 import 'models/snippet.dart';
+import 'models/userInfo.dart';
+import 'models/user.dart';
+import 'own-snippet-view.dart';
 
 class UserAccountPage extends StatefulWidget {
   @override
@@ -12,176 +16,271 @@ class UserAccountPage extends StatefulWidget {
 }
 
 class _UserAccountPageState extends State<UserAccountPage> {
-  PickedFile _imageFile;
   static const double snippetRatio = 10 / 14;
-  List<Snippet> hotSnippets = [
-    Snippet('', '', 'https://i.ibb.co/D8ZgZT5/Elevation-l-Container.png', 100),
-    Snippet('', '', 'https://i.ibb.co/D8ZgZT5/Elevation-l-Container.png', 100),
-    Snippet('', '', 'https://i.ibb.co/D8ZgZT5/Elevation-l-Container.png', 100),
-    Snippet('', '', 'https://i.ibb.co/D8ZgZT5/Elevation-l-Container.png', 100),
-    Snippet('', '', 'https://i.ibb.co/D8ZgZT5/Elevation-l-Container.png', 100),
-    Snippet('', '', 'https://i.ibb.co/D8ZgZT5/Elevation-l-Container.png', 100),
-    Snippet('', '', 'https://i.ibb.co/D8ZgZT5/Elevation-l-Container.png', 100),
-    Snippet('', '', 'https://i.ibb.co/D8ZgZT5/Elevation-l-Container.png', 100),
-  ];
-  final ImagePicker _picker = ImagePicker();
+  List<Snippet> hotSnippets = [];
+  UserInfo userInfo;
+  int snippetCache = 4;
+  int snippetIndex = 0;
+  final _scrollController = ScrollController();
+  User user = User.empty();
+
+  @override
+  void initState() {
+    super.initState();
+    userInfo = context.read<UserInfo>();
+    getUserInfo();
+    getUserSnippets();
+  }
+
+  void getUserInfo() async {
+    final url = Uri.parse('${Globals.apiUrl}/api/user/getuser');
+    var response = await post(url,
+        headers: {"Content-Type": "application/json"},
+        body: json.encode({"token": userInfo.token}));
+    var resObj = json.decode(response.body);
+
+    if (response.statusCode != 200) {
+      String err = resObj["message"];
+      alert(context,
+          title: Text('${response.statusCode}'), content: Text('$err'));
+      return;
+    }
+
+    if (resObj['message'] == 'success') {
+      setState(() {
+        user = User.fromJson(resObj["user"]);
+      });
+    } else {
+      return alert(context, content: Text(resObj['message']));
+    }
+  }
+
+  void getUserSnippets() async {
+    // No need to call api if there are no more snippets
+    if (hotSnippets.length < snippetIndex) return;
+
+    final url = Uri.parse('${Globals.apiUrl}/api/snippet/get-by-score');
+    var response = await post(url,
+        headers: {"Content-Type": "application/json"},
+        body: json.encode({
+          "startIndex": snippetIndex,
+          "numSnippets": snippetIndex == 0 ? snippetCache + 1 : snippetCache,
+        }));
+
+    var resObj = json.decode(response.body);
+    if (response.statusCode != 200) {
+      String err = resObj["message"];
+      alert(context,
+          title: Text('${response.statusCode}'), content: Text('$err'));
+      return;
+    }
+
+    if (resObj['message'] == 'success') {
+      setState(() {
+        for (Map<String, dynamic> snippet in resObj['snippets']) {
+          hotSnippets.add(Snippet.fromJson(snippet));
+        }
+      });
+    } else {
+      return alert(context, content: Text(resObj['message']));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    if (hotSnippets.length == 0 || user.username == "") {
+      return Scaffold(
+        body: Align(
+          alignment: Alignment.center,
+          child: SizedBox(
+            width: 80,
+            height: 80,
+            child: CircularProgressIndicator(
+              strokeWidth: 8,
+            ),
+          ),
+        ),
+      );
+    }
+
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              SizedBox(height: 50),
-              SizedBox(
-                child: Stack(
-                  children: <Widget>[
-                    // This is the rectangle background
-                    // Center(
-                    //   child: Expanded(
-                    //     child: Container(
-                    //       width: 500,
-                    //       height: 500,
-                    //       child: Image.asset(
-                    //         "assets/Rectangle 27.png",
-                    //         width: 500,
-                    //         height: 500,
-                    //       ),
-                    //     ),
-                    //   ),
-                    // ),
-                    Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            SizedBox(width: 10),
-                            Container(
-                              // Grab from API a profile picture
-                              child: Image.asset("assets/joe.png",
-                                  width: 90, height: 90, fit: BoxFit.cover),
-                            ),
-                            SizedBox(width: 30),
-                            Container(
-                              child: Text(
-                                // Grab from API the user's name
-                                'Joe Mama',
-                                style: TextStyle(fontSize: 25),
+      body: NotificationListener<ScrollEndNotification>(
+        onNotification: (notification) {
+          if (_scrollController.position.pixels ==
+              _scrollController.position.maxScrollExtent) {
+            snippetIndex += snippetCache;
+            getUserSnippets();
+          }
+        },
+        child: SingleChildScrollView(
+          controller: _scrollController,
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                SizedBox(height: 50),
+                SizedBox(
+                  child: Stack(
+                    children: <Widget>[
+                      // This is the rectangle background
+                      // Center(
+                      //   child: Expanded(
+                      //     child: Container(
+                      //       width: 500,
+                      //       height: 500,
+                      //       child: Image.asset(
+                      //         "assets/Rectangle 27.png",
+                      //         width: 500,
+                      //         height: 500,
+                      //       ),
+                      //     ),
+                      //   ),
+                      // ),
+                      Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              SizedBox(width: 10),
+                              Container(
+                                // Grab from API a profile picture
+                                child: CircleAvatar(
+                                    radius: 45,
+                                    // This is the user profile picture
+                                    // This should grab the API user profile pic
+                                    backgroundImage: NetworkImage(
+                                        'https://t3.ftcdn.net/jpg/00/64/67/52/240_F_64675209_7ve2XQANuzuHjMZXP3aIYIpsDKEbF5dD.jpg'),
+                                  ),
                               ),
-                            ),
-                            SizedBox(width: 50),
-                            Container(
-                              child: GestureDetector(
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => EditAccount(),
-                                    ),
-                                  );
-                                },
-                                // This should be replaced with user profile picture
-                                // Associated with the snippet
-                                child: Container(
-                                  // Button that will go to the edit page
-                                  child: Image.asset("assets/edit.png",
-                                      width: 30, height: 30, fit: BoxFit.cover),
+                              SizedBox(width: 30),
+                              Container(
+                                child: Text(
+                                  // Grab from API the user's name
+                                  user.firstName + " " + user.lastName,
+                                  style: TextStyle(fontSize: 25),
                                 ),
                               ),
-                            ),
-                            SizedBox(width: 50),
-                          ],
-                        ),
-                        Container(
-                          child: Text(
-                            // Grab this from API too
-                            'username: Joe_Mama',
-                            style: TextStyle(fontSize: 17),
-                          ),
-                        ),
-                        SizedBox(height: 5),
-                        Container(
-                          child: Text(
-                            // Grab this from the API
-                            'email: joe@mama.com',
-                            style: TextStyle(fontSize: 17),
-                          ),
-                        ),
-                        SizedBox(height: 10),
-                        Stack(
-                          children: [
-                            Center(
-                              child: Container(
-                                child: Image.asset("assets/Rectangle 28.png",
-                                    width: 287, height: 110),
-                              ),
-                            ),
-                            Center(
-                              child: Column(
-                                children: [
-                                  SizedBox(height: 10),
-                                  Container(
-                                    child: Text(
-                                      // This is the user description, it should
-                                      // Grab from the API the user description
-                                      'About Me: You\'ve never had it Joe good',
-                                      style: TextStyle(fontSize: 12),
-                                    ),
+                              SizedBox(width: 50),
+                              Container(
+                                child: GestureDetector(
+                                  onTap: () async{
+                                    await Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => EditAccount(),
+                                      ),
+                                    );
+                                    setState(() {
+                                      user = User.empty();
+                                      getUserInfo();
+                                    });
+                                  },
+                                  // This should be replaced with user profile picture
+                                  // Associated with the snippet
+                                  child: Container(
+                                    // Button that will go to the edit page
+                                    child: Image.asset("assets/edit.png",
+                                        width: 30,
+                                        height: 30,
+                                        fit: BoxFit.cover),
                                   ),
-                                ],
+                                ),
                               ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: 5),
-                        Container(
-                          child: Text(
-                            'Your Snippets',
-                            style: TextStyle(fontSize: 20),
+                              SizedBox(width: 50),
+                            ],
                           ),
-                        ),
-                        SizedBox(height: 5),
-                        Container(
-                          padding: EdgeInsets.fromLTRB(25, 0, 25, 0),
-                          constraints: BoxConstraints(
-                            maxWidth: 370,
-                          ),
-                          child: GridView.builder(
-                            gridDelegate:
-                                const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 2,
-                              mainAxisSpacing: 20,
-                              crossAxisSpacing: 20,
-                              childAspectRatio: snippetRatio,
+                          Container(
+                            child: Text(
+                              // Grab this from API too
+                              'username: ' + user.username,
+                              style: TextStyle(fontSize: 17),
                             ),
-                            itemCount: hotSnippets.length - 1,
-                            shrinkWrap: true,
-                            physics: NeverScrollableScrollPhysics(),
-                            itemBuilder: (_, index) {
-                              String title = "";
-                              if (index == 0)
-                                title = "Slighty Less Hot";
-                              else if (index == 1)
-                                title = "Mildly Hot";
-                              else
-                                title = "Hot";
+                          ),
+                          SizedBox(height: 5),
+                          Container(
+                            child: Text(
+                              // Grab this from the API
+                              'email: ' + user.email,
+                              style: TextStyle(fontSize: 17),
+                            ),
+                          ),
+                          SizedBox(height: 10),
+                          Stack(
+                            children: [
+                              Center(
+                                child: Container(
+                                  child: Image.asset("assets/Rectangle 28.png",
+                                      width: 287, height: 110),
+                                ),
+                              ),
+                              Center(
+                                child: Column(
+                                  children: [
+                                    SizedBox(height: 10),
+                                    Container(
+                                      width: 250,
+                                      height: 110,
+                                      child: Text(
+                                        // This is the user description, it should
+                                        // Grab from the API the user description
+                                        'About Me: ' + user.about,
+                                        style: TextStyle(fontSize: 12),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 5),
+                          Container(
+                            child: Text(
+                              'Your Snippets',
+                              style: TextStyle(fontSize: 20),
+                            ),
+                          ),
+                          SizedBox(height: 5),
+                          Container(
+                            padding: EdgeInsets.fromLTRB(25, 0, 25, 0),
+                            constraints: BoxConstraints(
+                              maxWidth: 370,
+                            ),
+                            child: GridView.builder(
+                              gridDelegate:
+                                  const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2,
+                                mainAxisSpacing: 20,
+                                crossAxisSpacing: 20,
+                                childAspectRatio: snippetRatio,
+                              ),
+                              itemCount: hotSnippets.length - 1,
+                              shrinkWrap: true,
+                              physics: NeverScrollableScrollPhysics(),
+                              itemBuilder: (_, index) {
+                                String title = "";
+                                if (index == 0)
+                                  title = "Slighty Less Hot";
+                                else if (index == 1)
+                                  title = "Mildly Hot";
+                                else
+                                  title = "Hot";
 
-                              return codeSnippet(
-                                snippet: hotSnippets[index + 1],
-                                description: title,
-                                fontSize: 14,
-                              );
-                            },
+                                return codeSnippet(
+                                  snippet: hotSnippets[index + 1],
+                                  description: title,
+                                  fontSize: 14,
+                                );
+                              },
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                  ],
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              SizedBox(height: 100),
-            ],
+                SizedBox(height: 100),
+              ],
+            ),
           ),
         ),
       ),
@@ -194,7 +293,17 @@ class _UserAccountPageState extends State<UserAccountPage> {
       @required String description}) {
     return GestureDetector(
       onTap: () async {
-        return alert(context, title: Text(description));
+        await Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => SnippetViewOwn(snippet),
+          ),
+        );
+        setState(() {
+          snippetIndex = 0;
+          hotSnippets.clear();
+          getUserSnippets();
+        });
       },
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
