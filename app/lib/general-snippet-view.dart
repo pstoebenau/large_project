@@ -20,10 +20,9 @@ class _SnippetGeneralViewState extends State<SnippetViewGeneral> {
   void deleteSnippet() async {
     final url = Uri.parse('${Globals.apiUrl}/api/snippet/deleteSnippet');
     var response = await post(url,
-        headers: {"Content-Type": "application/json"}, body: json.encode({
-          "_id" : widget.snippet.id
-        }));
-        print(response.statusCode);
+        headers: {"Content-Type": "application/json"},
+        body: json.encode({"_id": widget.snippet.id}));
+    print(response.statusCode);
 
     var resObj = json.decode(response.body);
     if (response.statusCode != 200) {
@@ -47,34 +46,33 @@ class _SnippetGeneralViewState extends State<SnippetViewGeneral> {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Column(
-        children: [
-          SizedBox(height: 30),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Align(
-              alignment: Alignment.topLeft,
-              child: GestureDetector(
-                onTap: () {
-                  Navigator.pop(context);
-                },
-                child: Icon(Icons.arrow_back),
+      child: SizedBox(
+        height: MediaQuery.of(context).size.height * 1,
+        child: SingleChildScrollView(
+                child: Column(
+            children: [
+              SizedBox(height: 30),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Align(
+                  alignment: Alignment.topLeft,
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    child: Icon(Icons.arrow_back),
+                  ),
+                ),
               ),
-            ),
+              SizedBox(height: 30),
+               Image(width: 500, image: NetworkImage(
+                          widget.snippet.imageURL,
+                        ),
+                        fit: BoxFit.fitWidth),
+              SizedBox(height: 70),
+            ],
           ),
-          SizedBox(height: 30),
-          Container(
-            width: 500,
-            height: 500,
-            decoration: BoxDecoration(
-                image: DecorationImage(
-                    image: NetworkImage(
-                      widget.snippet.imageURL,
-                    ),
-                    fit: BoxFit.fitWidth)),
-          ),
-          SizedBox(height: 70),
-        ],
+        ),
       ),
     );
   }
