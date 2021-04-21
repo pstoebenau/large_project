@@ -7,55 +7,44 @@ class Landing extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            SizedBox(height: 20),
-            new Container(
-              child: new Image.asset("assets/chili.png",
-                  width: 200, height: 200, fit: BoxFit.cover),
-            ),
-            Text(
-              'CHILL CHILI',
-              style: TextStyle(fontSize: 32, letterSpacing: 15),
-            ),
-            SizedBox(
-              width: 220,
-              height: 65,
-              child: ElevatedButton(
-                onPressed: () => {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => Login(),
-                    ),
-                  ),
-                },
-                child: Text('Login'),
+        child: Container(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              new Container(
+                child: new Image.asset("assets/chili.png",
+                    width: 200, height: 200, fit: BoxFit.cover),
               ),
-            ),
-            Text(
-              "OR",
-            ),
-            SizedBox(
-              width: 220,
-              height: 65,
-              child: ElevatedButton(
-                onPressed: () => {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => Login(),
-                    ),
-                  ),
-                },
-                child: Text('Register'),
+              SizedBox(height: 20),
+              Text(
+                'CHILL CHILI',
+                style: TextStyle(fontSize: 32, letterSpacing: 15),
               ),
-            ),
-            SizedBox(height: 20),
-          ],
+              SizedBox(height: 100),
+              SizedBox(
+                width: 220,
+                height: 50,
+                child: ElevatedButton(
+                  onPressed: () => Navigator.pushReplacementNamed(context, "/login"),
+                  child: Text('Login'),
+                ),
+              ),
+              SizedBox(height: 20),
+              Text(
+                "OR",
+              ),
+              SizedBox(height: 20),
+              SizedBox(
+                width: 220,
+                height: 50,
+                child: ElevatedButton(
+                  onPressed: () => Navigator.pushReplacementNamed(context, "/signup"),
+                  child: Text('Register'),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

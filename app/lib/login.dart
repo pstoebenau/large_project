@@ -108,23 +108,19 @@ class _LoginState extends State<Login> {
                 ),
                 Spacer(flex: 2),
                 GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => NewPassword(),
-                      ),
-                    );
-                  },
+                  onTap: () => Navigator.pushReplacementNamed(context, "/forgot-password"),
                   child: Text(
                     "Forgot Password?",
                     style: TextStyle(decoration: TextDecoration.underline),
                   ),
                 ),
                 SizedBox(height: 10),
-                Text(
-                  "Or create a new account",
-                  style: TextStyle(decoration: TextDecoration.underline),
+                GestureDetector(
+                  onTap: () => Navigator.pushReplacementNamed(context, "/signup"),
+                  child: Text(
+                    "Or create a new account",
+                    style: TextStyle(decoration: TextDecoration.underline),
+                  ),
                 ),
                 SizedBox(height: 20),
               ],
