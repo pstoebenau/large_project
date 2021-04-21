@@ -169,10 +169,7 @@ class _SwipingPageState extends State<SwipingPage> {
               ),
               SizedBox(height: 5),
               // API here, need to replace with new photo everytime a widget is clicked, Needs to be initialized?
-              AnimatedSwitcher(
-                duration: Duration(milliseconds: 2000),
-                child: codeSnippet(snippet: hotSnippet),
-              ),
+              codeSnippet(snippet: hotSnippet),
               SizedBox(height: 13),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
