@@ -58,13 +58,13 @@ class _ViewAccountPageState extends State<ViewAccountPage> {
       return;
     }
 
-    if (!mounted)
-      dispose();
-
     if (resObj['message'] == 'success') {
-      setState(() {
-        user = User.fromJson(resObj["user"]);
-      });
+      if (!mounted)
+        dispose();
+      else
+        setState(() {
+          user = User.fromJson(resObj["user"]);
+        });
     } else {
       alert(context, content: Text(resObj['message']));
     }
@@ -91,16 +91,16 @@ class _ViewAccountPageState extends State<ViewAccountPage> {
       return;
     }
 
-    if (!mounted)
-      dispose();
-
     if (resObj['message'] == 'success') {
-      setState(() {
-        for (Map<String, dynamic> snippet in resObj['snippets']) {
-          hotSnippets.add(Snippet.fromJson(snippet));
-        }
-        loading = false;
-      });
+      if (!mounted)
+        dispose();
+      else
+        setState(() {
+          for (Map<String, dynamic> snippet in resObj['snippets']) {
+            hotSnippets.add(Snippet.fromJson(snippet));
+          }
+          loading = false;
+        });
     } else {
       return alert(context, content: Text(resObj['message']));
     }

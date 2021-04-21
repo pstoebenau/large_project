@@ -22,8 +22,7 @@ class _SwipingPageState extends State<SwipingPage> {
 
   @override
   void initState() {
-    if (!mounted)
-      return;
+    if (!mounted) return;
     super.initState();
     userInfo = context.read<UserInfo>();
     getNextSnippet();
@@ -57,11 +56,14 @@ class _SwipingPageState extends State<SwipingPage> {
       await getNextSnippet();
       return;
     }
-    
+
     if (resObj['message'] == 'success') {
-      setState(() {
-        user = User.fromJson(resObj["user"]);
-      });
+      if (!mounted)
+        dispose();
+      else
+        setState(() {
+          user = User.fromJson(resObj["user"]);
+        });
     } else {
       return alert(context, content: Text(resObj['message']));
     }
@@ -97,10 +99,13 @@ class _SwipingPageState extends State<SwipingPage> {
           title: Text('${response.statusCode}'), content: Text('$err'));
       return;
     }
-    if (resObj['message'] == 'success' && mounted) {
-      setState(() {
-        hotSnippet = Snippet.fromJson(resObj["snippet"]);
-      });
+    if (resObj['message'] == 'success') {
+      if (!mounted)
+        dispose();
+      else
+        setState(() {
+          hotSnippet = Snippet.fromJson(resObj["snippet"]);
+        });
     } else {
       return alert(context, content: Text(resObj['message']));
     }

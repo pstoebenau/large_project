@@ -40,13 +40,13 @@ class _EditAccountState extends State<EditAccount> {
       return;
     }
 
-    if (!mounted)
-      dispose();
-
     if (resObj['message'] == 'success') {
-      setState(() {
-        user = User.fromJson(resObj["user"]);
-      });
+      if (!mounted)
+        dispose();
+      else
+        setState(() {
+          user = User.fromJson(resObj["user"]);
+        });
     } else {
       return alert(context, content: Text(resObj['message']));
     }
@@ -70,7 +70,8 @@ class _EditAccountState extends State<EditAccount> {
     if (response.statusCode != 200) return;
 
     final resObj = json.decode(response.body);
-    if (resObj['message'] == 'success' || resObj['message'] == 'success with password change') {
+    if (resObj['message'] == 'success' ||
+        resObj['message'] == 'success with password change') {
       Navigator.pop(context);
     } else {
       return alert(context, content: Text(resObj['message']));
@@ -253,7 +254,6 @@ class _EditAccountState extends State<EditAccount> {
                                   border: OutlineInputBorder(),
                                   labelText: 'Password',
                                 ),
-                                
                               ),
                             ),
                             SizedBox(height: 10),

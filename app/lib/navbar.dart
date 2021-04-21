@@ -105,12 +105,14 @@ class _NavbarState extends State<Navbar> {
     rootBundle.load('assets/rive/${item.iconName}').then(
       (data) async {
         final file = RiveFile.import(data);
-        if (!mounted) dispose();
-        setState(() {
-          item.artboard = file.mainArtboard;
-          item.artboard
-              .addController(item.controller = SimpleAnimation('idle'));
-        });
+        if (!mounted)
+          dispose();
+        else
+          setState(() {
+            item.artboard = file.mainArtboard;
+            item.artboard
+                .addController(item.controller = SimpleAnimation('idle'));
+          });
       },
     );
   }
@@ -234,18 +236,20 @@ class _NavbarState extends State<Navbar> {
       onTap: () {
         if (!mounted)
           dispose();
-        setState(() {
-          if (active != item) {
-            // This determines what way to animate the navbar transition
-            if (active.xPos > item.xPos)
-              animDir = -1.0;
-            else
-              animDir = 1.0;
+        else
+          setState(() {
+            if (active != item) {
+              // This determines what way to animate the navbar transition
+              if (active.xPos > item.xPos)
+                animDir = -1.0;
+              else
+                animDir = 1.0;
 
-            active = item;
-          }
-          item.artboard.addController(item.controller = SimpleAnimation('go'));
-        });
+              active = item;
+            }
+            item.artboard
+                .addController(item.controller = SimpleAnimation('go'));
+          });
       },
     );
   }

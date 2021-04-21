@@ -33,14 +33,14 @@ class _SnippetGeneralViewState extends State<SnippetViewGeneral> {
     }
     print(resObj['message']);
 
-    if (!mounted)
-      dispose();
-
     if (resObj['message'] == 'success') {
-      setState(() {
-        Navigator.pop(context);
-        Navigator.pop(context);
-      });
+      if (!mounted)
+        dispose();
+      else
+        setState(() {
+          Navigator.pop(context);
+          Navigator.pop(context);
+        });
     } else {
       return alert(context, content: Text(resObj['message']));
     }
@@ -57,7 +57,7 @@ class _SnippetGeneralViewState extends State<SnippetViewGeneral> {
             child: Column(
               children: [
                 SizedBox(height: 30),
-                Row(mainAxisAlignment: MainAxisAlignment.center,children: [
+                Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: GestureDetector(
@@ -67,7 +67,9 @@ class _SnippetGeneralViewState extends State<SnippetViewGeneral> {
                       child: Icon(Icons.arrow_back),
                     ),
                   ),
-                  SizedBox(width: 370,),
+                  SizedBox(
+                    width: 370,
+                  ),
                 ]),
                 SizedBox(height: 30),
                 Image(

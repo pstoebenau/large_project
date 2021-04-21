@@ -32,25 +32,22 @@ class _UploadSnippetState extends State<UploadSnippet> {
 
     if (!mounted)
       dispose();
-
-    setState(() {
-      isLoading = true;
-    });
+    else
+      setState(() {
+        isLoading = true;
+      });
 
     var url = Uri.parse('${Globals.apiUrl}/api/snippet/create');
-    var response = await post(
-      url,
-      headers: { "Content-Type": "application/json" },
-      body: realFormData
-    );
+    var response = await post(url,
+        headers: {"Content-Type": "application/json"}, body: realFormData);
     final resObj = json.decode(response.body);
 
     if (!mounted)
       dispose();
-
-    setState(() {
-      isLoading = false;
-    });
+    else
+      setState(() {
+        isLoading = false;
+      });
 
     if (response.statusCode != 200) {
       return alert(context, content: Text(resObj['message']));
@@ -91,55 +88,50 @@ class _UploadSnippetState extends State<UploadSnippet> {
             height: aboveNavbarHeight,
             width: MediaQuery.of(context).size.width * 0.85,
             constraints: BoxConstraints(maxWidth: 700),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SizedBox(height: 20),
-                Text(
-                  "Type your code or paste it here",
-                  style: TextStyle(
-                    fontSize: 20,
-                  ),
+            child:
+                Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+              SizedBox(height: 20),
+              Text(
+                "Type your code or paste it here",
+                style: TextStyle(
+                  fontSize: 20,
                 ),
-                SizedBox(height: 20),
-                FormBuilder(
+              ),
+              SizedBox(height: 20),
+              FormBuilder(
                   key: _formKey,
-                  child: Column(
-                    children: [
-                      FormBuilderTextField(
-                        name: "codeText",
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(),
-                          hintText: "print('Hello World')",
-                          fillColor: Colors.grey.shade900,
-                          filled: true,
-                        ),
-                        style: TextStyle(
-                          fontFamily: "RobotoMono",
-                        ),
-                        keyboardType: TextInputType.multiline,
-                        maxLines: maxLines.floor(),
-                        validator: FormBuilderValidators.maxLength(context, 2000),
+                  child: Column(children: [
+                    FormBuilderTextField(
+                      name: "codeText",
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        hintText: "print('Hello World')",
+                        fillColor: Colors.grey.shade900,
+                        filled: true,
                       ),
-                      SizedBox(height: 20),
-                      SizedBox(
-                        width: 220,
-                        height: 50,
-                        child: ElevatedButton(
-                          onPressed: () {
-                            if (!_formKey.currentState.validate()) return;
+                      style: TextStyle(
+                        fontFamily: "RobotoMono",
+                      ),
+                      keyboardType: TextInputType.multiline,
+                      maxLines: maxLines.floor(),
+                      validator: FormBuilderValidators.maxLength(context, 2000),
+                    ),
+                    SizedBox(height: 20),
+                    SizedBox(
+                      width: 220,
+                      height: 50,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          if (!_formKey.currentState.validate()) return;
 
-                            _formKey.currentState.save();
-                            uploadSnippet();
-                          },
-                          child: Text('Create'),
-                        ),
+                          _formKey.currentState.save();
+                          uploadSnippet();
+                        },
+                        child: Text('Create'),
                       ),
-                    ]
-                  )
-                ),
-              ]
-            ),
+                    ),
+                  ])),
+            ]),
           ),
         ),
       ),
