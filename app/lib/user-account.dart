@@ -58,7 +58,8 @@ class _UserAccountPageState extends State<UserAccountPage> {
         user = User.fromJson(resObj["user"]);
       });
     } else {
-      return alert(context, content: Text(resObj['message']));
+      alert(context, content: Text(resObj['message']));
+      dispose();
     }
   }
 
@@ -135,15 +136,15 @@ class _UserAccountPageState extends State<UserAccountPage> {
               children: [
                 SizedBox(height: 50),
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     SizedBox(width: 290),
                     ElevatedButton(
-                      
                       onPressed: () {
                         Navigator.pushReplacementNamed(context, '/');
                       },
-
-                      style: ElevatedButton.styleFrom(primary: Colors.grey[900]),
+                      style:
+                          ElevatedButton.styleFrom(primary: Colors.grey[900]),
                       child: Text(
                         "Logout",
                         style: TextStyle(

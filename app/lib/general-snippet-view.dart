@@ -54,7 +54,7 @@ class _SnippetGeneralViewState extends State<SnippetViewGeneral> {
             child: Column(
               children: [
                 SizedBox(height: 30),
-                Row(children: [
+                Row(mainAxisAlignment: MainAxisAlignment.center,children: [
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: GestureDetector(
@@ -64,7 +64,7 @@ class _SnippetGeneralViewState extends State<SnippetViewGeneral> {
                       child: Icon(Icons.arrow_back),
                     ),
                   ),
-                  SizedBox(width: 320,),
+                  SizedBox(width: 370,),
                 ]),
                 SizedBox(height: 30),
                 Image(

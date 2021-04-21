@@ -58,7 +58,7 @@ class _ViewAccountPageState extends State<ViewAccountPage> {
       return;
     }
 
-    if (resObj['message'] == 'success') {
+    if (resObj['message'] == 'success' && mounted) {
       setState(() {
         user = User.fromJson(resObj["user"]);
       });
@@ -152,10 +152,9 @@ class _ViewAccountPageState extends State<ViewAccountPage> {
                       // ),
                       Column(
                         children: [
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Align(
-                              alignment: Alignment.topLeft,
+                          Row(mainAxisAlignment: MainAxisAlignment.center,children: [
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
                               child: GestureDetector(
                                 onTap: () {
                                   Navigator.pop(context);
@@ -163,9 +162,12 @@ class _ViewAccountPageState extends State<ViewAccountPage> {
                                 child: Icon(Icons.arrow_back),
                               ),
                             ),
-                          ),
+                            SizedBox(
+                              width: 370,
+                            ),
+                          ]),
                           Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               SizedBox(width: 10),
                               Container(
@@ -180,13 +182,13 @@ class _ViewAccountPageState extends State<ViewAccountPage> {
                               ),
                               SizedBox(width: 40),
                               Container(
+                                width: 250,
                                 child: Text(
                                   // Grab from API the user's name
                                   user.firstName + " " + user.lastName,
                                   style: TextStyle(fontSize: 25),
                                 ),
                               ),
-                              SizedBox(width: 60),
                             ],
                           ),
                           SizedBox(height: 10),
@@ -287,7 +289,7 @@ class _ViewAccountPageState extends State<ViewAccountPage> {
         );
       },
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(description,
               style: TextStyle(
