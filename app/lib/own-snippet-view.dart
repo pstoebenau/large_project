@@ -34,10 +34,13 @@ class _SnippetOwnViewState extends State<SnippetViewOwn> {
     print(resObj['message']);
 
     if (resObj['message'] == 'success') {
-      setState(() {
-        Navigator.pop(context);
-        Navigator.pop(context);
-      });
+      if (!mounted)
+        dispose();
+      else
+        setState(() {
+          Navigator.pop(context);
+          Navigator.pop(context);
+        });
     } else {
       return alert(context, content: Text(resObj['message']));
     }
@@ -45,20 +48,20 @@ class _SnippetOwnViewState extends State<SnippetViewOwn> {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: SizedBox(
-        height: MediaQuery.of(context).size.height * 1,
-              child: SingleChildScrollView(
-                child: Column(
-            children: [
-              SizedBox(height: 30),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Align(
-                      alignment: Alignment.topLeft,
+    return Scaffold(
+      backgroundColor: Colors.black,
+      body: Center(
+        child: SizedBox(
+          height: MediaQuery.of(context).size.height * 1,
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                SizedBox(height: 30),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
                       child: GestureDetector(
                         onTap: () {
                           Navigator.pop(context);
@@ -66,12 +69,9 @@ class _SnippetOwnViewState extends State<SnippetViewOwn> {
                         child: Icon(Icons.arrow_back),
                       ),
                     ),
-                  ),
-                  SizedBox(width: 320),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Align(
-                      alignment: Alignment.topRight,
+                    SizedBox(width: 320),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
                       child: GestureDetector(
                         onTap: () {
                           showModalBottomSheet(
@@ -82,18 +82,18 @@ class _SnippetOwnViewState extends State<SnippetViewOwn> {
                         child: Icon(CupertinoIcons.ellipsis_vertical),
                       ),
                     ),
-                  ),
-                ],
-              ),
-              SizedBox(height: 30),
-              Image(
-                  width: 500,
-                  image: NetworkImage(
-                    widget.snippet.imageURL,
-                  ),
-                  fit: BoxFit.fitWidth),
-              SizedBox(height: 70),
-            ],
+                  ],
+                ),
+                SizedBox(height: 30),
+                Image(
+                    width: 500,
+                    image: NetworkImage(
+                      widget.snippet.imageURL,
+                    ),
+                    fit: BoxFit.fitWidth),
+                SizedBox(height: 70),
+              ],
+            ),
           ),
         ),
       ),

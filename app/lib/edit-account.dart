@@ -4,7 +4,6 @@ import 'package:alert_dialog/alert_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:http/http.dart';
-import 'package:image_picker/image_picker.dart';
 import 'globals.dart';
 import 'models/user.dart';
 import 'models/userInfo.dart';
@@ -16,8 +15,6 @@ class EditAccount extends StatefulWidget {
 }
 
 class _EditAccountState extends State<EditAccount> {
-  PickedFile _imageFile;
-  final ImagePicker _picker = ImagePicker();
   final _formKey = GlobalKey<FormBuilderState>();
   UserInfo userInfo;
   User user = User.empty();
@@ -44,9 +41,12 @@ class _EditAccountState extends State<EditAccount> {
     }
 
     if (resObj['message'] == 'success') {
-      setState(() {
-        user = User.fromJson(resObj["user"]);
-      });
+      if (!mounted)
+        dispose();
+      else
+        setState(() {
+          user = User.fromJson(resObj["user"]);
+        });
     } else {
       return alert(context, content: Text(resObj['message']));
     }
@@ -70,7 +70,8 @@ class _EditAccountState extends State<EditAccount> {
     if (response.statusCode != 200) return;
 
     final resObj = json.decode(response.body);
-    if (resObj['message'] == 'success') {
+    if (resObj['message'] == 'success' ||
+        resObj['message'] == 'success with password change') {
       Navigator.pop(context);
     } else {
       return alert(context, content: Text(resObj['message']));
@@ -247,6 +248,19 @@ class _EditAccountState extends State<EditAccount> {
                             Container(
                               width: 300,
                               child: FormBuilderTextField(
+                                name: 'newPassword',
+                                obscureText: true,
+                                decoration: InputDecoration(
+                                  border: OutlineInputBorder(),
+                                  labelText: 'Password',
+                                ),
+                              ),
+                            ),
+                            SizedBox(height: 10),
+
+                            Container(
+                              width: 300,
+                              child: FormBuilderTextField(
                                 name: "about",
                                 maxLines: 4,
                                 maxLength: 300,
@@ -259,20 +273,6 @@ class _EditAccountState extends State<EditAccount> {
                               ),
                             ),
                             // Fill with user's previous input from API
-                            SizedBox(height: 10),
-                            GestureDetector(
-                              onTap: () {},
-                              child: Container(
-                                child: Text(
-                                  // Grab the description from the API
-                                  'Change Password',
-                                  style: TextStyle(
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.blueAccent[400]),
-                                ),
-                              ),
-                            ),
                           ],
                         ),
                       ),
@@ -288,47 +288,10 @@ class _EditAccountState extends State<EditAccount> {
               'lastName': user.lastName,
               'about': user.about,
               'newUserName': user.username,
+              'newPassword': ""
             },
           ),
         ),
-      ),
-    );
-  }
-
-  void takePhoto(ImageSource source) async {
-    final pickedFile = await _picker.getImage(
-      source: source,
-    );
-    setState(() {
-      _imageFile = pickedFile;
-    });
-  }
-
-  Widget bottomSheet(BuildContext context) {
-    return Container(
-      height: 25.0,
-      width: MediaQuery.of(context).size.width,
-      margin: EdgeInsets.symmetric(
-        horizontal: 20,
-        vertical: 20,
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          FlatButton.icon(
-              onPressed: () {
-                takePhoto(ImageSource.camera);
-              },
-              icon: Icon(Icons.camera),
-              label: Text("Camera")),
-          SizedBox(width: 50),
-          FlatButton.icon(
-              onPressed: () {
-                takePhoto(ImageSource.gallery);
-              },
-              icon: Icon(Icons.image),
-              label: Text("Photo Library")),
-        ],
       ),
     );
   }

@@ -34,10 +34,13 @@ class _SnippetGeneralViewState extends State<SnippetViewGeneral> {
     print(resObj['message']);
 
     if (resObj['message'] == 'success') {
-      setState(() {
-        Navigator.pop(context);
-        Navigator.pop(context);
-      });
+      if (!mounted)
+        dispose();
+      else
+        setState(() {
+          Navigator.pop(context);
+          Navigator.pop(context);
+        });
     } else {
       return alert(context, content: Text(resObj['message']));
     }
@@ -45,32 +48,39 @@ class _SnippetGeneralViewState extends State<SnippetViewGeneral> {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: SizedBox(
-        height: MediaQuery.of(context).size.height * 1,
-        child: SingleChildScrollView(
-                child: Column(
-            children: [
-              SizedBox(height: 30),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Align(
-                  alignment: Alignment.topLeft,
-                  child: GestureDetector(
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                    child: Icon(Icons.arrow_back),
+    return Scaffold(
+      backgroundColor: Colors.black,
+      body: Center(
+        child: SizedBox(
+          height: MediaQuery.of(context).size.height * 1,
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                SizedBox(height: 30),
+                Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                      child: Icon(Icons.arrow_back),
+                    ),
                   ),
-                ),
-              ),
-              SizedBox(height: 30),
-               Image(width: 500, image: NetworkImage(
-                          widget.snippet.imageURL,
-                        ),
-                        fit: BoxFit.fitWidth),
-              SizedBox(height: 70),
-            ],
+                  SizedBox(
+                    width: 370,
+                  ),
+                ]),
+                SizedBox(height: 30),
+                Image(
+                    width: 500,
+                    image: NetworkImage(
+                      widget.snippet.imageURL,
+                    ),
+                    fit: BoxFit.fitWidth),
+                SizedBox(height: 70),
+              ],
+            ),
           ),
         ),
       ),

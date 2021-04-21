@@ -53,13 +53,12 @@ class _NavbarState extends State<Navbar> {
       route: Favorite(),
     ),
     MenuItem(
-      xPos: -0.0,
-      artboard: null,
-      controller: null,
-      iconName: 'add_snippet.riv',
-      color: Colors.greenAccent,
-      route: UploadSnippet()
-    ),
+        xPos: -0.0,
+        artboard: null,
+        controller: null,
+        iconName: 'add_snippet.riv',
+        color: Colors.greenAccent,
+        route: UploadSnippet()),
     MenuItem(
       xPos: 0.5,
       artboard: null,
@@ -104,11 +103,14 @@ class _NavbarState extends State<Navbar> {
     rootBundle.load('assets/rive/${item.iconName}').then(
       (data) async {
         final file = RiveFile.import(data);
-        setState(() {
-          item.artboard = file.mainArtboard;
-          item.artboard
-              .addController(item.controller = SimpleAnimation('idle'));
-        });
+        if (!mounted)
+          dispose();
+        else
+          setState(() {
+            item.artboard = file.mainArtboard;
+            item.artboard
+                .addController(item.controller = SimpleAnimation('idle'));
+          });
       },
     );
   }
@@ -230,18 +232,22 @@ class _NavbarState extends State<Navbar> {
             : Rive(artboard: item.artboard),
       ),
       onTap: () {
-        setState(() {
-          if (active != item) {
-            // This determines what way to animate the navbar transition
-            if (active.xPos > item.xPos)
-              animDir = -1.0;
-            else
-              animDir = 1.0;
+        if (!mounted)
+          dispose();
+        else
+          setState(() {
+            if (active != item) {
+              // This determines what way to animate the navbar transition
+              if (active.xPos > item.xPos)
+                animDir = -1.0;
+              else
+                animDir = 1.0;
 
-            active = item;
-          }
-          item.artboard.addController(item.controller = SimpleAnimation('go'));
-        });
+              active = item;
+            }
+            item.artboard
+                .addController(item.controller = SimpleAnimation('go'));
+          });
       },
     );
   }
