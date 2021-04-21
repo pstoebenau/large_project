@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:large_project/forgot_pass.dart';
 import 'package:large_project/models/userInfo.dart';
+import 'package:large_project/signup.dart';
 import 'package:provider/provider.dart';
 import 'package:url_strategy/url_strategy.dart';
 import 'package:large_project/navbar.dart';
+import 'landing.dart';
 import 'login.dart';
 
 
@@ -26,7 +29,10 @@ class MyApp extends StatelessWidget {
         ),
         initialRoute: '/',
         routes: {
-          '/': (context) => Login(),
+          '/': (context) => Landing(),
+          '/login': (context) => Login(),
+          '/signup': (context) => Signup(),
+          '/forgot-password': (context) => ForgotPassword(),
           '/swipe': (context) => Navbar(initialRoute: 'swipe'),
           '/favorites': (context) => Navbar(initialRoute: 'favorites'),
           '/addSnippet': (context) => Navbar(initialRoute: 'addSnippet'),

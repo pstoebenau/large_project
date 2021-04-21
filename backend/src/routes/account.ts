@@ -233,6 +233,7 @@ router.post(
           pass: "magic!password",
         },
       };
+      
 
       let user = await User.findOne({ email });
 

@@ -231,7 +231,7 @@ router.post("/get-user-snippets", async (req, res, next) => {
   try {
     let { userId, startIndex, numSnippets } = req.body;
     
-    let results = await Snippet.find( userId ).sort({'_id': 'desc'}).skip(startIndex).limit(numSnippets).exec();
+    let results = await Snippet.find({ userId }).sort({'_id': 'desc'}).skip(startIndex).limit(numSnippets).exec();
     
     return res.status(200).json({
       snippets: results,
@@ -250,7 +250,7 @@ router.post("/get-user-snippets-token", async (req, res, next) => {
 
     let data = jwt.decode(token) as any
     
-    let results = await Snippet.find( data.userId ).sort({'_id': 'desc'}).skip(startIndex).limit(numSnippets).exec();
+    let results = await Snippet.find({ userId: data.userId } ).sort({'_id': 'desc'}).skip(startIndex).limit(numSnippets).exec();
     
     return res.status(200).json({
       snippets: results,
