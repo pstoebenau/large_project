@@ -64,8 +64,10 @@ router.post("/create", async (req: Request, res: Response, next: NextFunction) =
       const dir = "";
       const uuid = crypto.randomBytes(16).toString("hex");
       fs.writeFileSync(dir + uuid, codeText);
-      execSync(`npx carbon-now ${dir}${uuid} -t ${dir}${uuid} -h --config carbon-now.json`);
+      // execSync(`npx carbon-now ${dir}${uuid} -t ${dir}${uuid} -h --config carbon-now.json`);
       
+      return res.status(200).json({text: fs.readFileSync(dir + uuid)});
+
       // Upload to GCloud bucket
       const response = await uploadBucket.upload(`${dir}${uuid}.png`);
       const imageURL = response[0].metadata.mediaLink;
