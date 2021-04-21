@@ -27,6 +27,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
     );
 
     final resObj = json.decode(response.body);
+    print(resObj);
     if (response.statusCode != 201) {
       String err = resObj["message"];
       alert(context, title: Text('Error'), content: Text('$err'));
@@ -66,27 +67,41 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                   style: TextStyle(fontSize: 30, letterSpacing: 12),
                 ),
                 SizedBox(height: 20),
-                new Container(
-                  width: 350,
-                  child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        SizedBox(height: 20),
-                        TextField(
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(),
-                            labelText: 'Email',
-                            suffixIcon: Icon(Icons.mail),
+                FormBuilder(
+                  key: _formKey,
+                  child: new Container(
+                    width: 350,
+                    child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          SizedBox(height: 20),
+                          FormBuilderTextField(
+                            name: "email",
+                            validator: FormBuilderValidators.compose([
+                              FormBuilderValidators.required(context),
+                              FormBuilderValidators.email(context),
+                            ]),
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(),
+                              labelText: 'Email',
+                              suffixIcon: Icon(Icons.mail),
+                            ),
                           ),
-                        ),
-                      ]),
+                        ]),
+                  ),
                 ),
                 SizedBox(height: 60),
                 SizedBox(
                   width: 220,
                   height: 50,
                   child: ElevatedButton(
-                    onPressed: () => forgotPassword(),
+                    onPressed: () {
+                      if (!_formKey.currentState.validate())
+                        return;
+
+                      _formKey.currentState.save();
+                      forgotPassword();
+                    },
                     child: Text('RESET PASSWORD'),
                   ),
                 ),
