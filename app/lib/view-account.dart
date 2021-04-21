@@ -9,36 +9,72 @@ import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'globals.dart';
 import 'models/snippet.dart';
+import 'models/user.dart';
 import 'models/userInfo.dart';
 
 class ViewAccountPage extends StatefulWidget {
+  final String userId;
+
+  const ViewAccountPage(this.userId);
   @override
   _ViewAccountPageState createState() => _ViewAccountPageState();
 }
 
 class _ViewAccountPageState extends State<ViewAccountPage> {
+    UserInfo userInfo;
   static const double snippetRatio = 10 / 14;
   List<Snippet> hotSnippets = [];
-  UserInfo userInfo;
   int snippetCache = 4;
   int snippetIndex = 0;
   final _scrollController = ScrollController();
+  User user;
 
   @override
   void initState() {
+    if (!mounted)
+      return;
     super.initState();
     userInfo = context.read<UserInfo>();
-    getUserSnippets();
+    getUserEverything();
   }
 
-  void getUserSnippets() async {
+  void getUserEverything() async {
+    await getUserInfo(widget.userId);
+    getUserSnippets(widget.userId);
+  }
+
+  Future<void> getUserInfo(String userId) async {
+    final url = Uri.parse('${Globals.apiUrl}/api/user/getuserbyId');
+    var response = await post(url,
+        headers: {"Content-Type": "application/json"},
+        body: json.encode({"_id": userId}));
+    var resObj = json.decode(response.body);
+
+    if (response.statusCode != 200) {
+      String err = resObj["message"];
+      alert(context,
+          title: Text('${response.statusCode}'), content: Text('$err'));
+      return;
+    }
+
+    if (resObj['message'] == 'success') {
+      setState(() {
+        user = User.fromJson(resObj["user"]);
+      });
+    } else {
+      return alert(context, content: Text(resObj['message']));
+    }
+  }
+
+  void getUserSnippets(String userId) async {
     // No need to call api if there are no more snippets
     if (hotSnippets.length < snippetIndex) return;
 
-    final url = Uri.parse('${Globals.apiUrl}/api/snippet/get-by-score');
+    final url = Uri.parse('${Globals.apiUrl}/api/snippet/get-user-snippets');
     var response = await post(url,
         headers: {"Content-Type": "application/json"},
         body: json.encode({
+          "_id": userId,
           "startIndex": snippetIndex,
           "numSnippets": snippetIndex == 0 ? snippetCache + 1 : snippetCache,
         }));
@@ -85,7 +121,7 @@ class _ViewAccountPageState extends State<ViewAccountPage> {
           if (_scrollController.position.pixels ==
               _scrollController.position.maxScrollExtent) {
             snippetIndex += snippetCache;
-            getUserSnippets();
+            getUserSnippets(widget.userId);
           }
         },
         child: SingleChildScrollView(
@@ -143,7 +179,7 @@ class _ViewAccountPageState extends State<ViewAccountPage> {
                               Container(
                                 child: Text(
                                   // Grab from API the user's name
-                                  'Joe Mama',
+                                  user.firstName + " " + user.lastName,
                                   style: TextStyle(fontSize: 25),
                                 ),
                               ),
@@ -164,10 +200,12 @@ class _ViewAccountPageState extends State<ViewAccountPage> {
                                   children: [
                                     SizedBox(height: 10),
                                     Container(
+                                      width: 250,
+                                      height: 110,
                                       child: Text(
                                         // This is the user description, it should
                                         // Grab from the API the user description
-                                        'About Me: You\'ve never had it Joe good',
+                                        'About Me: ' + user.about,
                                         style: TextStyle(fontSize: 12),
                                       ),
                                     ),
@@ -180,7 +218,7 @@ class _ViewAccountPageState extends State<ViewAccountPage> {
                           Container(
                             child: Text(
                               // Insert API call for First Name here
-                              'Joe\'s Snippets',
+                              user.firstName + '\'s Snippets',
                               style: TextStyle(fontSize: 20),
                             ),
                           ),

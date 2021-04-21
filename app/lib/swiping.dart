@@ -22,6 +22,8 @@ class _SwipingPageState extends State<SwipingPage> {
 
   @override
   void initState() {
+    if (!mounted)
+      return;
     super.initState();
     userInfo = context.read<UserInfo>();
     getNextSnippet();
@@ -132,7 +134,7 @@ class _SwipingPageState extends State<SwipingPage> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => ViewAccountPage(),
+                      builder: (context) => ViewAccountPage(hotSnippet.userId),
                     ),
                   );
                 },

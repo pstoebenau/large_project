@@ -26,13 +26,19 @@ class _UserAccountPageState extends State<UserAccountPage> {
 
   @override
   void initState() {
+    if (!mounted)
+      return;
     super.initState();
     userInfo = context.read<UserInfo>();
-    getUserInfo();
-    getUserSnippets();
+    getUserEverything();
   }
 
-  void getUserInfo() async {
+  void getUserEverything() async {
+    await getUserInfo();
+    getUserSnippets(userInfo.token);
+  }
+
+  Future<void> getUserInfo() async {
     final url = Uri.parse('${Globals.apiUrl}/api/user/getuser');
     var response = await post(url,
         headers: {"Content-Type": "application/json"},
@@ -55,14 +61,15 @@ class _UserAccountPageState extends State<UserAccountPage> {
     }
   }
 
-  void getUserSnippets() async {
+  void getUserSnippets(String userId) async {
     // No need to call api if there are no more snippets
     if (hotSnippets.length < snippetIndex) return;
 
-    final url = Uri.parse('${Globals.apiUrl}/api/snippet/get-by-score');
+    final url = Uri.parse('${Globals.apiUrl}/api/snippet/get-user-snippets');
     var response = await post(url,
         headers: {"Content-Type": "application/json"},
         body: json.encode({
+          "_id": userId,
           "startIndex": snippetIndex,
           "numSnippets": snippetIndex == 0 ? snippetCache + 1 : snippetCache,
         }));
@@ -109,7 +116,7 @@ class _UserAccountPageState extends State<UserAccountPage> {
           if (_scrollController.position.pixels ==
               _scrollController.position.maxScrollExtent) {
             snippetIndex += snippetCache;
-            getUserSnippets();
+            getUserSnippets(userInfo.token);
           }
         },
         child: SingleChildScrollView(
@@ -302,7 +309,7 @@ class _UserAccountPageState extends State<UserAccountPage> {
         setState(() {
           snippetIndex = 0;
           hotSnippets.clear();
-          getUserSnippets();
+          getUserSnippets(userInfo.token);
         });
       },
       child: Column(
