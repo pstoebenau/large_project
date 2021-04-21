@@ -1,5 +1,4 @@
 // /api/account/signup
-
 // input
 // {
 //   "firstName": string,
@@ -14,8 +13,10 @@
 //   "message": string
 // }
 
-// /api/account/login
 
+
+
+// /api/account/login
 // input
 // {
 //   "username": string,
@@ -27,25 +28,57 @@
 //   token: string
 // }
 
-/**
- *  input: Will assume fields are instantiated and not empty. newPassword is excluded. If it is empty or just white space
- *  it will not update.
- * {
-    "token": string,
-    "profileImage": string,
-    "firstName": string,
-    "lastName": string,
-    "email" : string,
-    "about" : string,
-    "newUserName": string
-    "newPassword" : string
- * }
- *  
- *   output
- * {
- *    message : string
- * }
- */
+
+
+
+// /api/account/account-edit
+// input: Will assume fields are instantiated and not empty. newPassword is excluded. If it is empty or just white space
+// it will not update.
+
+// input
+// {
+//   "token": string,
+//   "profileImage": string,
+//   "firstName": string,
+//   "lastName": string,
+//   "email" : string,
+//   "about" : string,
+//   "newUserName": string
+//   "newPassword" : string
+// }
+
+// output
+// {
+//   message : string
+// }
+
+
+
+// /api/account/forgotpassword
+// input
+// {
+//   "email": string
+// }
+
+// output
+// {
+//   "message": string
+// }
+
+
+
+
+// /api/account/changepassword
+// input
+// {
+//   "password": string,
+//   "token": string
+// }
+
+// output
+// {
+//   "message": string
+// }
 import express, { NextFunction, Request, Response } from "express";
 import nodemailer, { createTestAccount } from "nodemailer";
 import bcrypt from "bcrypt";
@@ -127,7 +160,7 @@ router.post(
 
 router.get("/verify/:token", async function (req, res) {
   let token = req.params.token;
-  res.sendFile(path.resolve('src/public/success.html'));
+  res.sendFile(path.resolve("src/public/success.html"));
 
   try {
     let data = jwt.decode(token) as any;
@@ -158,17 +191,18 @@ router.post("/login", async function (req, res) {
       });
     }
 
-
-    if (bcrypt.compareSync(password, user.password))
-    {
-      if (user?.active)
-      {
-        token = jwt.sign({userId: user.id, firstName: user.firstName, username: user.username}, config.server.secret);
-        return res.status(200).json({token, message: "success"});
-      }
-      else
-      {
-
+    if (bcrypt.compareSync(password, user.password)) {
+      if (user?.active) {
+        token = jwt.sign(
+          {
+            userId: user.id,
+            firstName: user.firstName,
+            username: user.username,
+          },
+          config.server.secret
+        );
+        return res.status(200).json({ token, message: "success" });
+      } else {
         return res.status(200).json({
           message: "verify email",
         });
@@ -232,32 +266,28 @@ router.get("/changepassword/:token", (req, res) => {
   return res.sendFile(path.resolve("src/public/changepassword.html"));
 });
 
+router.post("/changepassword", async function (req, res) {
+  let { password, token } = req.body;
+  try {
+    const hash = await bcrypt.hash(password, 10);
+    let data = jwt.decode(token) as any;
+    let email = data.email;
 
-  router.post("/changepassword", async function (req, res) {
-    let { password, token } = req.body;
-    
-    try {
-      const hash = await bcrypt.hash(password, 10);
-      let data = jwt.decode(token) as any;
-      let email = data.email;
-  
-      let user = await User.findOne({ email });
-      user?.updateOne({ password: hash }, null, (err, res) => {});
-  
-      return res.status(200).json({ user, message: "success" });
-    } catch (error) {
-      return res.status(500).json({
-        message: error.message,
-      });
-    }
-  });
+    let user = await User.findOne({ email });
+    user?.updateOne({ password: hash }, null, (err, res) => {});
 
+    return res.status(200).json({ user, message: "success" });
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message,
+    });
+  }
+});
 
 // Assumes that all fields are instantiated
 router.post("/account-edit", async function (req, res) {
   let {
     token,
-    profileImage,
     firstName,
     lastName,
     email,
@@ -267,9 +297,9 @@ router.post("/account-edit", async function (req, res) {
   } = req.body;
   const hash = await bcrypt.hash(newPassword.trim(), 10);
   let data = jwt.verify(token, config.server.secret) as Token;
-  console.log(data);
+
   let id = data.userId;
-  console.log(id);
+
   try {
     let user = await User.findOne({ _id: id });
     user?.updateOne(
@@ -278,17 +308,17 @@ router.post("/account-edit", async function (req, res) {
         firstName: firstName,
         lastName: lastName,
         email: email,
-        profileImage: profileImage,
         about: about,
       },
       null,
       (err, res) => {}
     );
-    if (newPassword.length > 0 && newPassword.trim().length > 0)
-     { 
-       user?.updateOne({ password: hash }, null, (err, res) => {});
-       return res.status(200).json({ message: "success with password change" });
-     }
+    if (newPassword.length > 0 && newPassword.trim().length > 0) {
+      user?.updateOne({ password: hash }, null, (err, res) => {});
+
+      return res.status(200).json({ message: "success with password change" });
+
+    }
     return res.status(200).json({ message: "success" });
   } catch (error) {
     return res.status(500).json({
