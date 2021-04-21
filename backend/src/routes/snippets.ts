@@ -13,8 +13,9 @@ import { Storage } from '@google-cloud/storage';
 import { createReadStream } from "fs";
 import path from "path";
 import axios from "axios";
+import { OutputFileType } from "typescript";
 
-// /api/snippet/deleteSnippet
+// /api/snippets/deleteSnippet
 
 // input
 // {
@@ -32,7 +33,7 @@ import axios from "axios";
 // }
 // returns the snippet that was deleted.
 
-// /api/snippet/create
+// /api/snippets/create
 // input
 // {
 //   "token": string,
@@ -44,7 +45,20 @@ import axios from "axios";
 //   "message": string,
 // }
 
+// /api/snippets/get-user-snippets
 
+// input
+// {
+//   "userId": string,
+//   "startIndex": integer,
+//   "numSnippets": integer
+// }
+
+// output
+// {
+//   "snippets": snippets,
+//   "message": string
+// }
 let gc;
 
 if (process.env["CREDS"]) {
