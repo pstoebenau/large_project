@@ -77,9 +77,12 @@ class Signup_next extends StatelessWidget {
               ),
             ),
             SizedBox(height: 60),
-            Text(
-              "Login to an existing account",
-              style: TextStyle(decoration: TextDecoration.underline),
+            GestureDetector(
+              onTap: () => Navigator.pushReplacementNamed(context, "/"),
+              child: Text(
+                "Login to an existing account",
+                style: TextStyle(decoration: TextDecoration.underline),
+              ),
             ),
             SizedBox(height: 30),
           ],
