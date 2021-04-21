@@ -86,7 +86,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                   width: 220,
                   height: 50,
                   child: ElevatedButton(
-                    onPressed: () => {},
+                    onPressed: () => forgotPassword(),
                     child: Text('RESET PASSWORD'),
                   ),
                 ),
