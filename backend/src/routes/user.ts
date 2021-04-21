@@ -1,7 +1,33 @@
+// /api/user/getuser
+
+// input
+// {
+//   "token": string;
+// }
+
+// output
+// {
+//   "user": {
+    //   "_id": string,
+    //   "profileImage": string,
+    //   "firstName": string,
+    //   "lastName": string,
+    //   "email": string,
+    //   "username": string,
+    //   "password": string,
+    //   "about": string,
+    //   "active": boolean,
+    //   "createdAt": "2021-04-20T18:43:39.732Z",
+    //   "updatedAt": "2021-04-20T18:43:52.378Z",
+    //   "__v": 0
+// },
+// "message": "success"
+// }
 import express, { NextFunction, Request, Response } from 'express';
 import User from '@/schemas/user';
 import mongoose from 'mongoose';
 import jwt from "jsonwebtoken";
+import { OutputFileType } from 'typescript';
 
 const router = express.Router();
 
