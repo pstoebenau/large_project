@@ -16,12 +16,12 @@ class Landing extends StatelessWidget {
                 child: new Image.asset("assets/chili.png",
                     width: 200, height: 200, fit: BoxFit.cover),
               ),
-              SizedBox(height: 20),
+              SizedBox(height: 40),
               Text(
                 'CHILL CHILI',
                 style: TextStyle(fontSize: 32, letterSpacing: 15),
               ),
-              SizedBox(height: 100),
+              SizedBox(height: 80),
               SizedBox(
                 width: 220,
                 height: 50,
