@@ -57,6 +57,7 @@ class _SwipingPageState extends State<SwipingPage> {
       await getNextSnippet();
       return;
     }
+    
     if (resObj['message'] == 'success') {
       setState(() {
         user = User.fromJson(resObj["user"]);
@@ -96,7 +97,7 @@ class _SwipingPageState extends State<SwipingPage> {
           title: Text('${response.statusCode}'), content: Text('$err'));
       return;
     }
-    if (resObj['message'] == 'success') {
+    if (resObj['message'] == 'success' && mounted) {
       setState(() {
         hotSnippet = Snippet.fromJson(resObj["snippet"]);
       });

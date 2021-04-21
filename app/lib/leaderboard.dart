@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:http/http.dart';
 import 'package:large_project/globals.dart';
 import 'package:large_project/models/userInfo.dart';
+import 'general-snippet-view.dart';
 import 'models/snippet.dart';
 import 'models/userInfo.dart';
 import 'package:provider/provider.dart';
@@ -173,8 +174,13 @@ class _LeaderBoardState extends State<LeaderBoard> {
 
   Widget codeSnippet({@required Snippet snippet, @required double fontSize, @required String description}) {
     return GestureDetector(
-      onTap: () async {
-        return alert(context, title: Text(description));
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => SnippetViewGeneral(snippet),
+          ),
+        );
       },
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,

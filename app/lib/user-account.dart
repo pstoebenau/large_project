@@ -27,8 +27,7 @@ class _UserAccountPageState extends State<UserAccountPage> {
 
   @override
   void initState() {
-    if (!mounted)
-      return;
+    if (!mounted) return;
     super.initState();
     userInfo = context.read<UserInfo>();
     getUserEverything();
@@ -53,7 +52,7 @@ class _UserAccountPageState extends State<UserAccountPage> {
       return;
     }
 
-    if (resObj['message'] == 'success') {
+    if (resObj['message'] == 'success' && mounted) {
       setState(() {
         user = User.fromJson(resObj["user"]);
       });
@@ -66,12 +65,13 @@ class _UserAccountPageState extends State<UserAccountPage> {
     // No need to call api if there are no more snippets
     if (hotSnippets.length < snippetIndex) return;
 
-    final url = Uri.parse('${Globals.apiUrl}/api/snippet/get-user-snippets-token');
+    final url =
+        Uri.parse('${Globals.apiUrl}/api/snippet/get-user-snippets-token');
     print(json.encode({
-          "token": userId,
-          "startIndex": snippetIndex,
-          "numSnippets": snippetIndex == 0 ? snippetCache + 1 : snippetCache,
-        }));
+      "token": userId,
+      "startIndex": snippetIndex,
+      "numSnippets": snippetIndex == 0 ? snippetCache + 1 : snippetCache,
+    }));
     var response = await post(url,
         headers: {"Content-Type": "application/json"},
         body: json.encode({
@@ -79,7 +79,7 @@ class _UserAccountPageState extends State<UserAccountPage> {
           "startIndex": snippetIndex,
           "numSnippets": snippetIndex == 0 ? snippetCache + 1 : snippetCache,
         }));
-    
+
     var resObj = json.decode(response.body);
     if (response.statusCode != 200) {
       String err = resObj["message"];
@@ -88,7 +88,7 @@ class _UserAccountPageState extends State<UserAccountPage> {
       return;
     }
 
-    if (resObj['message'] == 'success') {
+    if (resObj['message'] == 'success' && mounted) {
       setState(() {
         for (Map<String, dynamic> snippet in resObj['snippets']) {
           hotSnippets.add(Snippet.fromJson(snippet));
@@ -159,12 +159,12 @@ class _UserAccountPageState extends State<UserAccountPage> {
                               Container(
                                 // Grab from API a profile picture
                                 child: CircleAvatar(
-                                    radius: 45,
-                                    // This is the user profile picture
-                                    // This should grab the API user profile pic
-                                    backgroundImage: NetworkImage(
-                                        'https://t3.ftcdn.net/jpg/00/64/67/52/240_F_64675209_7ve2XQANuzuHjMZXP3aIYIpsDKEbF5dD.jpg'),
-                                  ),
+                                  radius: 45,
+                                  // This is the user profile picture
+                                  // This should grab the API user profile pic
+                                  backgroundImage: NetworkImage(
+                                      'https://t3.ftcdn.net/jpg/00/64/67/52/240_F_64675209_7ve2XQANuzuHjMZXP3aIYIpsDKEbF5dD.jpg'),
+                                ),
                               ),
                               SizedBox(width: 30),
                               Container(
@@ -177,17 +177,18 @@ class _UserAccountPageState extends State<UserAccountPage> {
                               SizedBox(width: 50),
                               Container(
                                 child: GestureDetector(
-                                  onTap: () async{
+                                  onTap: () async {
                                     await Navigator.push(
                                       context,
                                       MaterialPageRoute(
                                         builder: (context) => EditAccount(),
                                       ),
                                     );
-                                    setState(() {
-                                      user = User.empty();
-                                      getUserInfo();
-                                    });
+                                    if (mounted)
+                                      setState(() {
+                                        user = User.empty();
+                                        getUserInfo();
+                                      });
                                   },
                                   // This should be replaced with user profile picture
                                   // Associated with the snippet
@@ -313,12 +314,14 @@ class _UserAccountPageState extends State<UserAccountPage> {
             builder: (context) => SnippetViewOwn(snippet),
           ),
         );
-        setState(() {
-          loading = true;
-          snippetIndex = 0;
-          hotSnippets.clear();
-          getUserSnippets(userInfo.token);
-        });
+        if (mounted) {
+          setState(() {
+            loading = true;
+            snippetIndex = 0;
+            hotSnippets.clear();
+            getUserSnippets(userInfo.token);
+          });
+        }
       },
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,

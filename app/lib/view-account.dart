@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:alert_dialog/alert_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
+import 'package:large_project/general-snippet-view.dart';
 import './upload-snippet.dart';
 import './edit-account.dart';
 import 'package:image_picker/image_picker.dart';
@@ -87,7 +88,7 @@ class _ViewAccountPageState extends State<ViewAccountPage> {
       return;
     }
 
-    if (resObj['message'] == 'success') {
+    if (resObj['message'] == 'success' && mounted) {
       setState(() {
         for (Map<String, dynamic> snippet in resObj['snippets']) {
           hotSnippets.add(Snippet.fromJson(snippet));
@@ -277,8 +278,13 @@ class _ViewAccountPageState extends State<ViewAccountPage> {
       @required double fontSize,
       @required String description}) {
     return GestureDetector(
-      onTap: () async {
-        return alert(context, title: Text(description));
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => SnippetViewGeneral(snippet),
+          ),
+        );
       },
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
