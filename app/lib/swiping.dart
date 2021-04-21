@@ -24,10 +24,16 @@ class _SwipingPageState extends State<SwipingPage> {
   void initState() {
     super.initState();
     userInfo = context.read<UserInfo>();
-    getRandomSnippet();
+    getNextSnippet();
   }
 
-  void getUserInfo(String userId) async {
+  Future<void> getNextSnippet() async {
+    user = User.empty();
+    await getRandomSnippet();
+    getUserInfo(hotSnippet.userId);
+  }
+
+  Future<void> getUserInfo(String userId) async {
     final url = Uri.parse('${Globals.apiUrl}/api/user/getuserbyId');
     var response = await post(
       url,
@@ -36,10 +42,17 @@ class _SwipingPageState extends State<SwipingPage> {
     );
 
     var resObj = json.decode(response.body);
+
     if (response.statusCode != 200) {
       String err = resObj["message"];
       alert(context,
           title: Text('${response.statusCode}'), content: Text('$err'));
+      return;
+    }
+
+    print(resObj);
+    if (resObj["user"] == null) {
+      await getNextSnippet();
       return;
     }
     if (resObj['message'] == 'success') {
@@ -51,7 +64,7 @@ class _SwipingPageState extends State<SwipingPage> {
     }
   }
 
-  void updateScore(Snippet snippet) async {
+  Future<void> updateScore(Snippet snippet) async {
     final url = Uri.parse('${Globals.apiUrl}/api/snippet/updateScore');
     var response = await post(url,
         headers: {"Content-Type": "application/json"},
@@ -69,7 +82,7 @@ class _SwipingPageState extends State<SwipingPage> {
     }
   }
 
-  void getRandomSnippet() async {
+  Future<void> getRandomSnippet() async {
     final url = Uri.parse('${Globals.apiUrl}/api/snippet/get-random');
     var response =
         await get(url, headers: {"Content-Type": "application/json"});
@@ -156,9 +169,7 @@ class _SwipingPageState extends State<SwipingPage> {
               children: [
                 GestureDetector(
                   onTap: () async {
-                    getRandomSnippet();
-                    user = User.empty();
-                    getUserInfo(hotSnippet.userID);
+                    getNextSnippet();
                   },
                   child: Container(
                     child: new Image.asset("assets/image 15.png",
@@ -168,10 +179,8 @@ class _SwipingPageState extends State<SwipingPage> {
                 SizedBox(width: 200),
                 GestureDetector(
                   onTap: () async {
-                    updateScore(hotSnippet);
-                    getRandomSnippet();
-                    user = User.empty();
-                    getUserInfo(hotSnippet.userID);
+                    await updateScore(hotSnippet);
+                    getNextSnippet();
                   },
                   child: Container(
                     child: new Image.asset("assets/fire 2.png",
@@ -188,7 +197,6 @@ class _SwipingPageState extends State<SwipingPage> {
   }
 
   Widget codeSnippet({@required Snippet snippet}) {
-    print(snippet.userID);
     return GestureDetector(
       onTap: () async {
         Navigator.push(

@@ -1,11 +1,11 @@
 class Snippet {
   final String id;
-  final String userID;
+  final String userId;
   final String imageURL;
   final int score;
 
-  Snippet(this.id, this.userID, this.imageURL, this.score);
-  Snippet.positional({ this.id, this.userID, this.imageURL, this.score });
+  Snippet(this.id, this.userId, this.imageURL, this.score);
+  Snippet.positional({ this.id, this.userId, this.imageURL, this.score });
 
   factory Snippet.empty() {
     return Snippet('', '', '', -1);
@@ -14,7 +14,7 @@ class Snippet {
   factory Snippet.fromJson(Map json) {
     return Snippet.positional(
       id: json['_id'] ?? '',
-      userID: json['userID'] ?? '',
+      userId: json['userId'] ?? '',
       imageURL: json['imageURL'] ?? '',
       score: json['score'] ?? -1,
     );
@@ -23,7 +23,7 @@ class Snippet {
   Map<String, dynamic> toJson(Snippet snippet) {
     return {
       '_id': snippet.id,
-      'userID': snippet.userID,
+      'userId': snippet.userId,
       'imageURL': snippet.imageURL,
       'score': snippet.score,
     };
