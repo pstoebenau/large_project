@@ -82,7 +82,11 @@ router.post("/create", async (req: Request, res: Response, next: NextFunction) =
       let results = await snippet.save();
 
       return res.status(200).json({
+<<<<<<< HEAD
+        snippet: results._id,
+=======
         snippet: results,
+>>>>>>> master
         message: "success"
       });
     } catch (error) {
@@ -107,22 +111,26 @@ router.get('/get-random', async (req, res, next) => {
   }
 });
 
-router.get('/find', async (req: Request, res: Response, next: NextFunction) => {
+router.post('/updateScore', async (req: Request, res: Response, next: NextFunction) => {
+  let _id = req.body;
+
   try {
-    let results = await Snippet.find().exec();
+    let results = await Snippet.findOneAndUpdate({_id: req.body._id}, {$inc : {score : 1}});
 
     return res.status(200).json({
+<<<<<<< HEAD
+=======
       snippet: results,
       count: results.length,
+>>>>>>> master
       message: "success"
     });
   } catch (error) {
     return res.status(500).json({
-      message: error.message,
+      message: error.message
     });
   }
 });
-
 router.post(
   "/deleteSnippet",
   async (req: Request, res: Response, next: NextFunction) => {
@@ -130,8 +138,13 @@ router.post(
     try {
       let results = await Snippet.findByIdAndRemove(test).exec();
       return res.status(200).json({
+<<<<<<< HEAD
+        message: "success"
+        //snippet: results,
+=======
         snippet: results,
         message: "success"
+>>>>>>> master
       });
     } catch (error) {
       return res.status(500).json({
