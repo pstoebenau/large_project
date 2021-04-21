@@ -8,8 +8,9 @@ import fs from "fs";
 import crypto from "crypto";
 import { execSync } from "child_process";
 import snippets from "@/schemas/snippets";
+import { JWTInput } from "google-auth-library"
 import { Storage } from '@google-cloud/storage';
-import { createReadStream } from "node:fs";
+import { createReadStream } from "fs";
 import path from "path";
 import axios from "axios";
 
@@ -43,10 +44,29 @@ import axios from "axios";
 //   "message": string,
 // }
 
-const gc = new Storage({
-  keyFilename: 'chillchili-a1903a0fdbb3.json',
-  projectId: 'chillchili'
-});
+
+let gc;
+
+if (process.env["CREDS"]) {
+  // load the environment variable with our keys
+  const keysEnvVar = process.env["CREDS"];
+  const keys: JWTInput = JSON.parse(keysEnvVar);
+  
+  gc = new Storage({
+    projectId: 'chillchili',
+    credentials: {
+      client_email: keys.client_email,
+      private_key: keys.private_key
+    }
+  });
+}
+else {
+  gc = new Storage({
+    keyFilename: 'chillchili-a1903a0fdbb3.json',
+    projectId: 'chillchili',
+  });
+}
+
 const uploadBucket = gc.bucket('chillchilli-uploads');
 
 const router = express.Router();
