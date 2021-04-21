@@ -234,7 +234,6 @@ router.post(
         },
       };
       
-
       let user = await User.findOne({ email });
 
       if (user === null)
