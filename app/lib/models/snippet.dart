@@ -13,7 +13,7 @@ class Snippet {
 
   factory Snippet.fromJson(Map json) {
     return Snippet.positional(
-      id: json['id'] ?? '',
+      id: json['_id'] ?? '',
       userID: json['userID'] ?? '',
       imageURL: json['imageURL'] ?? '',
       score: json['score'] ?? -1,
@@ -22,7 +22,7 @@ class Snippet {
 
   Map<String, dynamic> toJson(Snippet snippet) {
     return {
-      'id': snippet.id,
+      '_id': snippet.id,
       'userID': snippet.userID,
       'imageURL': snippet.imageURL,
       'score': snippet.score,
