@@ -50,6 +50,7 @@ class _LoginState extends State<Login> {
           child: Container(
             constraints: BoxConstraints(maxWidth: 400),
             width: MediaQuery.of(context).size.width * 0.8,
+            height: MediaQuery.of(context).size.height,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
