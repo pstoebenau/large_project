@@ -16,6 +16,7 @@ class SwipingPage extends StatefulWidget {
 }
 
 class _SwipingPageState extends State<SwipingPage> {
+  static const double snippetRatio = 10 / 14;
   Snippet hotSnippet = Snippet.empty();
   UserInfo userInfo;
   User user = User.empty();
@@ -169,7 +170,11 @@ class _SwipingPageState extends State<SwipingPage> {
               ),
               SizedBox(height: 5),
               // API here, need to replace with new photo everytime a widget is clicked, Needs to be initialized?
-              codeSnippet(snippet: hotSnippet),
+              Container(
+                height: MediaQuery.of(context).size.height * 0.5,
+                width: (MediaQuery.of(context).size.height * 0.5) * snippetRatio,
+                child: codeSnippet(snippet: hotSnippet)
+              ),
               SizedBox(height: 13),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -214,19 +219,15 @@ class _SwipingPageState extends State<SwipingPage> {
           ),
         );
       },
-      child: Expanded(
-        child: Container(
-          width: 300,
-          height: 400,
-          decoration: BoxDecoration(
-              image: DecorationImage(
-            image: NetworkImage(
-              snippet.imageURL,
-            ),
-            fit: BoxFit.fitWidth,
-            alignment: Alignment.topCenter,
-          )),
-        ),
+      child: Container(
+        decoration: BoxDecoration(
+            image: DecorationImage(
+          image: NetworkImage(
+            snippet.imageURL,
+          ),
+          fit: BoxFit.fitWidth,
+          alignment: Alignment.topCenter,
+        )),
       ),
     );
   }
