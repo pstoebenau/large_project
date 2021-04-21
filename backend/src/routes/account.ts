@@ -160,7 +160,6 @@ router.post(
 
 router.get("/verify/:token", async function (req, res) {
   let token = req.params.token;
-  res.sendFile(path.resolve("src/public/success.html"));
 
   try {
     let data = jwt.decode(token) as any;
@@ -170,7 +169,7 @@ router.get("/verify/:token", async function (req, res) {
     user?.updateOne({ active: true }, null, (err, res) => {});
     console.log(user);
 
-    return res.status(200).json({ user });
+    return res.sendFile(path.resolve("src/public/success.html"));
   } catch (error) {
     return res.status(500).json({
       message: error.message,
