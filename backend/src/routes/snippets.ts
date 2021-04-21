@@ -86,7 +86,7 @@ router.post("/create", async (req: Request, res: Response, next: NextFunction) =
         image.data.on('end', () => resolve());
         image.data.on('error', (err: Error) => reject(err));
       });
-      
+
       // Upload to GCloud bucket
       const response = await uploadBucket.upload(`${uuid}.png`);
       const imageURL = response[0].metadata.mediaLink;
@@ -103,11 +103,7 @@ router.post("/create", async (req: Request, res: Response, next: NextFunction) =
       let results = await snippet.save();
 
       return res.status(200).json({
-<<<<<<< HEAD
-        snippet: results._id,
-=======
         snippet: results,
->>>>>>> master
         message: "success"
       });
     } catch (error) {
@@ -139,11 +135,6 @@ router.post('/updateScore', async (req: Request, res: Response, next: NextFuncti
     let results = await Snippet.findOneAndUpdate({_id: req.body._id}, {$inc : {score : 1}});
 
     return res.status(200).json({
-<<<<<<< HEAD
-=======
-      snippet: results,
-      count: results.length,
->>>>>>> master
       message: "success"
     });
   } catch (error) {
@@ -159,13 +150,8 @@ router.post(
     try {
       let results = await Snippet.findByIdAndRemove(test).exec();
       return res.status(200).json({
-<<<<<<< HEAD
         message: "success"
         //snippet: results,
-=======
-        snippet: results,
-        message: "success"
->>>>>>> master
       });
     } catch (error) {
       return res.status(500).json({
