@@ -50,38 +50,17 @@ class _SnippetGeneralViewState extends State<SnippetViewGeneral> {
       child: Column(
         children: [
           SizedBox(height: 30),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Align(
-                  alignment: Alignment.topLeft,
-                  child: GestureDetector(
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                    child: Icon(Icons.arrow_back),
-                  ),
-                ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Align(
+              alignment: Alignment.topLeft,
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.pop(context);
+                },
+                child: Icon(Icons.arrow_back),
               ),
-              SizedBox(width: 320),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Align(
-                  alignment: Alignment.topRight,
-                  child: GestureDetector(
-                    onTap: () {
-                      showModalBottomSheet(
-                        context: context,
-                        builder: ((builder) => bottomSheet(context)),
-                      );
-                    },
-                    child: Icon(CupertinoIcons.ellipsis_vertical),
-                  ),
-                ),
-              ),
-            ],
+            ),
           ),
           SizedBox(height: 30),
           Container(

@@ -2,15 +2,13 @@ import 'dart:convert';
 import 'package:alert_dialog/alert_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
-import 'package:large_project/snippet-view.dart';
-import './upload-snippet.dart';
 import './edit-account.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'globals.dart';
 import 'models/snippet.dart';
 import 'models/userInfo.dart';
 import 'models/user.dart';
+import 'own-snippet-view.dart';
 
 class UserAccountPage extends StatefulWidget {
   @override

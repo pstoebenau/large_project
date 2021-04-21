@@ -1,5 +1,5 @@
 import 'dart:convert';
-
+import 'general-snippet-view.dart';
 import 'package:alert_dialog/alert_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
@@ -145,18 +145,28 @@ class _SwipingPageState extends State<SwipingPage> {
   }
 
   Widget codeSnippet({@required Snippet snippet}) {
-    return Expanded(
-      child: Container(
-        width: 300,
-        height: 400,
-        decoration: BoxDecoration(
-            image: DecorationImage(
-          image: NetworkImage(
-            snippet.imageURL,
+    return GestureDetector(
+      onTap: () async {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => SnippetViewGeneral(snippet),
           ),
-          fit: BoxFit.fitWidth,
-          alignment: Alignment.topCenter,
-        )),
+        );
+      },
+      child: Expanded(
+        child: Container(
+          width: 300,
+          height: 400,
+          decoration: BoxDecoration(
+              image: DecorationImage(
+            image: NetworkImage(
+              snippet.imageURL,
+            ),
+            fit: BoxFit.fitWidth,
+            alignment: Alignment.topCenter,
+          )),
+        ),
       ),
     );
   }
