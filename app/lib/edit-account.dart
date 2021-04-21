@@ -70,7 +70,7 @@ class _EditAccountState extends State<EditAccount> {
     if (response.statusCode != 200) return;
 
     final resObj = json.decode(response.body);
-    if (resObj['message'] == 'success') {
+    if (resObj['message'] == 'success' || resObj['message'] == 'success with password change') {
       Navigator.pop(context);
     } else {
       return alert(context, content: Text(resObj['message']));
@@ -247,6 +247,21 @@ class _EditAccountState extends State<EditAccount> {
                             Container(
                               width: 300,
                               child: FormBuilderTextField(
+                                name: 'newPassword',
+                                obscureText: true,
+                                decoration: InputDecoration(
+                                  border: OutlineInputBorder(),
+                                  labelText: 'Password',
+                                ),
+                                validator:
+                                    FormBuilderValidators.required(context),
+                              ),
+                            ),
+                            SizedBox(height: 10),
+
+                            Container(
+                              width: 300,
+                              child: FormBuilderTextField(
                                 name: "about",
                                 maxLines: 4,
                                 maxLength: 300,
@@ -259,20 +274,6 @@ class _EditAccountState extends State<EditAccount> {
                               ),
                             ),
                             // Fill with user's previous input from API
-                            SizedBox(height: 10),
-                            GestureDetector(
-                              onTap: () {},
-                              child: Container(
-                                child: Text(
-                                  // Grab the description from the API
-                                  'Change Password',
-                                  style: TextStyle(
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.blueAccent[400]),
-                                ),
-                              ),
-                            ),
                           ],
                         ),
                       ),
