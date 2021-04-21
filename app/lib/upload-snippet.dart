@@ -113,7 +113,7 @@ class _UploadSnippetState extends State<UploadSnippet> {
                         ),
                         keyboardType: TextInputType.multiline,
                         maxLines: maxLines.floor(),
-                        validator: FormBuilderValidators.maxLength(context, 1000),
+                        validator: FormBuilderValidators.maxLength(context, 2000),
                       ),
                       SizedBox(height: 20),
                       SizedBox(
