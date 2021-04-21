@@ -136,7 +136,7 @@ router.post(
 
       let verifyLink = `${config.server.url}/api/account/verify/${token}`;
       let send = await transporter.sendMail({
-        from: '"Chill Midnight 👻" <mmidnight.magic@gmail.com>', // sender address
+        from: '"Chill Chili 👻" <mmidnight.magic@gmail.com>', // sender address
         to: email, // list of receivers
         subject: "Verify Email ✔", // Subject line
         text: "Verify Email Link", // plain text body
@@ -150,6 +150,7 @@ router.post(
         message: "success",
       });
     } catch (error) {
+
       return res.status(500).json({
         message: error.message,
         error,
@@ -249,7 +250,7 @@ router.post(
 
       let verifyLink = `${config.server.url}/api/account/changepassword/${token}`;
       let send = await transporter.sendMail({
-        from: '"Chill Midnight 👻" <mmidnight.magic@gmail.com>', // sender address
+        from: '"Chill Chili 👻" <mmidnight.magic@gmail.com>', // sender address
         to: email, // list of receivers
         subject: "Change Password ✔", // Subject line
         text: "Change Password Link", // plain text body
@@ -263,14 +264,6 @@ router.post(
         message: "success",
       });
     } catch (error) {
-
-      if (error.keyValue.username !== null)
-      {
-        res.status(500).json({
-          message: error.message,
-          text: "duplicate username"
-        });
-      }
 
       res.status(500).json({
         message: error.message,
