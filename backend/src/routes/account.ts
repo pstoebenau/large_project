@@ -1,5 +1,4 @@
 // /api/account/signup
-
 // input
 // {
 //   "firstName": string,
@@ -14,8 +13,10 @@
 //   "message": string
 // }
 
-// /api/account/login
 
+
+
+// /api/account/login
 // input
 // {
 //   "username": string,
@@ -27,25 +28,57 @@
 //   token: string
 // }
 
-/**
- *  input: Will assume fields are instantiated and not empty. newPassword is excluded. If it is empty or just white space
- *  it will not update.
- * {
-    "token": string,
-    "profileImage": string,
-    "firstName": string,
-    "lastName": string,
-    "email" : string,
-    "about" : string,
-    "newUserName": string
-    "newPassword" : string
- * }
- *  
- *   output
- * {
- *    message : string
- * }
- */
+
+
+
+// /api/account/account-edit
+// input: Will assume fields are instantiated and not empty. newPassword is excluded. If it is empty or just white space
+// it will not update.
+
+// input
+// {
+//   "token": string,
+//   "profileImage": string,
+//   "firstName": string,
+//   "lastName": string,
+//   "email" : string,
+//   "about" : string,
+//   "newUserName": string
+//   "newPassword" : string
+// }
+
+// output
+// {
+//   message : string
+// }
+
+
+
+// /api/account/forgotpassword
+// input
+// {
+//   "email": string
+// }
+
+// output
+// {
+//   "message": string
+// }
+
+
+
+
+// /api/account/changepassword
+// input
+// {
+//   "password": string,
+//   "token": string
+// }
+
+// output
+// {
+//   "message": string
+// }
 import express, { NextFunction, Request, Response } from "express";
 import nodemailer, { createTestAccount } from "nodemailer";
 import bcrypt from "bcrypt";
