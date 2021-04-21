@@ -193,7 +193,7 @@ class _LeaderBoardState extends State<LeaderBoard> {
                     image: NetworkImage(
                       snippet.imageURL,
                     ),
-                    fit: BoxFit.cover,
+                    fit: BoxFit.fitWidth,
                     alignment: Alignment.topCenter,
                   )
                 ),

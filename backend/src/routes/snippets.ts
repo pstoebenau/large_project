@@ -78,7 +78,7 @@ router.post("/create", async (req: Request, res: Response, next: NextFunction) =
       const data = jwt.verify(token, config.server.secret) as Token;
 
       // Verify code length
-      if (codeText.length >= 1000)
+      if (codeText.length >= 2000)
         return res.status(400).json({message: "Snippet too long"});
 
       // Use carbon-now-cli to convert text to image
@@ -186,6 +186,23 @@ router.post("/get-by-score", async (req, res, next) => {
     let { startIndex, numSnippets } = req.body;
     
     let results = await Snippet.find().sort({'score': 'desc'}).skip(startIndex).limit(numSnippets).exec();
+    
+    return res.status(200).json({
+      snippets: results,
+      message: "success"
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message,
+    });
+  }
+});
+
+router.post("/get-user-snippets", async (req, res, next) => {
+  try {
+    let { userId, startIndex, numSnippets } = req.body;
+    
+    let results = await Snippet.find( userId ).sort({'_id': 'desc'}).skip(startIndex).limit(numSnippets).exec();
     
     return res.status(200).json({
       snippets: results,
