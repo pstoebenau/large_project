@@ -90,7 +90,7 @@ class _UserAccountPageState extends State<UserAccountPage> {
 
   @override
   Widget build(BuildContext context) {
-    if (hotSnippets.length == 0 || user.email == "") {
+    if (hotSnippets.length == 0 || user.username == "") {
       return Scaffold(
         body: Align(
           alignment: Alignment.center,

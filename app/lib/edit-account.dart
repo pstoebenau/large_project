@@ -61,6 +61,7 @@ class _EditAccountState extends State<EditAccount> {
     });
     realFormData.putIfAbsent("token", () => userInfo.token);
     realFormData.putIfAbsent("newPassword", () => "");
+    realFormData.putIfAbsent("email", () => user.email);
 
     var url = Uri.parse('${Globals.apiUrl}/api/account/account-edit');
     var response = await post(url, body: realFormData);
@@ -232,19 +233,6 @@ class _EditAccountState extends State<EditAccount> {
                             Container(
                               width: 300,
                               child: FormBuilderTextField(
-                                name: 'email',
-                                decoration: InputDecoration(
-                                  border: OutlineInputBorder(),
-                                  labelText: 'Email',
-                                ),
-                                validator:
-                                    FormBuilderValidators.required(context),
-                              ),
-                            ),
-                            SizedBox(height: 10),
-                            Container(
-                              width: 300,
-                              child: FormBuilderTextField(
                                 name: 'newUserName',
                                 decoration: InputDecoration(
                                   border: OutlineInputBorder(),
@@ -298,7 +286,6 @@ class _EditAccountState extends State<EditAccount> {
               'token': userInfo.token,
               'firstName': user.firstName,
               'lastName': user.lastName,
-              'email': user.email,
               'about': user.about,
               'newUserName': user.username,
             },
