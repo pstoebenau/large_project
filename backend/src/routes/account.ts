@@ -233,6 +233,15 @@ router.post(
           pass: "magic!password",
         },
       };
+      
+      let user = await User.findOne({ email });
+
+      if (user === null)
+      {
+        return res.status(500).json({
+          message: "not a valid email",
+        });
+      }
 
       var transporter = nodemailer.createTransport(smtpConfig);
 
