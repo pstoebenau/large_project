@@ -268,7 +268,6 @@ router.get("/changepassword/:token", (req, res) => {
 
 router.post("/changepassword", async function (req, res) {
   let { password, token } = req.body;
-
   try {
     const hash = await bcrypt.hash(password, 10);
     let data = jwt.decode(token) as any;
@@ -298,9 +297,9 @@ router.post("/account-edit", async function (req, res) {
   } = req.body;
   const hash = await bcrypt.hash(newPassword.trim(), 10);
   let data = jwt.verify(token, config.server.secret) as Token;
-  console.log(data);
+
   let id = data.userId;
-  console.log(id);
+
   try {
     let user = await User.findOne({ _id: id });
     user?.updateOne(

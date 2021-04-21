@@ -8,9 +8,11 @@ import fs from "fs";
 import crypto from "crypto";
 import { execSync } from "child_process";
 import snippets from "@/schemas/snippets";
+import { JWTInput } from "google-auth-library"
 import { Storage } from '@google-cloud/storage';
-import { createReadStream } from "node:fs";
+import { createReadStream } from "fs";
 import path from "path";
+import axios from "axios";
 
 // /api/snippet/deleteSnippet
 
@@ -42,10 +44,29 @@ import path from "path";
 //   "message": string,
 // }
 
-const gc = new Storage({
-  keyFilename: 'chillchili-a1903a0fdbb3.json',
-  projectId: 'chillchili'
-});
+
+let gc;
+
+if (process.env["CREDS"]) {
+  // load the environment variable with our keys
+  const keysEnvVar = process.env["CREDS"];
+  const keys: JWTInput = JSON.parse(keysEnvVar);
+  
+  gc = new Storage({
+    projectId: 'chillchili',
+    credentials: {
+      client_email: keys.client_email,
+      private_key: keys.private_key
+    }
+  });
+}
+else {
+  gc = new Storage({
+    keyFilename: 'chillchili-a1903a0fdbb3.json',
+    projectId: 'chillchili',
+  });
+}
+
 const uploadBucket = gc.bucket('chillchilli-uploads');
 
 const router = express.Router();
@@ -61,17 +82,37 @@ router.post("/create", async (req: Request, res: Response, next: NextFunction) =
         return res.status(400).json({message: "Snippet too long"});
 
       // Use carbon-now-cli to convert text to image
-      const dir = "";
       const uuid = crypto.randomBytes(16).toString("hex");
-      fs.writeFileSync(dir + uuid, codeText);
-      execSync(`npx carbon-now ${dir}${uuid} -t ${dir}${uuid} -h --config carbon-now.json`);
+      // execSync(`npx carbon-now ${dir}${uuid} -t ${dir}${uuid} -h --config carbon-now.json`);
+
+      let image = await axios({
+        method: "POST",
+        url: "https://carbonara.vercel.app/api/cook",
+        data: {
+          backgroundColor: "rgba(0, 0, 0, 0)",
+          paddingHorizontal: "0",
+          paddingVertical: "0",
+          theme: "panda-syntax",
+          widthAdjustment: true,
+          fontSize: "26px",
+          code: codeText
+        },
+        responseType: 'stream',
+      });
+
+      // Download image from stream
+      image.data.pipe(fs.createWriteStream(`${uuid}.png`));
+      await new Promise<void>((resolve, reject) => {
+        image.data.on('end', () => resolve());
+        image.data.on('error', (err: Error) => reject(err));
+      });
 
       // Upload to GCloud bucket
-      const response = await uploadBucket.upload(`${dir}${uuid}.png`);
+      const response = await uploadBucket.upload(`${uuid}.png`);
       const imageURL = response[0].metadata.mediaLink;
       
-      fs.unlinkSync(dir + uuid);
-      fs.unlinkSync(`${dir}${uuid}.png`);
+      // fs.unlinkSync(dir + uuid);
+      fs.unlinkSync(`${uuid}.png`);
 
       const snippet = new Snippet({
         userId: data.userId,
@@ -107,22 +148,21 @@ router.get('/get-random', async (req, res, next) => {
   }
 });
 
-router.get('/find', async (req: Request, res: Response, next: NextFunction) => {
+router.post('/updateScore', async (req: Request, res: Response, next: NextFunction) => {
+  let _id = req.body;
+
   try {
-    let results = await Snippet.find().exec();
+    let results = await Snippet.findOneAndUpdate({_id: req.body._id}, {$inc : {score : 1}});
 
     return res.status(200).json({
-      snippet: results,
-      count: results.length,
       message: "success"
     });
   } catch (error) {
     return res.status(500).json({
-      message: error.message,
+      message: error.message
     });
   }
 });
-
 router.post(
   "/deleteSnippet",
   async (req: Request, res: Response, next: NextFunction) => {
@@ -130,8 +170,8 @@ router.post(
     try {
       let results = await Snippet.findByIdAndRemove(test).exec();
       return res.status(200).json({
-        snippet: results,
         message: "success"
+        //snippet: results,
       });
     } catch (error) {
       return res.status(500).json({
