@@ -136,10 +136,10 @@ router.post(
 
       let verifyLink = `${config.server.url}/api/account/verify/${token}`;
       let send = await transporter.sendMail({
-        from: '"Chill Midnight 👻" <mmidnight.magic@gmail.com>', // sender address
+        from: '"Chill Chili 👻" <mmidnight.magic@gmail.com>', // sender address
         to: email, // list of receivers
-        subject: "Hello ✔", // Subject line
-        text: "Hello world?", // plain text body
+        subject: "Verify Email ✔", // Subject line
+        text: "Verify Email Link", // plain text body
         html: `Hello,<br> Please Click on the link to verify your email.<br><a href=${verifyLink}>Click here to verify</a>`, // html body
       });
 
@@ -150,6 +150,7 @@ router.post(
         message: "success",
       });
     } catch (error) {
+
       return res.status(500).json({
         message: error.message,
         error,
@@ -249,10 +250,10 @@ router.post(
 
       let verifyLink = `${config.server.url}/api/account/changepassword/${token}`;
       let send = await transporter.sendMail({
-        from: '"Chill Midnight 👻" <mmidnight.magic@gmail.com>', // sender address
+        from: '"Chill Chili 👻" <mmidnight.magic@gmail.com>', // sender address
         to: email, // list of receivers
         subject: "Change Password ✔", // Subject line
-        text: "Change Password?", // plain text body
+        text: "Change Password Link", // plain text body
         html: `Hello,<br> Please Click on the link to change your password.<br><a href=${verifyLink}>Click here to change password</a>`, // html body
       });
 
@@ -263,9 +264,11 @@ router.post(
         message: "success",
       });
     } catch (error) {
+
       res.status(500).json({
         message: error.message,
       });
+      
     }
   }
 );
