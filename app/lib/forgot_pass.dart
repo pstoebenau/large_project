@@ -29,7 +29,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
     final resObj = json.decode(response.body);
     if (response.statusCode != 201) {
       String err = resObj["message"];
-      alert(context, title: Text('${response.statusCode}'), content: Text('$err'));
+      alert(context, title: Text('Error'), content: Text('$err'));
       return;
     }
 
