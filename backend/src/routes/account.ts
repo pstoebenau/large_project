@@ -253,7 +253,6 @@ router.post(
 
       return res.status(201).json({
         message: "success",
-        user
       });
     } catch (error) {
       res.status(500).json({
